@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import NewLogin from './pages/NewLogin'
 import Callback from './pages/Callback'
+import Logout from './pages/Logout'
 import NewDashboard from './pages/NewDashboard'
 import ProtectedRoute from './components/ProtectedRoute'
 import { isAuthenticated } from './utils/auth'
@@ -28,6 +29,7 @@ function App() {
         {/* Public routes */}
         <Route path="/login" element={<NewLogin />} />
         <Route path="/cb" element={<Callback />} />
+        <Route path="/logout" element={<Logout />} />
 
         {/* Protected routes */}
         <Route

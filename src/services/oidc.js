@@ -17,8 +17,8 @@ import {
 // OIDC Configuration
 export const OIDC_CONFIG = {
   AUTH_SERVER: 'https://oidc.khidmaty.gov.mr',
-  CLIENT_ID: 'oidcTest', // Replace with your actual client ID
-  CLIENT_SECRET: 'D54A90D024447A1E4966C33F6FCB61657DEIDINE', // Replace with your actual client secret
+  CLIENT_ID: 'Next-Haj',
+  CLIENT_SECRET: '6A9EA8D755E210FAA307F41FC60A71A64A8E3FBB3C3F3185898124A371CD0D6C',
   REDIRECT_URI: `${window.location.origin}/cb`,
   SCOPE: 'openid email profile phone address offline_access api:read'
 }
@@ -159,7 +159,7 @@ export function logout() {
   // Build logout URL
   const logoutUrl = new URL(OIDC_ENDPOINTS.LOGOUT)
   logoutUrl.searchParams.append('client_id', OIDC_CONFIG.CLIENT_ID)
-  logoutUrl.searchParams.append('post_logout_redirect_uri', window.location.origin)
+  logoutUrl.searchParams.append('post_logout_redirect_uri', `${window.location.origin}/logout`)
 
   // Redirect to logout endpoint
   window.location.href = logoutUrl.toString()
