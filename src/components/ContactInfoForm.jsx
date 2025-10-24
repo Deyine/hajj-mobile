@@ -83,7 +83,7 @@ export default function ContactInfoForm({ initialData, onSuccess }) {
               value={formData.phone}
               onChange={handleChange}
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary text-right"
               placeholder="44123456"
               dir="ltr"
             />
@@ -99,7 +99,7 @@ export default function ContactInfoForm({ initialData, onSuccess }) {
               name="whatsapp"
               value={formData.whatsapp}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary text-right"
               placeholder="44123456"
               dir="ltr"
             />
@@ -115,7 +115,7 @@ export default function ContactInfoForm({ initialData, onSuccess }) {
               name="close_person_phone"
               value={formData.close_person_phone}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary text-right"
               placeholder="44123456"
               dir="ltr"
             />
