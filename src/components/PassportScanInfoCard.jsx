@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from './ui/card';
 import { Button } from './ui/button';
 import { FileCheck, CheckCircle2 } from 'lucide-react';
 import api from '../services/api';
@@ -9,6 +8,7 @@ import ConfirmationDialog from './ConfirmationDialog';
  * PassportScanInfoCard Component
  * Informs citizens that they need to bring their physical passport for scanning
  * Shown when status is 'passport_imported'
+ * Simplified borderless design
  */
 export default function PassportScanInfoCard({ onSuccess }) {
   const [loading, setLoading] = useState(false);
@@ -43,15 +43,15 @@ export default function PassportScanInfoCard({ onSuccess }) {
   };
 
   return (
-    <Card className="w-full border-primary">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
+    <div className="w-full mb-6">
+      <div className="mb-4">
+        <h3 className="text-xl font-bold text-foreground flex items-center gap-2">
           <FileCheck className="h-5 w-5 text-primary" />
           إحضار جواز السفر
-        </CardTitle>
-      </CardHeader>
+        </h3>
+      </div>
 
-      <CardContent className="space-y-4">
+      <div className="space-y-4">
         {error && (
           <div className="p-3 bg-red-50 border border-red-200 rounded-md text-red-600 text-sm">
             {error}
@@ -63,9 +63,7 @@ export default function PassportScanInfoCard({ onSuccess }) {
             يرجى التوجه إلى مديرية الحج والعمرة لإحضار جواز السفر
           </p>
         </div>
-      </CardContent>
 
-      <CardFooter>
         <Button
           onClick={handleButtonClick}
           className="w-full"
@@ -74,7 +72,7 @@ export default function PassportScanInfoCard({ onSuccess }) {
           <CheckCircle2 className="ml-2 h-5 w-5" />
           إتمام التسجيل
         </Button>
-      </CardFooter>
+      </div>
 
       <ConfirmationDialog
         isOpen={showConfirmDialog}
@@ -86,6 +84,6 @@ export default function PassportScanInfoCard({ onSuccess }) {
         cancelText="إلغاء"
         loading={loading}
       />
-    </Card>
+    </div>
   );
 }

@@ -230,44 +230,37 @@ function NewDashboard() {
           steps={steps}
         />
 
+        {/* Light separator */}
+        <div className="border-t border-border/50 mb-6"></div>
+
         {/* Contact Info Form - Show for init status if not complete */}
         {hajjData.status === 'init' && !hajjData.contact_info_complete && (
-          <Card className="mb-6 border-primary">
-            <CardContent className="pt-6">
-              <ContactInfoForm
-                initialData={hajjData}
-                onSuccess={handleContactInfoSuccess}
-              />
-            </CardContent>
-          </Card>
+          <div className="mb-6">
+            <ContactInfoForm
+              initialData={hajjData}
+              onSuccess={handleContactInfoSuccess}
+            />
+          </div>
         )}
 
         {/* Payment Information Section - Show when status is bill_generated OR (init with contact complete) */}
         {(hajjData.status === 'bill_generated' || (hajjData.status === 'init' && hajjData.contact_info_complete)) && (
-          <div className="mb-6">
-            <PaymentInfoCard hajjData={hajjData} />
-          </div>
+          <PaymentInfoCard hajjData={hajjData} />
         )}
 
         {/* Conditions Acceptance Card - Show when status is bill_paid and conditions not accepted */}
         {hajjData.status === 'bill_paid' && !hajjData.conditions_accepted && (
-          <div className="mb-6">
-            <ConditionsAcceptanceCard onAcceptClick={handleOpenConditionsModal} />
-          </div>
+          <ConditionsAcceptanceCard onAcceptClick={handleOpenConditionsModal} />
         )}
 
         {/* Passport Entry Card - Show when status is conditions_generated and passport not imported */}
         {hajjData.status === 'conditions_generated' && !hajjData.passeport_number && (
-          <div className="mb-6">
-            <PassportEntryCard onSuccess={handlePassportSubmitted} />
-          </div>
+          <PassportEntryCard onSuccess={handlePassportSubmitted} />
         )}
 
         {/* Passport Scan Info Card - Show when status is passport_imported */}
         {hajjData.status === 'passport_imported' && (
-          <div className="mb-6">
-            <PassportScanInfoCard onSuccess={handlePassportSubmitted} />
-          </div>
+          <PassportScanInfoCard onSuccess={handlePassportSubmitted} />
         )}
 
         {/* Personal Info Card */}

@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from './ui/card';
 import { Button } from './ui/button';
 import { Plane } from 'lucide-react';
 import api from '../services/api';
@@ -7,6 +6,7 @@ import api from '../services/api';
 /**
  * PassportEntryCard Component
  * Allows citizens in 'conditions_generated' status to submit their passport number
+ * Simplified borderless design
  */
 export default function PassportEntryCard({ onSuccess }) {
   const [passportNumber, setPassportNumber] = useState('');
@@ -49,19 +49,19 @@ export default function PassportEntryCard({ onSuccess }) {
   };
 
   return (
-    <Card className="w-full border-primary">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
+    <div className="w-full mb-6">
+      <div className="mb-4">
+        <h3 className="text-xl font-bold text-foreground flex items-center gap-2 mb-2">
           <Plane className="h-5 w-5 text-primary" />
           تسجيل جواز السفر
-        </CardTitle>
-        <CardDescription>
+        </h3>
+        <p className="text-sm text-muted-foreground">
           يرجى إدخال رقم جواز السفر الخاص بكم للمتابعة في عملية التسجيل
-        </CardDescription>
-      </CardHeader>
+        </p>
+      </div>
 
       <form onSubmit={handleSubmit}>
-        <CardContent className="space-y-4">
+        <div className="space-y-4">
           {error && (
             <div className="p-3 bg-red-50 border border-red-200 rounded-md text-red-600 text-sm">
               {error}
@@ -104,9 +104,7 @@ export default function PassportEntryCard({ onSuccess }) {
               أدخل رقم جواز السفر كما هو مكتوب في الجواز
             </p>
           </div>
-        </CardContent>
 
-        <CardFooter>
           <Button
             type="submit"
             className="w-full"
@@ -114,8 +112,8 @@ export default function PassportEntryCard({ onSuccess }) {
           >
             {loading ? 'جارٍ التحقق...' : success ? 'تم التسجيل بنجاح' : 'تسجيل جواز السفر'}
           </Button>
-        </CardFooter>
+        </div>
       </form>
-    </Card>
+    </div>
   );
 }

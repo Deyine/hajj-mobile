@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from './ui/card';
 import { Button } from './ui/button';
 import api from '../services/api';
 
 /**
  * ContactInfoForm Component
  * Allows citizens in 'init' status to complete their contact information
+ * Simplified borderless design
  */
 export default function ContactInfoForm({ initialData, onSuccess }) {
   const [formData, setFormData] = useState({
@@ -56,16 +56,16 @@ export default function ContactInfoForm({ initialData, onSuccess }) {
   };
 
   return (
-    <Card className="w-full">
-      <CardHeader>
-        <CardTitle>إكمال معلومات الاتصال</CardTitle>
-        <CardDescription>
+    <div className="w-full">
+      <div className="mb-4">
+        <h3 className="text-xl font-bold text-foreground mb-2">إكمال معلومات الاتصال</h3>
+        <p className="text-sm text-muted-foreground">
           يرجى ملء معلومات الاتصال الخاصة بكم للمتابعة في عملية التسجيل
-        </CardDescription>
-      </CardHeader>
+        </p>
+      </div>
 
       <form onSubmit={handleSubmit}>
-        <CardContent className="space-y-4">
+        <div className="space-y-4">
           {error && (
             <div className="p-3 bg-red-50 border border-red-200 rounded-md text-red-600 text-sm">
               {error}
@@ -120,9 +120,9 @@ export default function ContactInfoForm({ initialData, onSuccess }) {
               dir="ltr"
             />
           </div>
-        </CardContent>
+        </div>
 
-        <CardFooter>
+        <div className="mt-6">
           <Button
             type="submit"
             className="w-full"
@@ -130,8 +130,8 @@ export default function ContactInfoForm({ initialData, onSuccess }) {
           >
             {loading ? 'جارٍ الحفظ...' : 'حفظ معلومات الاتصال'}
           </Button>
-        </CardFooter>
+        </div>
       </form>
-    </Card>
+    </div>
   );
 }

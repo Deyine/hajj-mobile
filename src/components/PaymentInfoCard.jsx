@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from './ui/card';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
 import { Download, CreditCard, FileText } from 'lucide-react';
@@ -9,6 +8,7 @@ import api from '../services/api';
  * PaymentInfoCard Component
  * Displays payment information (titre de recette) for Hajj registration
  * Always shows download invoice button (creates bill if needed)
+ * Simplified borderless design
  */
 export default function PaymentInfoCard({ hajjData }) {
   const [downloading, setDownloading] = useState(false);
@@ -46,23 +46,23 @@ export default function PaymentInfoCard({ hajjData }) {
   };
 
   return (
-    <Card className="w-full border-primary">
-      <CardHeader>
-        <div className="flex justify-between items-start">
-          <CardTitle className="flex items-center gap-2">
+    <div className="w-full mb-6">
+      <div className="mb-4">
+        <div className="flex justify-between items-start mb-2">
+          <h3 className="text-xl font-bold text-foreground flex items-center gap-2">
             <CreditCard className="h-5 w-5 text-primary" />
             معلومات الدفع
-          </CardTitle>
+          </h3>
           {hajjData.bill_generated && (
             <Badge variant="success">متاح للدفع</Badge>
           )}
         </div>
-        <CardDescription>
+        <p className="text-sm text-muted-foreground">
           رقم الدفع الخاص بكم
-        </CardDescription>
-      </CardHeader>
+        </p>
+      </div>
 
-      <CardContent className="space-y-6">
+      <div className="space-y-6">
         {/* Payment number - prominently displayed */}
         <div className="bg-gradient-to-br from-primary to-primary/80 text-white rounded-lg p-6 text-center shadow-lg">
           <div className="flex items-center justify-center gap-2 mb-2">
@@ -146,7 +146,7 @@ export default function PaymentInfoCard({ hajjData }) {
           <Download className="ml-2 h-4 w-4" />
           {downloading ? 'جارٍ التحميل...' : 'تحميل الفاتورة'}
         </Button>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }

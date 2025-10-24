@@ -1,4 +1,3 @@
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from './ui/card';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
 import { FileCheck, AlertCircle } from 'lucide-react';
@@ -6,24 +5,25 @@ import { FileCheck, AlertCircle } from 'lucide-react';
 /**
  * ConditionsAcceptanceCard Component
  * Displays a call-to-action for reading and accepting Hajj conditions
+ * Simplified borderless design
  */
 export default function ConditionsAcceptanceCard({ onAcceptClick }) {
   return (
-    <Card className="w-full border-primary">
-      <CardHeader>
-        <div className="flex justify-between items-start">
-          <CardTitle className="flex items-center gap-2">
+    <div className="w-full mb-6">
+      <div className="mb-4">
+        <div className="flex justify-between items-start mb-2">
+          <h3 className="text-xl font-bold text-foreground flex items-center gap-2">
             <FileCheck className="h-5 w-5 text-primary" />
             شروط وإلتزامات الحاج
-          </CardTitle>
+          </h3>
           <Badge variant="default">مطلوب</Badge>
         </div>
-        <CardDescription>
+        <p className="text-sm text-muted-foreground">
           يجب الموافقة على الشروط والإلتزامات قبل المتابعة
-        </CardDescription>
-      </CardHeader>
+        </p>
+      </div>
 
-      <CardContent className="space-y-4">
+      <div className="space-y-4">
         {/* Important notice */}
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-center">
           <AlertCircle className="h-12 w-12 text-blue-600 mx-auto mb-3" />
@@ -70,7 +70,7 @@ export default function ConditionsAcceptanceCard({ onAcceptClick }) {
         <p className="text-xs text-center text-muted-foreground">
           بالضغط على الزر أعلاه، سيتم عرض الشروط كاملة لقراءتها والموافقة عليها
         </p>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }
