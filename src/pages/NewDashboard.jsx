@@ -4,7 +4,6 @@ import { logout } from '../services/oidc'
 import api from '../services/api'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
 import ContactInfoForm from '@/components/ContactInfoForm'
 import PaymentInfoCard from '@/components/PaymentInfoCard'
 import ConditionsAcceptanceCard from '@/components/ConditionsAcceptanceCard'
@@ -15,10 +14,7 @@ import MobileProgressIndicator from '@/components/MobileProgressIndicator'
 import {
   LogOut,
   Plane,
-  Users,
-  UserCheck,
   Hotel,
-  Calendar,
   Phone,
   IdCard
 } from 'lucide-react'
@@ -271,60 +267,25 @@ function NewDashboard() {
           </CardContent>
         </Card>
 
-        {/* Flight & Group Info */}
-        {hajjData.flight_info && (
-          <Card className="mb-6">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Plane className="h-5 w-5" />
-                معلومات الرحلة والمجموعة
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {/* Flight */}
-              <div>
-                <p className="text-sm text-muted-foreground mb-1">رقم الرحلة</p>
-                <Badge variant="default">{hajjData.flight_info.flight_number}</Badge>
-              </div>
-
-              {/* Dates */}
-              {hajjData.flight_info.departure_date && (
-                <div className="flex items-center gap-3">
-                  <Calendar className="h-5 w-5 text-muted-foreground" />
-                  <div>
-                    <p className="text-sm text-muted-foreground">تاريخ المغادرة</p>
-                    <p className="font-semibold">{hajjData.flight_info.departure_date}</p>
-                  </div>
-                </div>
-              )}
-
-              {/* Group */}
-              {hajjData.group_info && (
-                <div className="flex items-center gap-3">
-                  <Users className="h-5 w-5 text-muted-foreground" />
-                  <div>
-                    <p className="text-sm text-muted-foreground">المجموعة</p>
-                    <p className="font-semibold">{hajjData.group_info.name}</p>
-                  </div>
-                </div>
-              )}
-
-              {/* Supervisor */}
-              {hajjData.supervisor_info && (
-                <div className="flex items-center gap-3">
-                  <UserCheck className="h-5 w-5 text-muted-foreground" />
-                  <div>
-                    <p className="text-sm text-muted-foreground">المشرف</p>
-                    <p className="font-semibold">{hajjData.supervisor_info.name}</p>
-                    {hajjData.supervisor_info.phone && (
-                      <p className="text-sm text-muted-foreground">{hajjData.supervisor_info.phone}</p>
-                    )}
-                  </div>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        )}
+        {/* Flight Planning Notification */}
+        <Card className="mb-6">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Plane className="h-5 w-5" />
+              التفويج
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-center">
+              <p className="text-blue-900 font-medium mb-2">
+                التفويج قيد التحضير
+              </p>
+              <p className="text-sm text-blue-800">
+                سيتم إعلامكم فور برمجة التفويج
+              </p>
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Accommodation Info */}
         {hajjData.accommodation_info && (
