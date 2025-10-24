@@ -235,6 +235,24 @@ function NewDashboard() {
           <PassportScanInfoCard onSuccess={handlePassportSubmitted} />
         )}
 
+        {/* Flight Planning Notification */}
+        <div className="w-full mb-6">
+          <div className="mb-4">
+            <h3 className="text-xl font-bold text-foreground flex items-center gap-2">
+              <Plane className="h-5 w-5 text-primary" />
+              التفويج
+            </h3>
+          </div>
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-center">
+            <p className="text-blue-900 font-medium mb-2">
+              التفويج قيد التحضير
+            </p>
+            <p className="text-sm text-blue-800">
+              سيتم إعلامكم فور برمجة التفويج
+            </p>
+          </div>
+        </div>
+
         {/* Personal Info Card */}
         <Card className="mb-6">
           <CardHeader>
@@ -264,26 +282,6 @@ function NewDashboard() {
                 </div>
               </div>
             )}
-          </CardContent>
-        </Card>
-
-        {/* Flight Planning Notification */}
-        <Card className="mb-6">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Plane className="h-5 w-5" />
-              التفويج
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-center">
-              <p className="text-blue-900 font-medium mb-2">
-                التفويج قيد التحضير
-              </p>
-              <p className="text-sm text-blue-800">
-                سيتم إعلامكم فور برمجة التفويج
-              </p>
-            </div>
           </CardContent>
         </Card>
 
