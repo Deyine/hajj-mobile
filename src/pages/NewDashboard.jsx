@@ -230,9 +230,6 @@ function NewDashboard() {
           steps={steps}
         />
 
-        {/* Light separator */}
-        <div className="border-t border-border/50 mb-6"></div>
-
         {/* Contact Info Form - Show for init status if not complete */}
         {hajjData.status === 'init' && !hajjData.contact_info_complete && (
           <div className="mb-6">
