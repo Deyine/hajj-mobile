@@ -260,38 +260,6 @@ function NewDashboard() {
           <PassportScanInfoCard onSuccess={handlePassportSubmitted} />
         )}
 
-        {/* Personal Info Card */}
-        <Card className="mb-6">
-          <CardHeader>
-            <CardTitle>معلوماتي</CardTitle>
-          </CardHeader>
-          <CardContent className="grid gap-4">
-            <div className="flex items-center gap-3">
-              <IdCard className="h-5 w-5 text-muted-foreground" />
-              <div>
-                <p className="text-sm text-muted-foreground">رقم الحاج</p>
-                <p className="font-semibold">{hajjData.full_reference}</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-3">
-              <IdCard className="h-5 w-5 text-muted-foreground" />
-              <div>
-                <p className="text-sm text-muted-foreground">الرقم الوطني</p>
-                <p className="font-semibold">{hajjData.nni}</p>
-              </div>
-            </div>
-            {hajjData.phone && (
-              <div className="flex items-center gap-3">
-                <Phone className="h-5 w-5 text-muted-foreground" />
-                <div>
-                  <p className="text-sm text-muted-foreground">رقم الهاتف</p>
-                  <p className="font-semibold">{hajjData.phone}</p>
-                </div>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-
         {/* Documents Card */}
         {(hajjData.documents_available.bill || hajjData.documents_available.conditions || hajjData.documents_available.visa) && (
           <Card className="mb-6">
@@ -337,6 +305,38 @@ function NewDashboard() {
             </CardContent>
           </Card>
         )}
+
+        {/* Personal Info Card */}
+        <Card className="mb-6">
+          <CardHeader>
+            <CardTitle>معلوماتي</CardTitle>
+          </CardHeader>
+          <CardContent className="grid gap-4">
+            <div className="flex items-center gap-3">
+              <IdCard className="h-5 w-5 text-muted-foreground" />
+              <div>
+                <p className="text-sm text-muted-foreground">رقم الحاج</p>
+                <p className="font-semibold">{hajjData.full_reference}</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <IdCard className="h-5 w-5 text-muted-foreground" />
+              <div>
+                <p className="text-sm text-muted-foreground">الرقم الوطني</p>
+                <p className="font-semibold">{hajjData.nni}</p>
+              </div>
+            </div>
+            {hajjData.phone && (
+              <div className="flex items-center gap-3">
+                <Phone className="h-5 w-5 text-muted-foreground" />
+                <div>
+                  <p className="text-sm text-muted-foreground">رقم الهاتف</p>
+                  <p className="font-semibold">{hajjData.phone}</p>
+                </div>
+              </div>
+            )}
+          </CardContent>
+        </Card>
 
         {/* Flight & Group Info */}
         {hajjData.flight_info && (
