@@ -3,7 +3,6 @@ import { getUserInfo } from '../utils/auth'
 import { logout } from '../services/oidc'
 import api from '../services/api'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Progress } from '@/components/ui/progress'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import ContactInfoForm from '@/components/ContactInfoForm'
@@ -12,9 +11,8 @@ import ConditionsAcceptanceCard from '@/components/ConditionsAcceptanceCard'
 import ConditionsModal from '@/components/ConditionsModal'
 import PassportEntryCard from '@/components/PassportEntryCard'
 import PassportScanInfoCard from '@/components/PassportScanInfoCard'
+import MobileProgressIndicator from '@/components/MobileProgressIndicator'
 import {
-  CheckCircle2,
-  Circle,
   FileText,
   Download,
   LogOut,
@@ -111,26 +109,6 @@ function NewDashboard() {
       console.error(`Error downloading ${documentType}:`, err)
       alert('حدث خطأ في تحميل الملف')
     }
-  }
-
-  const getStepStatus = (stepNumber) => {
-    if (!hajjData) return 'pending'
-    return hajjData.progress.current_step >= stepNumber ? 'completed' : 'pending'
-  }
-
-  const getStatusColor = (status) => {
-    const colors = {
-      init: 'secondary',
-      bill_generated: 'default',
-      bill_paid: 'success',
-      passport_imported: 'default',
-      conditions_generated: 'default',
-      subscribed: 'success',
-      finished: 'success',
-      cancelled: 'destructive',
-      replaced: 'destructive'
-    }
-    return colors[status] || 'secondary'
   }
 
   const steps = [
@@ -245,6 +223,13 @@ function NewDashboard() {
           </Card>
         )}
 
+        {/* Mobile Progress Indicator - ALWAYS AT TOP, before any action blocks */}
+        <MobileProgressIndicator
+          currentStep={hajjData.progress.current_step}
+          totalSteps={hajjData.progress.total_steps}
+          steps={steps}
+        />
+
         {/* Contact Info Form - Show for init status if not complete */}
         {hajjData.status === 'init' && !hajjData.contact_info_complete && (
           <Card className="mb-6 border-primary">
@@ -284,52 +269,6 @@ function NewDashboard() {
             <PassportScanInfoCard onSuccess={handlePassportSubmitted} />
           </div>
         )}
-
-        {/* Progress Card */}
-        <Card className="mb-6">
-          <CardHeader>
-            <div className="flex justify-between items-center">
-              <CardTitle>مراحل التسجيل</CardTitle>
-              <Badge variant={getStatusColor(hajjData.status)}>
-                {hajjData.status_ar}
-              </Badge>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="mb-6">
-              <Progress value={hajjData.progress.percentage} className="h-3" />
-              <p className="text-sm text-muted-foreground mt-2 text-center">
-                المرحلة {hajjData.progress.current_step} من {hajjData.progress.total_steps} ({hajjData.progress.percentage}%)
-              </p>
-            </div>
-
-            {/* Steps */}
-            <div className="space-y-4">
-              {steps.map((step) => {
-                const status = getStepStatus(step.number)
-                const isCompleted = status === 'completed'
-
-                return (
-                  <div key={step.number} className="flex items-start gap-4">
-                    <div className="flex-shrink-0 mt-1">
-                      {isCompleted ? (
-                        <CheckCircle2 className="h-6 w-6 text-primary" />
-                      ) : (
-                        <Circle className="h-6 w-6 text-muted-foreground" />
-                      )}
-                    </div>
-                    <div className="flex-1">
-                      <h4 className={`font-semibold ${isCompleted ? 'text-foreground' : 'text-muted-foreground'}`}>
-                        {step.title}
-                      </h4>
-                      <p className="text-sm text-muted-foreground">{step.description}</p>
-                    </div>
-                  </div>
-                )
-              })}
-            </div>
-          </CardContent>
-        </Card>
 
         {/* Personal Info Card */}
         <Card className="mb-6">
