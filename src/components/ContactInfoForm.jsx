@@ -58,9 +58,9 @@ export default function ContactInfoForm({ initialData, onSuccess }) {
   return (
     <div className="w-full">
       <div className="mb-4">
-        <h3 className="text-xl font-bold text-foreground mb-2">إكمال معلومات الاتصال</h3>
+        <h3 className="text-xl font-bold text-foreground mb-2">إكمال معلومات الإتصال</h3>
         <p className="text-sm text-muted-foreground">
-          يرجى ملء معلومات الاتصال الخاصة بكم للمتابعة في عملية التسجيل
+          يرجى ملء معلومات الإتصال الخاصة بكم للمتابعة في عملية التسجيل
         </p>
       </div>
 
@@ -128,7 +128,7 @@ export default function ContactInfoForm({ initialData, onSuccess }) {
             className="w-full"
             disabled={loading}
           >
-            {loading ? 'جارٍ الحفظ...' : 'حفظ معلومات الاتصال'}
+            {loading ? 'جارٍ الحفظ...' : 'حفظ معلومات الإتصال'}
           </Button>
         </div>
       </form>
