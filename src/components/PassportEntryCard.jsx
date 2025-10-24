@@ -95,7 +95,7 @@ export default function PassportEntryCard({ onSuccess }) {
               onChange={(e) => setPassportNumber(e.target.value)}
               required
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary text-lg font-mono tracking-wider text-right"
-              placeholder="MR1234567"
+              placeholder="B00123456"
               dir="ltr"
               maxLength={20}
               disabled={loading || success}
