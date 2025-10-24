@@ -13,8 +13,6 @@ import PassportEntryCard from '@/components/PassportEntryCard'
 import PassportScanInfoCard from '@/components/PassportScanInfoCard'
 import MobileProgressIndicator from '@/components/MobileProgressIndicator'
 import {
-  FileText,
-  Download,
   LogOut,
   Plane,
   Users,
@@ -89,25 +87,6 @@ function NewDashboard() {
   const handleLogout = () => {
     if (confirm('هل أنت متأكد من تسجيل الخروج؟')) {
       logout()
-    }
-  }
-
-  const downloadDocument = async (documentType) => {
-    try {
-      const response = await api.get(`/api/v1/mobile/documents/${documentType}`, {
-        responseType: 'blob'
-      })
-
-      const url = window.URL.createObjectURL(new Blob([response.data]))
-      const link = document.createElement('a')
-      link.href = url
-      link.setAttribute('download', `${documentType}.pdf`)
-      document.body.appendChild(link)
-      link.click()
-      link.remove()
-    } catch (err) {
-      console.error(`Error downloading ${documentType}:`, err)
-      alert('حدث خطأ في تحميل الملف')
     }
   }
 
@@ -258,52 +237,6 @@ function NewDashboard() {
         {/* Passport Scan Info Card - Show when status is passport_imported */}
         {hajjData.status === 'passport_imported' && (
           <PassportScanInfoCard onSuccess={handlePassportSubmitted} />
-        )}
-
-        {/* Documents Card */}
-        {(hajjData.documents_available.bill || hajjData.documents_available.conditions || hajjData.documents_available.visa) && (
-          <Card className="mb-6">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <FileText className="h-5 w-5" />
-                الوثائق المتاحة
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              {hajjData.documents_available.bill && (
-                <Button
-                  variant="outline"
-                  className="w-full justify-between"
-                  onClick={() => downloadDocument('bill')}
-                >
-                  <span>الفاتورة</span>
-                  <Download className="h-4 w-4" />
-                </Button>
-              )}
-
-              {hajjData.documents_available.conditions && (
-                <Button
-                  variant="outline"
-                  className="w-full justify-between"
-                  onClick={() => downloadDocument('conditions')}
-                >
-                  <span>دفتر الالتزامات</span>
-                  <Download className="h-4 w-4" />
-                </Button>
-              )}
-
-              {hajjData.documents_available.visa && (
-                <Button
-                  variant="outline"
-                  className="w-full justify-between"
-                  onClick={() => downloadDocument('visa')}
-                >
-                  <span>التأشيرة</span>
-                  <Download className="h-4 w-4" />
-                </Button>
-              )}
-            </CardContent>
-          </Card>
         )}
 
         {/* Personal Info Card */}
