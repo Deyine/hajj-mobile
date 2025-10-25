@@ -62,19 +62,8 @@ function Callback() {
           khidmatyUser: window.khidmatyUser
         }
 
-        // Check cookies - parse them into an object
+        // Check cookies
         const cookies = document.cookie
-        const parsedCookies = {}
-        if (cookies) {
-          cookies.split(';').forEach(cookie => {
-            const parts = cookie.trim().split('=')
-            const name = parts[0]
-            const value = parts.slice(1).join('=') // Handle values with = in them
-            if (name) {
-              parsedCookies[name] = value
-            }
-          })
-        }
 
         // Check for Android/iOS JavaScript interfaces
         const hasAndroidInterface = !!window.Android
@@ -89,9 +78,7 @@ function Callback() {
           referrer: document.referrer,
           localStorageKeys: Object.keys(localStorage),
           sessionStorageKeys: Object.keys(sessionStorage),
-          cookiesRaw: cookies || 'None',
-          cookiesParsed: parsedCookies,
-          cookieCount: Object.keys(parsedCookies).length,
+          cookies: cookies || 'None',
           globalVars: globalVars,
           hasAndroidInterface: hasAndroidInterface,
           hasIOSInterface: hasIOSInterface,
@@ -227,35 +214,6 @@ function Callback() {
             {debugInfo && (
               <div className="mt-6 p-4 bg-base-200 rounded-lg text-left">
                 <h3 className="font-bold mb-2 text-sm">معلومات التشخيص (Debug Info)</h3>
-
-                {/* COOKIES - HIGHLIGHTED AT THE TOP */}
-                <div className="mb-4 p-4 bg-green-100 rounded-lg border-2 border-green-500">
-                  <strong className="text-green-900 text-base">🍪 COOKIES (JavaScript)</strong>
-                  <div className="text-xs mt-2 text-green-900">
-                    <div className="mb-2">
-                      <strong>Cookie Count:</strong> {debugInfo.cookieCount} cookies found
-                    </div>
-                    {debugInfo.cookieCount > 0 ? (
-                      <div>
-                        <strong>Parsed Cookies:</strong>
-                        <pre className="bg-white p-3 rounded mt-1 overflow-x-auto text-black">
-                          {JSON.stringify(debugInfo.cookiesParsed, null, 2)}
-                        </pre>
-                        <div className="mt-2">
-                          <strong>Raw Cookie String:</strong>
-                          <pre className="bg-white p-3 rounded mt-1 overflow-x-auto text-black break-all">
-                            {debugInfo.cookiesRaw}
-                          </pre>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="text-red-700 font-bold mt-2">
-                        ❌ NO COOKIES FOUND IN JAVASCRIPT!
-                      </div>
-                    )}
-                  </div>
-                </div>
-
                 <div className="text-xs space-y-2 font-mono overflow-auto max-h-96" dir="ltr">
                   <div>
                     <strong>URL:</strong>
