@@ -152,12 +152,16 @@ function NewDashboard() {
           {/* Hajj Photo */}
           <div className="flex-shrink-0">
             {hajjData.photo_url ? (
-              <img
-                src={hajjData.photo_url}
-                alt={hajjData.full_name_ar}
-                className="w-[60px] h-[60px] rounded-[5px] object-cover"
+              <div
+                className="relative w-[60px] h-[60px] rounded-[5px] overflow-hidden"
                 style={{ boxShadow: '0 1px 4px 0 rgba(0, 0, 0, 0.37)' }}
-              />
+              >
+                <img
+                  src={hajjData.photo_url}
+                  alt={hajjData.full_name_ar}
+                  className="absolute top-0 left-0 w-full h-full object-cover"
+                />
+              </div>
             ) : (
               <div
                 className="w-[60px] h-[60px] rounded-[5px] bg-primary/10 flex items-center justify-center"
