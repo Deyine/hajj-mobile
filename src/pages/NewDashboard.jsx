@@ -146,7 +146,38 @@ function NewDashboard() {
   // Main dashboard
   return (
     <div className="min-h-screen bg-background">
-      {/* Mobile Progress Indicator - Full width, outside container */}
+      {/* Header with Photo - Full width at top */}
+      <div className="bg-white border-b border-border py-4 px-6">
+        <div className="flex items-center gap-4">
+          {/* Hajj Photo */}
+          <div className="flex-shrink-0">
+            {hajjData.photo_url ? (
+              <img
+                src={hajjData.photo_url}
+                alt={hajjData.full_name_ar}
+                className="w-16 h-16 rounded-full object-cover border-2 border-primary"
+              />
+            ) : (
+              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center border-2 border-primary">
+                <span className="text-2xl text-primary font-bold">
+                  {hajjData.full_name_ar?.charAt(0) || '👤'}
+                </span>
+              </div>
+            )}
+          </div>
+          {/* Greeting */}
+          <div className="flex-1">
+            <h2 className="text-xl font-bold text-foreground">
+              مرحباً {hajjData.full_name_ar}
+            </h2>
+            <p className="text-sm text-muted-foreground">
+              <span className="font-medium">رقم الحاج:</span> {hajjData.full_reference}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile Progress Indicator - Full width */}
       <MobileProgressIndicator
         currentStep={hajjData.progress.current_step}
         totalSteps={hajjData.progress.total_steps}
@@ -155,38 +186,6 @@ function NewDashboard() {
 
       <div className="p-4">
         <div className="container mx-auto max-w-4xl">
-          {/* Header with Photo */}
-          <Card className="mb-6">
-            <CardContent className="pt-6">
-              <div className="flex items-center gap-4">
-                {/* Hajj Photo */}
-                <div className="flex-shrink-0">
-                  {hajjData.photo_url ? (
-                    <img
-                      src={hajjData.photo_url}
-                      alt={hajjData.full_name_ar}
-                      className="w-16 h-16 rounded-full object-cover border-2 border-primary"
-                    />
-                  ) : (
-                    <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center border-2 border-primary">
-                      <span className="text-2xl text-primary font-bold">
-                        {hajjData.full_name_ar?.charAt(0) || '👤'}
-                      </span>
-                    </div>
-                  )}
-                </div>
-                {/* Greeting */}
-                <div className="flex-1">
-                  <h2 className="text-xl font-bold text-foreground">
-                    مرحباً {hajjData.full_name_ar}
-                  </h2>
-                  <p className="text-sm text-muted-foreground">
-                    {hajjData.full_reference}
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
 
           {/* Cancelled/Replaced Alerts */}
           {hajjData.cancelled && (
