@@ -10,8 +10,9 @@ import api from '../services/api';
  * Always shows download invoice button (creates bill if needed)
  * Simplified borderless design
  */
-export default function PaymentInfoCard({ hajjData }) {
+export default function PaymentInfoCard({ hajjData, onPaymentMarked }) {
   const [downloading, setDownloading] = useState(false);
+  const [marking, setMarking] = useState(false);
 
   const handleDownloadBill = async () => {
     setDownloading(true);
@@ -32,6 +33,26 @@ export default function PaymentInfoCard({ hajjData }) {
       alert('حدث خطأ في تحميل الفاتورة');
     } finally {
       setDownloading(false);
+    }
+  };
+
+  const handleMarkAsPaid = async () => {
+    if (!confirm('هل تريد تسجيل الدفع؟ (للاختبار فقط)')) return;
+
+    setMarking(true);
+    try {
+      const response = await api.post('/api/v1/mobile/mark_paid');
+      if (response.data.success) {
+        alert('تم تسجيل الدفع بنجاح');
+        if (onPaymentMarked) {
+          onPaymentMarked(response.data.hajj);
+        }
+      }
+    } catch (err) {
+      console.error('Error marking as paid:', err);
+      alert('حدث خطأ في تسجيل الدفع');
+    } finally {
+      setMarking(false);
     }
   };
 
@@ -145,6 +166,16 @@ export default function PaymentInfoCard({ hajjData }) {
         >
           <Download className="ml-2 h-4 w-4" />
           {downloading ? 'جارٍ التحميل...' : 'تحميل الفاتورة'}
+        </Button>
+
+        {/* Test button to mark as paid */}
+        <Button
+          onClick={handleMarkAsPaid}
+          variant="destructive"
+          className="w-full"
+          disabled={marking}
+        >
+          {marking ? 'جارٍ التسجيل...' : '⚠️ تسجيل الدفع (اختبار)'}
         </Button>
       </div>
     </div>

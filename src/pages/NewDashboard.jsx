@@ -68,6 +68,11 @@ function NewDashboard() {
     setHajjData(updatedHajjData)
   }
 
+  const handlePaymentMarked = (updatedHajjData) => {
+    // Update hajj data after marking as paid
+    setHajjData(updatedHajjData)
+  }
+
   const handleCloseConditionsModal = () => {
     setShowConditionsModal(false)
   }
@@ -232,7 +237,7 @@ function NewDashboard() {
 
         {/* Payment Information Section - Show when status is bill_generated OR (init with contact complete) */}
         {(hajjData.status === 'bill_generated' || (hajjData.status === 'init' && hajjData.contact_info_complete)) && (
-          <PaymentInfoCard hajjData={hajjData} />
+          <PaymentInfoCard hajjData={hajjData} onPaymentMarked={handlePaymentMarked} />
         )}
 
         {/* Conditions Acceptance Card - Show when status is bill_paid and conditions not accepted */}
