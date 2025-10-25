@@ -18,8 +18,20 @@ function Callback() {
   const [searchParams] = useSearchParams()
   const [error, setError] = useState(null)
   const [debugInfo, setDebugInfo] = useState(null)
+  const [receivedMessages, setReceivedMessages] = useState([])
 
   useEffect(() => {
+    // Listen for postMessage events from native app
+    const messageHandler = (event) => {
+      console.log('Received postMessage:', event)
+      setReceivedMessages(prev => [...prev, {
+        origin: event.origin,
+        data: event.data,
+        timestamp: new Date().toISOString()
+      }])
+    }
+    window.addEventListener('message', messageHandler)
+
     const handleCallback = async () => {
       try {
         // Collect DEBUG information to display on screen
@@ -29,38 +41,86 @@ function Callback() {
           allParams[key] = value
         })
 
+        // Check URL hash/fragment
+        const urlHash = window.location.hash
+        const hashParams = {}
+        if (urlHash) {
+          const hashString = urlHash.substring(1) // Remove #
+          const pairs = hashString.split('&')
+          pairs.forEach(pair => {
+            const [key, value] = pair.split('=')
+            if (key) hashParams[key] = decodeURIComponent(value || '')
+          })
+        }
+
+        // Check for global JavaScript variables that might be injected by native app
+        const globalVars = {
+          khidmatyToken: window.khidmatyToken,
+          accessToken: window.accessToken,
+          token: window.token,
+          userInfo: window.userInfo,
+          khidmatyUser: window.khidmatyUser
+        }
+
+        // Check cookies
+        const cookies = document.cookie
+
+        // Check for Android/iOS JavaScript interfaces
+        const hasAndroidInterface = !!window.Android
+        const hasIOSInterface = !!window.webkit?.messageHandlers
+
         const debugData = {
           url: fullUrl,
           urlParams: allParams,
+          urlHash: urlHash || 'None',
+          hashParams: hashParams,
           userAgent: navigator.userAgent,
           referrer: document.referrer,
           localStorageKeys: Object.keys(localStorage),
           sessionStorageKeys: Object.keys(sessionStorage),
+          cookies: cookies || 'None',
+          globalVars: globalVars,
+          hasAndroidInterface: hasAndroidInterface,
+          hasIOSInterface: hasIOSInterface,
           isWebView: /wv|WebView/i.test(navigator.userAgent)
         }
 
         setDebugInfo(debugData)
         console.log('=== CALLBACK DEBUG INFO ===', debugData)
 
-        // SCENARIO 1: Token passed directly in URL parameters
-        // Check for access_token in URL (e.g., ?access_token=xyz or ?token=xyz)
-        const urlAccessToken = searchParams.get('access_token') || searchParams.get('token')
+        // SCENARIO 1: Token passed directly in URL parameters or hash
+        // Check for access_token in URL query params
+        let foundToken = searchParams.get('access_token') || searchParams.get('token')
+        let tokenSource = foundToken ? 'URL query parameter' : null
 
-        if (urlAccessToken) {
-          console.log('Token found in URL parameters')
+        // Check in URL hash/fragment
+        if (!foundToken && (hashParams.access_token || hashParams.token)) {
+          foundToken = hashParams.access_token || hashParams.token
+          tokenSource = 'URL hash/fragment'
+        }
+
+        // Check in global JavaScript variables
+        if (!foundToken && (globalVars.accessToken || globalVars.token || globalVars.khidmatyToken)) {
+          foundToken = globalVars.accessToken || globalVars.token || globalVars.khidmatyToken
+          tokenSource = 'Global JavaScript variable'
+        }
+
+        if (foundToken) {
+          console.log(`Token found in: ${tokenSource}`)
+          console.log('Token (first 20 chars):', foundToken.substring(0, 20) + '...')
 
           // Store the token in localStorage
-          storeAccessToken(urlAccessToken)
+          storeAccessToken(foundToken)
 
           // Fetch user info using this token
           try {
-            await fetchUserInfo(urlAccessToken)
-            console.log('User info fetched successfully with URL token')
+            await fetchUserInfo(foundToken)
+            console.log('User info fetched successfully')
             navigate('/dashboard', { replace: true })
             return
           } catch (error) {
-            console.error('Failed to fetch user info with URL token:', error)
-            setError('فشل التحقق من صحة الرمز المرسل')
+            console.error('Failed to fetch user info:', error)
+            setError(`فشل التحقق من صحة الرمز المرسل\n\nالمصدر: ${tokenSource}\nالخطأ: ${error.message}`)
             return
           }
         }
@@ -120,6 +180,11 @@ function Callback() {
     }
 
     handleCallback()
+
+    // Cleanup event listener
+    return () => {
+      window.removeEventListener('message', messageHandler)
+    }
   }, [searchParams, navigate])
 
   if (error) {
@@ -141,11 +206,24 @@ function Callback() {
                   </div>
 
                   <div>
-                    <strong>URL Parameters:</strong>
+                    <strong>URL Query Parameters:</strong>
                     <pre className="bg-base-300 p-2 rounded mt-1 overflow-x-auto">
                       {JSON.stringify(debugInfo.urlParams, null, 2)}
                     </pre>
                   </div>
+
+                  <div>
+                    <strong>URL Hash/Fragment:</strong> {debugInfo.urlHash}
+                  </div>
+
+                  {debugInfo.urlHash !== 'None' && (
+                    <div>
+                      <strong>Hash Parameters:</strong>
+                      <pre className="bg-base-300 p-2 rounded mt-1 overflow-x-auto">
+                        {JSON.stringify(debugInfo.hashParams, null, 2)}
+                      </pre>
+                    </div>
+                  )}
 
                   <div>
                     <strong>Is WebView:</strong> {debugInfo.isWebView ? 'YES' : 'NO'}
@@ -167,6 +245,45 @@ function Callback() {
                   <div>
                     <strong>sessionStorage Keys:</strong> {debugInfo.sessionStorageKeys.join(', ') || 'Empty'}
                   </div>
+
+                  <div>
+                    <strong>Cookies:</strong> {debugInfo.cookies || 'None'}
+                  </div>
+
+                  <div>
+                    <strong>Global Variables:</strong>
+                    <pre className="bg-base-300 p-2 rounded mt-1 overflow-x-auto">
+                      {JSON.stringify(
+                        Object.entries(debugInfo.globalVars)
+                          .filter(([, value]) => value !== undefined)
+                          .reduce((obj, [key, value]) => {
+                            obj[key] = typeof value === 'string' && value.length > 50
+                              ? value.substring(0, 50) + '...'
+                              : value
+                            return obj
+                          }, {}),
+                        null,
+                        2
+                      )}
+                    </pre>
+                  </div>
+
+                  <div>
+                    <strong>Android Interface:</strong> {debugInfo.hasAndroidInterface ? 'YES' : 'NO'}
+                  </div>
+
+                  <div>
+                    <strong>iOS Interface:</strong> {debugInfo.hasIOSInterface ? 'YES' : 'NO'}
+                  </div>
+
+                  {receivedMessages.length > 0 && (
+                    <div>
+                      <strong>PostMessage Events:</strong>
+                      <pre className="bg-base-300 p-2 rounded mt-1 overflow-x-auto">
+                        {JSON.stringify(receivedMessages, null, 2)}
+                      </pre>
+                    </div>
+                  )}
                 </div>
               </div>
             )}
