@@ -125,3 +125,21 @@ export function clearAuthData() {
 export function isAuthenticated() {
   return !!getAccessToken()
 }
+
+/**
+ * Detects if running in a WebView (e.g., Khidmaty native app)
+ * @returns {boolean} True if running in a webview
+ */
+export function isWebView() {
+  const userAgent = navigator.userAgent || navigator.vendor || window.opera
+  return /wv|WebView/i.test(userAgent)
+}
+
+/**
+ * Checks if running in WebView with pre-injected authentication
+ * (e.g., Khidmaty native app has already set tokens in localStorage)
+ * @returns {boolean} True if webview with existing tokens
+ */
+export function isWebViewAuthenticated() {
+  return isWebView() && isAuthenticated()
+}

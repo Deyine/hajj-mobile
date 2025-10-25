@@ -1,11 +1,17 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { exchangeCodeForTokens, fetchUserInfo } from '../services/oidc'
+import { isWebViewAuthenticated, getAccessToken, getUserInfo } from '../utils/auth'
 
 /**
  * Callback page component
- * Handles the OAuth callback from Khidmaty OIDC provider
- * Exchanges authorization code for tokens and fetches user info
+ *
+ * Handles two authentication scenarios:
+ * 1. WebView mode (Khidmaty native app): Uses pre-injected tokens from localStorage
+ * 2. Standalone web mode: Handles OAuth callback and exchanges authorization code for tokens
+ *
+ * When embedded in Khidmaty native app, the app pre-injects access_token and user_info
+ * into localStorage before loading the webview, so no OAuth flow is needed.
  */
 function Callback() {
   const navigate = useNavigate()
@@ -36,6 +42,22 @@ function Callback() {
         setDebugInfo(debugData)
         console.log('=== CALLBACK DEBUG INFO ===', debugData)
 
+        // SCENARIO 1: WebView with pre-injected tokens (Khidmaty native app)
+        // The native app has already set access_token and user_info in localStorage
+        if (isWebViewAuthenticated()) {
+          console.log('WebView authenticated - using pre-injected tokens from native app')
+          const accessToken = getAccessToken()
+          const userInfo = getUserInfo()
+
+          console.log('Access token exists:', !!accessToken)
+          console.log('User info exists:', !!userInfo)
+
+          // Tokens are already in localStorage, just redirect to dashboard
+          navigate('/dashboard', { replace: true })
+          return
+        }
+
+        // SCENARIO 2: Standard OAuth redirect flow (standalone web app)
         // Extract authorization code from URL
         const code = searchParams.get('code')
         const errorParam = searchParams.get('error')
