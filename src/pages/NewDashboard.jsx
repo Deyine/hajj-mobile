@@ -270,12 +270,14 @@ function NewDashboard() {
           </div>
         )}
 
-        {/* Personal Info Card */}
-        <Card className="mb-6">
-          <CardHeader>
-            <CardTitle>معلوماتي</CardTitle>
-          </CardHeader>
-          <CardContent className="grid gap-4">
+        </div>
+      </div>
+
+      {/* Personal Info - Full width footer */}
+      <div className="bg-white border-t border-border mt-6">
+        <div className="py-6 px-6">
+          <h3 className="text-lg font-bold text-foreground mb-4">معلوماتي</h3>
+          <div className="grid gap-4">
             <div className="flex items-center gap-3">
               <IdCard className="h-5 w-5 text-muted-foreground" />
               <div>
@@ -299,19 +301,17 @@ function NewDashboard() {
                 </div>
               </div>
             )}
-          </CardContent>
-        </Card>
+          </div>
+        </div>
 
         {/* Accommodation Info */}
         {hajjData.accommodation_info && (
-          <Card className="mb-6">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Hotel className="h-5 w-5" />
-                معلومات السكن
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
+          <div className="border-t border-border py-6 px-6">
+            <h3 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
+              <Hotel className="h-5 w-5" />
+              معلومات السكن
+            </h3>
+            <div className="space-y-3">
               <div>
                 <p className="text-sm text-muted-foreground">الفندق</p>
                 <p className="font-semibold">{hajjData.accommodation_info.hotel.name}</p>
@@ -332,10 +332,9 @@ function NewDashboard() {
                   <p className="font-semibold">{hajjData.accommodation_info.suite.name}</p>
                 </div>
               )}
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         )}
-        </div>
       </div>
 
       {/* Conditions Modal */}
