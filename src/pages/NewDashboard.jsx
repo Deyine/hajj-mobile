@@ -1,9 +1,6 @@
 import { useEffect, useState } from 'react'
-import { getUserInfo } from '../utils/auth'
-import { logout } from '../services/oidc'
 import api from '../services/api'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import ContactInfoForm from '@/components/ContactInfoForm'
 import PaymentInfoCard from '@/components/PaymentInfoCard'
 import ConditionsAcceptanceCard from '@/components/ConditionsAcceptanceCard'
@@ -12,7 +9,6 @@ import PassportEntryCard from '@/components/PassportEntryCard'
 import PassportScanInfoCard from '@/components/PassportScanInfoCard'
 import MobileProgressIndicator from '@/components/MobileProgressIndicator'
 import {
-  LogOut,
   Plane,
   Hotel,
   Phone,
@@ -24,7 +20,6 @@ import {
  * Shows citizen's Hajj journey with step-by-step progress
  */
 function NewDashboard() {
-  const [userInfo, setUserInfo] = useState(null)
   const [hajjData, setHajjData] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -32,9 +27,6 @@ function NewDashboard() {
   const [showConditionsModal, setShowConditionsModal] = useState(false)
 
   useEffect(() => {
-    // Load user info from storage
-    const user = getUserInfo()
-    setUserInfo(user)
     fetchHajjData()
   }, [])
 
@@ -80,12 +72,6 @@ function NewDashboard() {
     setShowConditionsModal(false)
   }
 
-  const handleLogout = () => {
-    if (confirm('هل أنت متأكد من تسجيل الخروج؟')) {
-      logout()
-    }
-  }
-
   const steps = [
     { number: 1, title: 'التسجيل الأولي', description: 'يرجى إدخال معلومات الاتصال الخاصة بك' },
     { number: 2, title: 'الدفع', description: 'تم دفع رسوم الحج' },
@@ -112,17 +98,6 @@ function NewDashboard() {
     return (
       <div className="min-h-screen bg-background p-4">
         <div className="container mx-auto max-w-4xl">
-          {/* Header */}
-          <Card className="mb-6">
-            <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle>تطبيق الحج</CardTitle>
-              <Button variant="ghost" size="sm" onClick={handleLogout}>
-                <LogOut className="ml-2 h-4 w-4" />
-                تسجيل الخروج
-              </Button>
-            </CardHeader>
-          </Card>
-
           {/* Not Found Message */}
           <Card>
             <CardHeader>
@@ -156,7 +131,12 @@ function NewDashboard() {
           </CardHeader>
           <CardContent>
             <p>{error}</p>
-            <Button className="mt-4" onClick={fetchHajjData}>إعادة المحاولة</Button>
+            <button
+              className="mt-4 text-primary font-semibold hover:underline cursor-pointer"
+              onClick={fetchHajjData}
+            >
+              إعادة المحاولة
+            </button>
           </CardContent>
         </Card>
       </div>
@@ -175,18 +155,37 @@ function NewDashboard() {
 
       <div className="p-4">
         <div className="container mx-auto max-w-4xl">
-          {/* Header */}
+          {/* Header with Photo */}
           <Card className="mb-6">
-            <CardHeader className="flex flex-row items-center justify-between">
-              <div>
-                <CardTitle>تطبيق الحج</CardTitle>
-                <CardDescription>مرحباً {hajjData.full_name_ar}</CardDescription>
+            <CardContent className="pt-6">
+              <div className="flex items-center gap-4">
+                {/* Hajj Photo */}
+                <div className="flex-shrink-0">
+                  {hajjData.photo_url ? (
+                    <img
+                      src={hajjData.photo_url}
+                      alt={hajjData.full_name_ar}
+                      className="w-16 h-16 rounded-full object-cover border-2 border-primary"
+                    />
+                  ) : (
+                    <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center border-2 border-primary">
+                      <span className="text-2xl text-primary font-bold">
+                        {hajjData.full_name_ar?.charAt(0) || '👤'}
+                      </span>
+                    </div>
+                  )}
+                </div>
+                {/* Greeting */}
+                <div className="flex-1">
+                  <h2 className="text-xl font-bold text-foreground">
+                    مرحباً {hajjData.full_name_ar}
+                  </h2>
+                  <p className="text-sm text-muted-foreground">
+                    {hajjData.full_reference}
+                  </p>
+                </div>
               </div>
-              <Button variant="ghost" size="sm" onClick={handleLogout}>
-                <LogOut className="ml-2 h-4 w-4" />
-                تسجيل الخروج
-              </Button>
-            </CardHeader>
+            </CardContent>
           </Card>
 
           {/* Cancelled/Replaced Alerts */}
