@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { exchangeCodeForTokens, fetchUserInfo } from '../services/oidc'
-import { isWebViewAuthenticated, getAccessToken, getUserInfo } from '../utils/auth'
+import { isWebViewAuthenticated, getAccessToken, getUserInfo, storeAccessToken } from '../utils/auth'
 
 /**
  * Callback page component
@@ -42,7 +42,30 @@ function Callback() {
         setDebugInfo(debugData)
         console.log('=== CALLBACK DEBUG INFO ===', debugData)
 
-        // SCENARIO 1: WebView with pre-injected tokens (Khidmaty native app)
+        // SCENARIO 1: Token passed directly in URL parameters
+        // Check for access_token in URL (e.g., ?access_token=xyz or ?token=xyz)
+        const urlAccessToken = searchParams.get('access_token') || searchParams.get('token')
+
+        if (urlAccessToken) {
+          console.log('Token found in URL parameters')
+
+          // Store the token in localStorage
+          storeAccessToken(urlAccessToken)
+
+          // Fetch user info using this token
+          try {
+            await fetchUserInfo(urlAccessToken)
+            console.log('User info fetched successfully with URL token')
+            navigate('/dashboard', { replace: true })
+            return
+          } catch (error) {
+            console.error('Failed to fetch user info with URL token:', error)
+            setError('فشل التحقق من صحة الرمز المرسل')
+            return
+          }
+        }
+
+        // SCENARIO 2: WebView with pre-injected tokens (Khidmaty native app)
         // The native app has already set access_token and user_info in localStorage
         if (isWebViewAuthenticated()) {
           console.log('WebView authenticated - using pre-injected tokens from native app')
@@ -57,7 +80,7 @@ function Callback() {
           return
         }
 
-        // SCENARIO 2: Standard OAuth redirect flow (standalone web app)
+        // SCENARIO 3: Standard OAuth redirect flow (standalone web app)
         // Extract authorization code from URL
         const code = searchParams.get('code')
         const errorParam = searchParams.get('error')
@@ -72,7 +95,12 @@ function Callback() {
 
         // Ensure we have a code
         if (!code) {
-          setError('لم يتم استلام رمز التفويض')
+          // If we're in a webview with no code and no token, show integration instructions
+          if (debugData.isWebView) {
+            setError('خطأ في التكامل مع تطبيق خدماتي\n\nيجب على تطبيق خدماتي إرسال رمز الوصول (access token) بإحدى الطرق التالية:\n\n1. عبر URL: ?access_token=xxx\n2. في localStorage\n3. عبر OAuth code parameter')
+          } else {
+            setError('لم يتم استلام رمز التفويض')
+          }
           console.error('No authorization code received')
           return
         }
