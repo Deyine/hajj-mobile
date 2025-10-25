@@ -165,45 +165,46 @@ function NewDashboard() {
 
   // Main dashboard
   return (
-    <div className="min-h-screen bg-background p-4">
-      <div className="container mx-auto max-w-4xl">
-        {/* Header */}
-        <Card className="mb-6">
-          <CardHeader className="flex flex-row items-center justify-between">
-            <div>
-              <CardTitle>تطبيق الحج</CardTitle>
-              <CardDescription>مرحباً {hajjData.full_name_ar}</CardDescription>
-            </div>
-            <Button variant="ghost" size="sm" onClick={handleLogout}>
-              <LogOut className="ml-2 h-4 w-4" />
-              تسجيل الخروج
-            </Button>
-          </CardHeader>
-        </Card>
+    <div className="min-h-screen bg-background">
+      {/* Mobile Progress Indicator - Full width, outside container */}
+      <MobileProgressIndicator
+        currentStep={hajjData.progress.current_step}
+        totalSteps={hajjData.progress.total_steps}
+        steps={steps}
+      />
 
-        {/* Cancelled/Replaced Alerts */}
-        {hajjData.cancelled && (
-          <Card className="mb-6 border-destructive">
-            <CardContent className="pt-6">
-              <p className="text-destructive font-semibold text-center">تم إلغاء التسجيل</p>
-            </CardContent>
+      <div className="p-4">
+        <div className="container mx-auto max-w-4xl">
+          {/* Header */}
+          <Card className="mb-6">
+            <CardHeader className="flex flex-row items-center justify-between">
+              <div>
+                <CardTitle>تطبيق الحج</CardTitle>
+                <CardDescription>مرحباً {hajjData.full_name_ar}</CardDescription>
+              </div>
+              <Button variant="ghost" size="sm" onClick={handleLogout}>
+                <LogOut className="ml-2 h-4 w-4" />
+                تسجيل الخروج
+              </Button>
+            </CardHeader>
           </Card>
-        )}
 
-        {hajjData.replaced && (
-          <Card className="mb-6 border-destructive">
-            <CardContent className="pt-6">
-              <p className="text-destructive font-semibold text-center">تم التنازل</p>
-            </CardContent>
-          </Card>
-        )}
+          {/* Cancelled/Replaced Alerts */}
+          {hajjData.cancelled && (
+            <Card className="mb-6 border-destructive">
+              <CardContent className="pt-6">
+                <p className="text-destructive font-semibold text-center">تم إلغاء التسجيل</p>
+              </CardContent>
+            </Card>
+          )}
 
-        {/* Mobile Progress Indicator - ALWAYS AT TOP, before any action blocks */}
-        <MobileProgressIndicator
-          currentStep={hajjData.progress.current_step}
-          totalSteps={hajjData.progress.total_steps}
-          steps={steps}
-        />
+          {hajjData.replaced && (
+            <Card className="mb-6 border-destructive">
+              <CardContent className="pt-6">
+                <p className="text-destructive font-semibold text-center">تم التنازل</p>
+              </CardContent>
+            </Card>
+          )}
 
         {/* Contact Info Form - Show for init status if not complete */}
         {hajjData.status === 'init' && !hajjData.contact_info_complete && (
@@ -320,6 +321,7 @@ function NewDashboard() {
             </CardContent>
           </Card>
         )}
+        </div>
       </div>
 
       {/* Conditions Modal */}
