@@ -169,7 +169,6 @@ function NewDashboard() {
                   alt={hajjData.full_name_ar}
                   style={{
                     objectFit: 'contain',
-                    zIndex: -1,
                     position: 'absolute',
                     top: 0,
                     left: 0,
