@@ -85,6 +85,20 @@ function Callback() {
           isWebView: /wv|WebView/i.test(navigator.userAgent)
         }
 
+        // Fetch HTTP headers from backend
+        let backendHeaders = null
+        try {
+          const headersResponse = await fetch('/api/v1/mobile/debug_headers')
+          if (headersResponse.ok) {
+            backendHeaders = await headersResponse.json()
+            console.log('=== BACKEND HEADERS ===', backendHeaders)
+          }
+        } catch (error) {
+          console.error('Failed to fetch backend headers:', error)
+        }
+
+        debugData.backendHeaders = backendHeaders
+
         setDebugInfo(debugData)
         console.log('=== CALLBACK DEBUG INFO ===', debugData)
 
@@ -282,6 +296,31 @@ function Callback() {
                       <pre className="bg-base-300 p-2 rounded mt-1 overflow-x-auto">
                         {JSON.stringify(receivedMessages, null, 2)}
                       </pre>
+                    </div>
+                  )}
+
+                  {debugInfo.backendHeaders && (
+                    <div className="mt-4 p-3 bg-yellow-100 rounded border-2 border-yellow-500">
+                      <strong className="text-yellow-900">🔍 HTTP HEADERS (From Backend):</strong>
+                      <div className="text-xs mt-2">
+                        <div><strong>Method:</strong> {debugInfo.backendHeaders.request_method}</div>
+                        <div><strong>Path:</strong> {debugInfo.backendHeaders.request_path}</div>
+                        <div><strong>Remote IP:</strong> {debugInfo.backendHeaders.remote_ip}</div>
+                        <div className="mt-2">
+                          <strong>All Headers:</strong>
+                          <pre className="bg-white p-2 rounded mt-1 overflow-x-auto">
+                            {JSON.stringify(debugInfo.backendHeaders.headers, null, 2)}
+                          </pre>
+                        </div>
+                        {Object.keys(debugInfo.backendHeaders.cookies || {}).length > 0 && (
+                          <div className="mt-2">
+                            <strong>Cookies (Backend):</strong>
+                            <pre className="bg-white p-2 rounded mt-1 overflow-x-auto">
+                              {JSON.stringify(debugInfo.backendHeaders.cookies, null, 2)}
+                            </pre>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   )}
                 </div>
