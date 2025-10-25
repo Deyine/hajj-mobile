@@ -153,15 +153,10 @@ function Callback() {
           return
         }
 
-        // Ensure we have a code
+        // No code found - silently redirect to login
         if (!code) {
-          // If we're in a webview with no code and no token, show integration instructions
-          if (debugData.isWebView) {
-            setError('خطأ في التكامل مع تطبيق خدماتي\n\nيجب على تطبيق خدماتي إرسال رمز الوصول (access token) بإحدى الطرق التالية:\n\n1. عبر URL: ?access_token=xxx\n2. في localStorage\n3. عبر OAuth code parameter')
-          } else {
-            setError('لم يتم استلام رمز التفويض')
-          }
-          console.error('No authorization code received')
+          console.warn('No authorization code, token, or authentication data found - redirecting to login')
+          navigate('/login', { replace: true })
           return
         }
 
@@ -175,7 +170,8 @@ function Callback() {
         navigate('/dashboard', { replace: true })
       } catch (error) {
         console.error('Callback error:', error)
-        setError(error.message || 'حدث خطأ أثناء المصادقة')
+        // On any error, silently redirect to login instead of showing error screen
+        navigate('/login', { replace: true })
       }
     }
 
