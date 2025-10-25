@@ -153,7 +153,7 @@ function NewDashboard() {
           <div className="flex-shrink-0">
             {hajjData.photo_url ? (
               <div
-                className="h-[60px] rounded-[5px]"
+                className="h-[80px] rounded-[5px]"
                 style={{
                   display: 'flex',
                   overflow: 'hidden',
@@ -172,10 +172,10 @@ function NewDashboard() {
               </div>
             ) : (
               <div
-                className="w-[60px] h-[60px] rounded-[5px] bg-primary/10 flex items-center justify-center"
+                className="w-[80px] h-[80px] rounded-[5px] bg-primary/10 flex items-center justify-center"
                 style={{ boxShadow: '0 1px 4px 0 rgba(0, 0, 0, 0.37)' }}
               >
-                <span className="text-2xl text-primary font-bold">
+                <span className="text-3xl text-primary font-bold">
                   {hajjData.full_name_ar?.charAt(0) || '👤'}
                 </span>
               </div>
