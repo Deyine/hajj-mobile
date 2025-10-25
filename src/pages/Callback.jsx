@@ -85,21 +85,6 @@ function Callback() {
           isWebView: /wv|WebView/i.test(navigator.userAgent)
         }
 
-        // Check if backend sent debug info (Base64 encoded)
-        const debugParam = searchParams.get('debug')
-        if (debugParam) {
-          try {
-            // Decode URL-safe Base64 (replace - and _ back to + and /)
-            const base64 = debugParam.replace(/-/g, '+').replace(/_/g, '/')
-            const decoded = atob(base64)
-            const backendDebugInfo = JSON.parse(decoded)
-            console.log('=== BACKEND DEBUG INFO ===', backendDebugInfo)
-            debugData.backendDebugInfo = backendDebugInfo
-          } catch (error) {
-            console.error('Failed to decode debug parameter:', error)
-          }
-        }
-
         setDebugInfo(debugData)
         console.log('=== CALLBACK DEBUG INFO ===', debugData)
 
@@ -293,49 +278,6 @@ function Callback() {
                       <pre className="bg-base-300 p-2 rounded mt-1 overflow-x-auto">
                         {JSON.stringify(receivedMessages, null, 2)}
                       </pre>
-                    </div>
-                  )}
-
-                  {debugInfo.backendDebugInfo && (
-                    <div className="mt-4 p-3 bg-red-100 rounded border-2 border-red-500">
-                      <strong className="text-red-900">🔴 BACKEND /CB CALLBACK DATA:</strong>
-                      <div className="text-xs mt-2 text-red-900">
-                        <div><strong>⏰ Time:</strong> {debugInfo.backendDebugInfo.timestamp}</div>
-                        <div><strong>📍 Full URL:</strong> {debugInfo.backendDebugInfo.full_url}</div>
-                        <div><strong>🔗 Query String:</strong> {debugInfo.backendDebugInfo.query_string || 'Empty'}</div>
-
-                        <div className="mt-2">
-                          <strong>🔑 Query Params:</strong>
-                          <pre className="bg-white p-2 rounded mt-1 overflow-x-auto text-black">
-                            {JSON.stringify(debugInfo.backendDebugInfo.query_params, null, 2)}
-                          </pre>
-                        </div>
-
-                        <div className="mt-2">
-                          <strong>📨 Headers (Backend Received):</strong>
-                          <pre className="bg-white p-2 rounded mt-1 overflow-x-auto text-black max-h-48 overflow-y-auto">
-                            {JSON.stringify(debugInfo.backendDebugInfo.headers, null, 2)}
-                          </pre>
-                        </div>
-
-                        {Object.keys(debugInfo.backendDebugInfo.cookies || {}).length > 0 && (
-                          <div className="mt-2">
-                            <strong>🍪 Cookies (Backend Received):</strong>
-                            <pre className="bg-white p-2 rounded mt-1 overflow-x-auto text-black">
-                              {JSON.stringify(debugInfo.backendDebugInfo.cookies, null, 2)}
-                            </pre>
-                          </div>
-                        )}
-
-                        {debugInfo.backendDebugInfo.body && (
-                          <div className="mt-2">
-                            <strong>📦 Request Body:</strong>
-                            <pre className="bg-white p-2 rounded mt-1 overflow-x-auto text-black">
-                              {debugInfo.backendDebugInfo.body}
-                            </pre>
-                          </div>
-                        )}
-                      </div>
                     </div>
                   )}
                 </div>
