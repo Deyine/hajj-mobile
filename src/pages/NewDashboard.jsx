@@ -147,7 +147,7 @@ function NewDashboard() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header with Photo - Full width at top */}
-      <div className="bg-white border-b border-border py-4 px-6">
+      <div className="bg-gradient-to-br from-primary/10 via-primary/5 to-background border-b border-border/50 py-4 px-6">
         <div className="flex items-center gap-4">
           {/* Hajj Photo */}
           <div className="flex-shrink-0">
