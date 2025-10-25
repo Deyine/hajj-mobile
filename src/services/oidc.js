@@ -14,11 +14,15 @@ import {
   clearAuthData
 } from '../utils/auth'
 
-// OIDC Configuration
+// OIDC Configuration - uses dev credentials for localhost
+const isDevelopment = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+
 export const OIDC_CONFIG = {
   AUTH_SERVER: 'https://oidc.khidmaty.gov.mr',
-  CLIENT_ID: 'Next-Haj',
-  CLIENT_SECRET: '6A9EA8D755E210FAA307F41FC60A71A64A8E3FBB3C3F3185898124A371CD0D6C',
+  CLIENT_ID: isDevelopment ? 'oidcTest' : 'Next-Haj',
+  CLIENT_SECRET: isDevelopment
+    ? 'D54A90D024447A1E4966C33F6FCB61657DEIDINE'
+    : '6A9EA8D755E210FAA307F41FC60A71A64A8E3FBB3C3F3185898124A371CD0D6C',
   REDIRECT_URI: `${window.location.origin}/cb`,
   SCOPE: 'openid email profile phone address offline_access api:read'
 }
