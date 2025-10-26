@@ -8,11 +8,15 @@ import ConditionsModal from '@/components/ConditionsModal'
 import PassportEntryCard from '@/components/PassportEntryCard'
 import PassportScanInfoCard from '@/components/PassportScanInfoCard'
 import MobileProgressIndicator from '@/components/MobileProgressIndicator'
+import DebugPanel from '@/components/DebugPanel'
+import { getUserInfo } from '../utils/auth'
+import { getImpersonatedNNI, setImpersonatedNNI, clearImpersonatedNNI, isImpersonating } from '../utils/debug'
 import {
   Plane,
   Hotel,
   Phone,
-  IdCard
+  IdCard,
+  AlertTriangle
 } from 'lucide-react'
 
 /**
@@ -25,10 +29,26 @@ function NewDashboard() {
   const [error, setError] = useState(null)
   const [notFound, setNotFound] = useState(false)
   const [showConditionsModal, setShowConditionsModal] = useState(false)
+  const [showDebugPanel, setShowDebugPanel] = useState(false)
+  const [clickCount, setClickCount] = useState(0)
 
   useEffect(() => {
     fetchHajjData()
   }, [])
+
+  // Triple-click handler for debug panel
+  const handleHeaderClick = () => {
+    setClickCount(prev => prev + 1)
+
+    // Reset click count after 1 second
+    setTimeout(() => setClickCount(0), 1000)
+
+    // Show debug panel on triple-click
+    if (clickCount === 2) {
+      setShowDebugPanel(true)
+      setClickCount(0)
+    }
+  }
 
   const handleOpenConditionsModal = () => {
     setShowConditionsModal(true)
@@ -75,6 +95,20 @@ function NewDashboard() {
 
   const handleCloseConditionsModal = () => {
     setShowConditionsModal(false)
+  }
+
+  const handleImpersonate = (targetNNI) => {
+    if (targetNNI) {
+      setImpersonatedNNI(targetNNI)
+    } else {
+      clearImpersonatedNNI()
+    }
+    // Reload data with new NNI
+    fetchHajjData()
+  }
+
+  const handleCloseDebugPanel = () => {
+    setShowDebugPanel(false)
   }
 
   const steps = [
@@ -149,10 +183,36 @@ function NewDashboard() {
   }
 
   // Main dashboard
+  const userInfo = getUserInfo()
+  const currentNNI = userInfo?.nni || ''
+  const impersonatedNNI = getImpersonatedNNI()
+
   return (
     <div className="min-h-screen bg-background">
+      {/* Debug Impersonation Banner */}
+      {isImpersonating() && (
+        <div className="bg-destructive text-destructive-foreground py-2 px-6 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <AlertTriangle className="h-4 w-4" />
+            <span className="text-sm font-semibold">
+              وضع التصحيح: تعرض بيانات المواطن {impersonatedNNI}
+            </span>
+          </div>
+          <button
+            onClick={() => setShowDebugPanel(true)}
+            className="text-xs underline hover:no-underline"
+          >
+            إعدادات التصحيح
+          </button>
+        </div>
+      )}
+
       {/* Header with Photo - Full width at top */}
-      <div className="bg-gradient-to-br from-primary/10 via-primary/5 to-background border-b border-border/50 py-4 px-6">
+      <div
+        className="bg-gradient-to-br from-primary/10 via-primary/5 to-background border-b border-border/50 py-4 px-6"
+        onClick={handleHeaderClick}
+        style={{ cursor: 'pointer' }}
+      >
         <div className="flex items-center gap-4">
           {/* Hajj Photo */}
           <div className="flex-shrink-0">
@@ -348,6 +408,16 @@ function NewDashboard() {
         onClose={handleCloseConditionsModal}
         onAccepted={handleConditionsAccepted}
       />
+
+      {/* Debug Panel - Admin Impersonation */}
+      {showDebugPanel && (
+        <DebugPanel
+          onClose={handleCloseDebugPanel}
+          onImpersonate={handleImpersonate}
+          currentNNI={currentNNI}
+          impersonatedNNI={impersonatedNNI}
+        />
+      )}
     </div>
   )
 }
