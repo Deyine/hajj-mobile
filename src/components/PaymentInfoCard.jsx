@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
-import { Download, CreditCard, FileText } from 'lucide-react';
+import { Download, CreditCard } from 'lucide-react';
 import api from '../services/api';
 import AlertDialog from './AlertDialog';
 import ConfirmationDialog from './ConfirmationDialog';
@@ -76,16 +76,6 @@ export default function PaymentInfoCard({ hajjData, onPaymentMarked }) {
     } finally {
       setMarking(false);
     }
-  };
-
-  const formatDate = (dateString) => {
-    if (!dateString) return '';
-    const date = new Date(dateString);
-    return date.toLocaleDateString('ar-TN', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
   };
 
   return (
@@ -164,21 +154,6 @@ export default function PaymentInfoCard({ hajjData, onPaymentMarked }) {
             <li>بعد إتمام الدفع، سيتم تحديث حالة التسجيل تلقائياً</li>
           </ul>
         </div>
-
-        {/* Bill generation info if bill is already generated */}
-        {hajjData.bill_generated && (
-          <div className="flex items-center justify-between bg-green-50 border border-green-200 rounded-md p-3 mb-3">
-            <div className="flex items-center gap-2">
-              <FileText className="h-5 w-5 text-green-600" />
-              <div>
-                <p className="text-sm font-medium text-green-900">الفاتورة متاحة</p>
-                <p className="text-xs text-green-700">
-                  تم الإنشاء: {formatDate(hajjData.bill_generated_at)}
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
 
         {/* Download invoice button - always available */}
         <Button
