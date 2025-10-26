@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
-import { Download, CreditCard } from 'lucide-react';
+import { Download, CreditCard, Copy, Check } from 'lucide-react';
 import api from '../services/api';
 import AlertDialog from './AlertDialog';
 import ConfirmationDialog from './ConfirmationDialog';
@@ -15,8 +15,25 @@ import ConfirmationDialog from './ConfirmationDialog';
 export default function PaymentInfoCard({ hajjData, onPaymentMarked }) {
   const [downloading, setDownloading] = useState(false);
   const [marking, setMarking] = useState(false);
+  const [copied, setCopied] = useState(false);
   const [alertDialog, setAlertDialog] = useState({ isOpen: false, title: '', message: '', type: 'info' });
   const [confirmDialog, setConfirmDialog] = useState({ isOpen: false });
+
+  const handleCopyTitreDeRecette = async () => {
+    try {
+      await navigator.clipboard.writeText(hajjData.titre_de_recette);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000); // Reset after 2 seconds
+    } catch (err) {
+      console.error('Error copying to clipboard:', err);
+      setAlertDialog({
+        isOpen: true,
+        title: 'خطأ',
+        message: 'حدث خطأ في نسخ رقم الدفع',
+        type: 'error'
+      });
+    }
+  };
 
   const handleDownloadBill = async () => {
     setDownloading(true);
@@ -106,6 +123,24 @@ export default function PaymentInfoCard({ hajjData, onPaymentMarked }) {
             {hajjData.titre_de_recette}
           </p>
           <p className="text-xs mt-2 opacity-75">استخدموا هذا الرقم للدفع عبر المحافظ الإلكترونية</p>
+
+          {/* Copy button */}
+          <button
+            onClick={handleCopyTitreDeRecette}
+            className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-white/20 hover:bg-white/30 rounded-md transition-colors text-sm font-medium"
+          >
+            {copied ? (
+              <>
+                <Check className="h-4 w-4" />
+                تم النسخ
+              </>
+            ) : (
+              <>
+                <Copy className="h-4 w-4" />
+                نسخ رقم الدفع
+              </>
+            )}
+          </button>
         </div>
 
         {/* Invoice details */}
