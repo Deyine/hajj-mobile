@@ -120,7 +120,7 @@ function MobileProgressIndicator({ currentStep, totalSteps, steps, hajjData, onH
         </div>
 
         {/* Separator */}
-        <div className="border-t border-primary/20 mx-6"></div>
+        <div className="border-t border-primary/20"></div>
 
         {/* Progress Section */}
         <div className="p-6 pt-6">
