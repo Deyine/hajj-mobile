@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Button } from './ui/button';
-import { Badge } from './ui/badge';
 import { Download, CreditCard, Copy, Check } from 'lucide-react';
 import api from '../services/api';
 import AlertDialog from './AlertDialog';
@@ -98,15 +97,10 @@ export default function PaymentInfoCard({ hajjData, onPaymentMarked }) {
   return (
     <div className="w-full mb-6">
       <div className="mb-4">
-        <div className="flex justify-between items-start mb-2">
-          <h3 className="text-xl font-bold text-foreground flex items-center gap-2">
-            <CreditCard className="h-5 w-5 text-primary" />
-            معلومات الدفع
-          </h3>
-          {hajjData.bill_generated && (
-            <Badge variant="success">متاح للدفع</Badge>
-          )}
-        </div>
+        <h3 className="text-xl font-bold text-foreground flex items-center gap-2 mb-2">
+          <CreditCard className="h-5 w-5 text-primary" />
+          معلومات الدفع
+        </h3>
         <p className="text-sm text-muted-foreground">
           رقم الدفع الخاص بكم
         </p>
