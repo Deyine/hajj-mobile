@@ -1,10 +1,10 @@
 import { Button } from './ui/button';
-import { FileCheck, AlertCircle } from 'lucide-react';
+import { FileCheck } from 'lucide-react';
 
 /**
  * ConditionsAcceptanceCard Component
  * Displays a call-to-action for reading and accepting Hajj conditions
- * Simplified borderless design
+ * Clean, modern design with gradient card
  */
 export default function ConditionsAcceptanceCard({ onAcceptClick }) {
   return (
@@ -19,37 +19,21 @@ export default function ConditionsAcceptanceCard({ onAcceptClick }) {
         </p>
       </div>
 
-      <div className="space-y-4">
-        {/* Important notice */}
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-center">
-          <AlertCircle className="h-12 w-12 text-blue-600 mx-auto mb-3" />
-          <h4 className="font-semibold text-blue-900 mb-2">الخطوة التالية</h4>
-          <p className="text-sm text-blue-800">
-            يرجى قراءة شروط وإلتزامات الحاج بعناية والموافقة عليها للمتابعة في عملية التسجيل
-          </p>
+      {/* Main action card with gradient */}
+      <div className="bg-gradient-to-br from-primary/5 via-primary/10 to-primary/5 border-2 border-primary/20 rounded-xl p-6 text-center space-y-6">
+        {/* Icon */}
+        <div className="flex justify-center">
+          <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center border-2 border-primary/20">
+            <FileCheck className="h-10 w-10 text-primary" />
+          </div>
         </div>
 
-        {/* What's included */}
-        <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-          <h4 className="font-semibold text-gray-900 mb-3 text-center">ماذا تتضمن الشروط؟</h4>
-          <ul className="text-sm text-gray-700 space-y-2">
-            <li className="flex items-start gap-2">
-              <span className="text-primary font-bold">•</span>
-              <span>السلوك الديني والمدني في أرض الحرمين</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="text-primary font-bold">•</span>
-              <span>التزامات السفر والإقامة</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="text-primary font-bold">•</span>
-              <span>شروط جواز السفر والتأشيرة</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="text-primary font-bold">•</span>
-              <span>المسؤوليات المالية والإدارية</span>
-            </li>
-          </ul>
+        {/* Message */}
+        <div className="space-y-2">
+          <h4 className="text-lg font-bold text-gray-900">الخطوة التالية</h4>
+          <p className="text-sm text-gray-700 leading-relaxed max-w-md mx-auto">
+            يرجى قراءة شروط وإلتزامات الحاج بعناية والموافقة عليها للمتابعة في عملية التسجيل
+          </p>
         </div>
 
         {/* Call to action button */}
@@ -63,8 +47,8 @@ export default function ConditionsAcceptanceCard({ onAcceptClick }) {
         </Button>
 
         {/* Additional note */}
-        <p className="text-xs text-center text-muted-foreground">
-          بالضغط على الزر أعلاه، سيتم عرض الشروط كاملة لقراءتها والموافقة عليها
+        <p className="text-xs text-gray-600">
+          سيتم عرض الشروط كاملة لقراءتها والموافقة عليها
         </p>
       </div>
     </div>
