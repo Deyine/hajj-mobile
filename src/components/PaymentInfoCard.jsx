@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button } from './ui/button';
-import { Download, CreditCard, Copy, Check } from 'lucide-react';
+import { Download, CreditCard, Copy, Check, Banknote, Calendar, User, Hash } from 'lucide-react';
 import api from '../services/api';
 import AlertDialog from './AlertDialog';
 import ConfirmationDialog from './ConfirmationDialog';
@@ -139,37 +139,75 @@ export default function PaymentInfoCard({ hajjData, onPaymentMarked }) {
 
         {/* Invoice details */}
         {hajjData.payment_info && (
-          <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 space-y-3">
-            <h4 className="font-semibold text-gray-900 text-center mb-3">{hajjData.payment_info.hajj_season}</h4>
+          <div className="space-y-3">
+            {/* Season badge */}
+            <div className="text-center">
+              <span className="inline-block bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-semibold">
+                {hajjData.payment_info.hajj_season}
+              </span>
+            </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div className="text-center">
+            {/* Amount and Deadline - Prominent cards */}
+            <div className="grid grid-cols-2 gap-3">
+              {/* Amount card */}
+              <div className="bg-white border-2 border-primary/20 rounded-lg p-4 text-center shadow-sm">
+                <div className="flex justify-center mb-2">
+                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                    <Banknote className="h-5 w-5 text-primary" />
+                  </div>
+                </div>
                 <p className="text-xs text-gray-600 mb-1">المبلغ المطلوب</p>
-                <p className="text-lg font-bold text-gray-900">{hajjData.payment_info.amount_formatted}</p>
+                <p className="text-lg font-bold text-primary">{hajjData.payment_info.amount_formatted}</p>
               </div>
 
-              <div className="text-center">
+              {/* Deadline card */}
+              <div className="bg-white border-2 border-amber-200 rounded-lg p-4 text-center shadow-sm">
+                <div className="flex justify-center mb-2">
+                  <div className="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center">
+                    <Calendar className="h-5 w-5 text-amber-600" />
+                  </div>
+                </div>
                 <p className="text-xs text-gray-600 mb-1">آخر موعد للدفع</p>
-                <p className="text-lg font-bold text-gray-900" dir="ltr">{hajjData.payment_info.payment_deadline}</p>
+                <p className="text-lg font-bold text-amber-700" dir="ltr">{hajjData.payment_info.payment_deadline}</p>
               </div>
             </div>
 
-            <div className="pt-2 border-t border-gray-300">
-              <div className="text-center">
-                <p className="text-xs text-gray-600 mb-1">الاسم الكامل</p>
-                <p className="text-sm font-semibold text-gray-900">{hajjData.full_name_ar}</p>
+            {/* Personal info - Compact list */}
+            <div className="bg-gray-50 rounded-lg p-3 space-y-2.5">
+              {/* Full name */}
+              <div className="flex items-start gap-3">
+                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mt-0.5">
+                  <User className="h-4 w-4 text-blue-600" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs text-gray-600 mb-0.5">الاسم الكامل</p>
+                  <p className="text-sm font-semibold text-gray-900">{hajjData.full_name_ar}</p>
+                </div>
               </div>
-            </div>
 
-            <div className="grid grid-cols-2 gap-4 pt-2">
-              <div className="text-center">
-                <p className="text-xs text-gray-600 mb-1">رقم الحاج</p>
-                <p className="text-sm font-semibold text-gray-900" dir="ltr">{hajjData.full_reference}</p>
-              </div>
+              {/* Reference and NNI */}
+              <div className="grid grid-cols-2 gap-3">
+                {/* Reference */}
+                <div className="flex items-start gap-2">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-green-100 flex items-center justify-center mt-0.5">
+                    <Hash className="h-4 w-4 text-green-600" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs text-gray-600 mb-0.5">رقم الحاج</p>
+                    <p className="text-sm font-semibold text-gray-900 truncate" dir="ltr">{hajjData.full_reference}</p>
+                  </div>
+                </div>
 
-              <div className="text-center">
-                <p className="text-xs text-gray-600 mb-1">الرقم الوطني</p>
-                <p className="text-sm font-semibold text-gray-900" dir="ltr">{hajjData.nni}</p>
+                {/* NNI */}
+                <div className="flex items-start gap-2">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center mt-0.5">
+                    <Hash className="h-4 w-4 text-purple-600" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs text-gray-600 mb-0.5">الرقم الوطني</p>
+                    <p className="text-sm font-semibold text-gray-900 truncate" dir="ltr">{hajjData.nni}</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
