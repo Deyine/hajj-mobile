@@ -119,8 +119,11 @@ function MobileProgressIndicator({ currentStep, totalSteps, steps, hajjData, onH
           </div>
         </div>
 
+        {/* Separator */}
+        <div className="border-t border-primary/20 mx-6"></div>
+
         {/* Progress Section */}
-        <div className="p-6 pt-2">
+        <div className="p-6 pt-6">
         <div className="flex items-start justify-between gap-4">
           {/* Left side: Step information */}
           <div className="flex-1">
