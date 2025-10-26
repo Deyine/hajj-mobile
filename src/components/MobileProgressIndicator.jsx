@@ -68,7 +68,7 @@ function MobileProgressIndicator({ currentStep, totalSteps, steps }) {
   return (
     <div className="mb-6">
       {/* Progress header block with distinct background and integrated separator */}
-      <div className="bg-gradient-to-br from-primary/10 via-primary/5 to-background rounded-t-lg p-6 shadow-sm border-b border-border/50 pb-6">
+      <div className="bg-gradient-to-br from-primary/10 via-primary/5 to-background p-6 border-b border-border/50 pb-6">
         <div className="flex items-start justify-between gap-4">
           {/* Left side: Step information */}
           <div className="flex-1">
