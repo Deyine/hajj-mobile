@@ -73,7 +73,7 @@ const ConditionsModal = ({ isOpen, onClose, onAccepted }) => {
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      <Card className="w-full max-w-2xl max-h-[90vh] flex flex-col shadow-2xl">
+      <Card className="w-full max-w-2xl max-h-[90vh] flex flex-col shadow-2xl border-0">
         {/* Header with gradient */}
         <CardHeader className="bg-gradient-to-r from-primary to-primary/80 text-white rounded-t-lg">
           <div className="flex items-center justify-between">
