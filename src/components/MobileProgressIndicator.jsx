@@ -153,13 +153,6 @@ function MobileProgressIndicator({ currentStep, totalSteps, steps, hajjData, onH
             />
           </div>
         </div>
-
-        {/* Current step description */}
-        <div className="mt-4 pt-4 border-t border-primary/20">
-          <p className="text-sm text-muted-foreground">
-            {current?.description}
-          </p>
-        </div>
         </div>
       </div>
     </>
