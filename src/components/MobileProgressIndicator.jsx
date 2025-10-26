@@ -19,22 +19,29 @@ function CircularProgress({ percentage, currentStep, totalSteps }) {
           r={radius}
           stroke="currentColor"
           strokeWidth={strokeWidth}
-          fill="none"
+          fill="white"
           className="text-muted-foreground/20"
         />
-        {/* Progress circle */}
+        {/* Progress circle with gradient */}
         <circle
           cx={size / 2}
           cy={size / 2}
           r={radius}
-          stroke="currentColor"
+          stroke="url(#progressGradient)"
           strokeWidth={strokeWidth}
           fill="none"
           strokeDasharray={circumference}
           strokeDashoffset={offset}
           strokeLinecap="round"
-          className="text-primary transition-all duration-500 ease-in-out"
+          className="transition-all duration-500 ease-in-out"
         />
+        {/* Gradient definition */}
+        <defs>
+          <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#2C5F2D" />
+            <stop offset="100%" stopColor="#97CC04" />
+          </linearGradient>
+        </defs>
       </svg>
       {/* Center text */}
       <div className="absolute inset-0 flex items-center justify-center">
@@ -66,8 +73,14 @@ function MobileProgressIndicator({ currentStep, totalSteps, steps, hajjData, onH
 
   return (
     <>
-      {/* Unified header with progress - single gradient background */}
-      <div className="bg-gradient-to-br from-primary/10 via-primary/5 to-background border-b border-border/50 mb-6">
+      {/* Unified header with progress - with elevation shadow */}
+      {/* Teal-green blend - Beautiful gradient with cool aqua tones */}
+      <div
+        className="bg-gradient-to-br from-teal-100/40 via-emerald-100/35 to-lime-100/30 mb-6"
+        style={{
+          boxShadow: '0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+        }}
+      >
         {/* Hajj Header Section */}
         <div
           className="py-4 px-6"
@@ -118,9 +131,6 @@ function MobileProgressIndicator({ currentStep, totalSteps, steps, hajjData, onH
             </div>
           </div>
         </div>
-
-        {/* Separator */}
-        <div className="border-t border-primary/20"></div>
 
         {/* Progress Section */}
         <div className="p-6 pt-6">
