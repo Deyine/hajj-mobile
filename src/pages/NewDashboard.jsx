@@ -300,13 +300,13 @@ function NewDashboard() {
           <PaymentInfoCard hajjData={hajjData} onPaymentMarked={handlePaymentMarked} />
         )}
 
-        {/* Conditions Acceptance Card - Show when status is bill_paid and conditions not accepted */}
-        {hajjData.status === 'bill_paid' && !hajjData.conditions_accepted && (
+        {/* Conditions Acceptance Card - Show when status is bill_paid */}
+        {hajjData.status === 'bill_paid' && (
           <ConditionsAcceptanceCard onAcceptClick={handleOpenConditionsModal} />
         )}
 
-        {/* Passport Entry Card - Show when status is conditions_generated and passport not imported */}
-        {hajjData.status === 'conditions_generated' && !hajjData.passeport_number && (
+        {/* Passport Entry Card - Show when status is conditions_generated */}
+        {hajjData.status === 'conditions_generated' && (
           <PassportEntryCard onSuccess={handlePassportSubmitted} />
         )}
 
