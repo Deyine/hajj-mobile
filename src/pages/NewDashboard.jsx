@@ -209,7 +209,7 @@ function NewDashboard() {
 
       {/* Header with Photo - Full width at top */}
       <div
-        className="bg-primary/10 py-4 px-6"
+        className="bg-gradient-to-br from-primary/10 via-primary/5 to-background py-4 px-6"
         onClick={handleHeaderClick}
         style={{ cursor: 'pointer' }}
       >
