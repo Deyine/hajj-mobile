@@ -50,14 +50,13 @@ function CircularProgress({ percentage, currentStep, totalSteps }) {
 }
 
 /**
- * Mobile-optimized progress indicator component
- * Shows current step with circular badge and next step preview
+ * Mobile-optimized progress indicator component with integrated header
+ * Shows hajj info, photo, and progress in one unified section
  * Based on mobile UX best practices for multi-step forms
  *
- * Design: Distinct header block with gradient background,
- * separated from rest of page content
+ * Design: Unified header block with gradient background
  */
-function MobileProgressIndicator({ currentStep, totalSteps, steps }) {
+function MobileProgressIndicator({ currentStep, totalSteps, steps, hajjData, onHeaderClick }) {
   // Get current and next step info
   const current = steps.find(s => s.number === currentStep)
   const next = steps.find(s => s.number === currentStep + 1)
@@ -67,8 +66,61 @@ function MobileProgressIndicator({ currentStep, totalSteps, steps }) {
 
   return (
     <>
-      {/* Progress header block with distinct background and integrated separator */}
-      <div className="bg-gradient-to-br from-primary/10 via-primary/5 to-background p-6 border-b border-border/50 mb-6">
+      {/* Unified header with progress - single gradient background */}
+      <div className="bg-gradient-to-br from-primary/10 via-primary/5 to-background border-b border-border/50 mb-6">
+        {/* Hajj Header Section */}
+        <div
+          className="py-4 px-6"
+          onClick={onHeaderClick}
+          style={{ cursor: 'pointer' }}
+        >
+          <div className="flex items-center gap-4">
+            {/* Hajj Photo */}
+            <div className="flex-shrink-0">
+              {hajjData?.photo_url ? (
+                <div
+                  className="h-[80px] rounded-[5px]"
+                  style={{
+                    display: 'flex',
+                    overflow: 'hidden',
+                    position: 'relative',
+                    boxShadow: '0 1px 4px 0 rgba(0, 0, 0, 0.37)'
+                  }}
+                >
+                  <img
+                    src={hajjData.photo_url}
+                    alt={hajjData.full_name_ar}
+                    className="h-full w-auto object-contain"
+                    style={{
+                      borderRadius: '5px'
+                    }}
+                  />
+                </div>
+              ) : (
+                <div
+                  className="w-[80px] h-[80px] rounded-[5px] bg-primary/10 flex items-center justify-center"
+                  style={{ boxShadow: '0 1px 4px 0 rgba(0, 0, 0, 0.37)' }}
+                >
+                  <span className="text-3xl text-primary font-bold">
+                    {hajjData?.full_name_ar?.charAt(0) || '👤'}
+                  </span>
+                </div>
+              )}
+            </div>
+            {/* Greeting */}
+            <div className="flex-1">
+              <h2 className="text-xl font-bold text-foreground">
+                مرحباً {hajjData?.full_name_ar}
+              </h2>
+              <p className="text-sm text-muted-foreground">
+                <span className="font-medium">رقم الحاج:</span> {hajjData?.full_reference}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Progress Section */}
+        <div className="p-6 pt-2">
         <div className="flex items-start justify-between gap-4">
           {/* Left side: Step information */}
           <div className="flex-1">

@@ -207,61 +207,13 @@ function NewDashboard() {
         </div>
       )}
 
-      {/* Header with Photo - Full width at top */}
-      <div
-        className="bg-gradient-to-br from-primary/10 via-primary/5 to-background py-4 px-6"
-        onClick={handleHeaderClick}
-        style={{ cursor: 'pointer' }}
-      >
-        <div className="flex items-center gap-4">
-          {/* Hajj Photo */}
-          <div className="flex-shrink-0">
-            {hajjData.photo_url ? (
-              <div
-                className="h-[80px] rounded-[5px]"
-                style={{
-                  display: 'flex',
-                  overflow: 'hidden',
-                  position: 'relative',
-                  boxShadow: '0 1px 4px 0 rgba(0, 0, 0, 0.37)'
-                }}
-              >
-                <img
-                  src={hajjData.photo_url}
-                  alt={hajjData.full_name_ar}
-                  className="h-full w-auto object-contain"
-                  style={{
-                    borderRadius: '5px'
-                  }}
-                />
-              </div>
-            ) : (
-              <div
-                className="w-[80px] h-[80px] rounded-[5px] bg-primary/10 flex items-center justify-center"
-                style={{ boxShadow: '0 1px 4px 0 rgba(0, 0, 0, 0.37)' }}
-              >
-                <span className="text-3xl text-primary font-bold">
-                  {hajjData.full_name_ar?.charAt(0) || '👤'}
-                </span>
-              </div>
-            )}
-          </div>
-          {/* Greeting */}
-          <div className="flex-1">
-            <h2 className="text-xl font-bold text-foreground">
-              مرحباً {hajjData.full_name_ar}
-            </h2>
-            <p className="text-sm text-muted-foreground">
-              <span className="font-medium">رقم الحاج:</span> {hajjData.full_reference}
-            </p>
-          </div>
-        </div>
-      </div>
-      {/* Mobile Progress Indicator - Full width */}
+      {/* Unified Header with Progress Indicator */}
       <MobileProgressIndicator
         currentStep={hajjData.progress.current_step}
         totalSteps={hajjData.progress.total_steps}
         steps={steps}
+        hajjData={hajjData}
+        onHeaderClick={handleHeaderClick}
       />
 
       <div className="p-4">
