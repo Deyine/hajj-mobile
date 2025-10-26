@@ -257,7 +257,6 @@ function NewDashboard() {
           </div>
         </div>
       </div>
-
       {/* Mobile Progress Indicator - Full width */}
       <MobileProgressIndicator
         currentStep={hajjData.progress.current_step}
