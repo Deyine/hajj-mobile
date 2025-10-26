@@ -97,12 +97,12 @@ export default function PaymentInfoCard({ hajjData, onPaymentMarked }) {
 
       <div className="space-y-6">
         {/* Payment number - prominently displayed */}
-        <div className="bg-gradient-to-br from-primary to-primary/80 text-white rounded-lg p-6 text-center shadow-lg">
+        <div className="bg-gradient-to-br from-primary to-primary/80 text-white rounded-lg p-4 sm:p-6 text-center shadow-lg">
           <div className="flex items-center justify-center gap-2 mb-2">
-            <CreditCard className="h-6 w-6" />
-            <p className="text-sm font-medium opacity-90">رقم الدفع</p>
+            <CreditCard className="h-5 w-5 sm:h-6 sm:w-6" />
+            <p className="text-xs sm:text-sm font-medium opacity-90">رقم الدفع</p>
           </div>
-          <p className="text-5xl font-bold tracking-wider font-mono" dir="ltr">
+          <p className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-wider font-mono break-all" dir="ltr">
             {hajjData.titre_de_recette}
           </p>
           <p className="text-xs mt-2 opacity-75">استخدموا هذا الرقم للدفع عبر المحافظ الإلكترونية</p>
