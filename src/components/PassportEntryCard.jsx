@@ -60,32 +60,24 @@ export default function PassportEntryCard({ onSuccess }) {
         </p>
       </div>
 
-      {/* Error/Success messages */}
-      {error && (
-        <div className="bg-red-50 border border-red-200 rounded-lg p-3 mb-4 flex items-start gap-2">
-          <AlertCircle className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
-          <p className="text-red-800 text-sm">{error}</p>
-        </div>
-      )}
-
-      {success && (
-        <div className="bg-green-50 border border-green-200 rounded-lg p-3 mb-4 flex items-start gap-2">
-          <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
-          <p className="text-green-800 text-sm">تم تسجيل جواز السفر بنجاح</p>
-        </div>
-      )}
-
-      {/* Main card with subtle gradient matching other cards */}
-      <div className="bg-gradient-to-br from-primary/5 via-primary/10 to-primary/5 border-2 border-primary/20 rounded-xl p-6 text-center space-y-6">
-        {/* Icon */}
-        <div className="flex justify-center">
-          <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center border-2 border-primary/20">
-            <Plane className="h-10 w-10 text-primary" />
+      <div className="space-y-4">
+        {/* Error/Success messages */}
+        {error && (
+          <div className="bg-red-50 border border-red-200 rounded-lg p-3 flex items-start gap-2">
+            <AlertCircle className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
+            <p className="text-red-800 text-sm">{error}</p>
           </div>
-        </div>
+        )}
 
-        {/* Requirements */}
-        <div className="bg-amber-50 border border-amber-200 rounded-md p-4 text-right">
+        {success && (
+          <div className="bg-green-50 border border-green-200 rounded-lg p-3 flex items-start gap-2">
+            <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+            <p className="text-green-800 text-sm">تم تسجيل جواز السفر بنجاح</p>
+          </div>
+        )}
+
+        {/* Requirements box */}
+        <div className="bg-amber-50 border border-amber-200 rounded-md p-4">
           <h4 className="font-semibold text-amber-900 mb-2">متطلبات جواز السفر:</h4>
           <ul className="text-sm text-amber-800 space-y-1 list-disc list-inside">
             <li>جواز السفر عادي (ليس دبلوماسي)</li>
@@ -94,40 +86,42 @@ export default function PassportEntryCard({ onSuccess }) {
           </ul>
         </div>
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <label htmlFor="passport_number" className="block text-sm font-semibold text-gray-900">
-              رقم جواز السفر <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="text"
-              id="passport_number"
-              name="passport_number"
-              value={passportNumber}
-              onChange={(e) => setPassportNumber(e.target.value)}
-              required
-              className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-lg font-bold tracking-wider text-center bg-white"
-              placeholder="B00123456"
-              dir="ltr"
-              maxLength={20}
-              disabled={loading || success}
-            />
-            <p className="text-xs text-gray-600">
-              أدخل رقم جواز السفر كما هو مكتوب في الجواز
-            </p>
-          </div>
+        {/* Passport input card */}
+        <div className="bg-white border-2 border-primary/20 rounded-lg p-6 shadow-sm">
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-3">
+              <label htmlFor="passport_number" className="block text-sm font-semibold text-gray-900 text-center">
+                رقم جواز السفر
+              </label>
+              <input
+                type="text"
+                id="passport_number"
+                name="passport_number"
+                value={passportNumber}
+                onChange={(e) => setPassportNumber(e.target.value)}
+                required
+                className="w-full px-4 py-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-2xl font-bold tracking-widest text-center bg-gray-50"
+                placeholder="B00123456"
+                dir="ltr"
+                maxLength={20}
+                disabled={loading || success}
+              />
+              <p className="text-xs text-gray-600 text-center">
+                أدخل رقم جواز السفر كما هو مكتوب في الجواز
+              </p>
+            </div>
 
-          <Button
-            type="submit"
-            className="w-full"
-            size="lg"
-            disabled={loading || success}
-          >
-            <Plane className="ml-2 h-5 w-5" />
-            {loading ? 'جارٍ التحقق...' : success ? 'تم التسجيل بنجاح' : 'تسجيل جواز السفر'}
-          </Button>
-        </form>
+            <Button
+              type="submit"
+              className="w-full"
+              size="lg"
+              disabled={loading || success}
+            >
+              <Plane className="ml-2 h-5 w-5" />
+              {loading ? 'جارٍ التحقق...' : success ? 'تم التسجيل بنجاح' : 'تسجيل جواز السفر'}
+            </Button>
+          </form>
+        </div>
       </div>
     </div>
   );
