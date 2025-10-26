@@ -157,6 +157,7 @@ function MobileProgressIndicator({ currentStep, totalSteps, steps, hajjData, onH
             {current?.description}
           </p>
         </div>
+        </div>
       </div>
     </>
   )
