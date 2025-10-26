@@ -1,5 +1,4 @@
 import { Button } from './ui/button';
-import { Badge } from './ui/badge';
 import { FileCheck, AlertCircle } from 'lucide-react';
 
 /**
@@ -11,13 +10,10 @@ export default function ConditionsAcceptanceCard({ onAcceptClick }) {
   return (
     <div className="w-full mb-6">
       <div className="mb-4">
-        <div className="flex justify-between items-start mb-2">
-          <h3 className="text-xl font-bold text-foreground flex items-center gap-2">
-            <FileCheck className="h-5 w-5 text-primary" />
-            شروط وإلتزامات الحاج
-          </h3>
-          <Badge variant="default">مطلوب</Badge>
-        </div>
+        <h3 className="text-xl font-bold text-foreground flex items-center gap-2 mb-2">
+          <FileCheck className="h-5 w-5 text-primary" />
+          شروط وإلتزامات الحاج
+        </h3>
         <p className="text-sm text-muted-foreground">
           يجب الموافقة على الشروط والإلتزامات قبل المتابعة
         </p>
