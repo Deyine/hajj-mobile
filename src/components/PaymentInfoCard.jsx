@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button } from './ui/button';
-import { Download, CreditCard, Copy, Check, Banknote, Calendar, User, Hash } from 'lucide-react';
+import { Download, CreditCard, Copy, Check, Banknote, Calendar, Hash } from 'lucide-react';
 import api from '../services/api';
 import AlertDialog from './AlertDialog';
 import ConfirmationDialog from './ConfirmationDialog';
@@ -172,43 +172,15 @@ export default function PaymentInfoCard({ hajjData, onPaymentMarked }) {
               </div>
             </div>
 
-            {/* Personal info - Compact list */}
-            <div className="bg-gray-50 rounded-lg p-3 space-y-2.5">
-              {/* Full name */}
-              <div className="flex items-start gap-3">
-                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mt-0.5">
-                  <User className="h-4 w-4 text-blue-600" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-xs text-gray-600 mb-0.5">الاسم الكامل</p>
-                  <p className="text-sm font-semibold text-gray-900">{hajjData.full_name_ar}</p>
+            {/* NNI - National ID */}
+            <div className="bg-white border-2 border-blue-200 rounded-lg p-4 text-center shadow-sm">
+              <div className="flex justify-center mb-2">
+                <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+                  <Hash className="h-5 w-5 text-blue-600" />
                 </div>
               </div>
-
-              {/* Reference and NNI */}
-              <div className="grid grid-cols-2 gap-3">
-                {/* Reference */}
-                <div className="flex items-start gap-2">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-green-100 flex items-center justify-center mt-0.5">
-                    <Hash className="h-4 w-4 text-green-600" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-xs text-gray-600 mb-0.5">رقم الحاج</p>
-                    <p className="text-sm font-semibold text-gray-900 truncate" dir="ltr">{hajjData.full_reference}</p>
-                  </div>
-                </div>
-
-                {/* NNI */}
-                <div className="flex items-start gap-2">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center mt-0.5">
-                    <Hash className="h-4 w-4 text-purple-600" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-xs text-gray-600 mb-0.5">الرقم الوطني</p>
-                    <p className="text-sm font-semibold text-gray-900 truncate" dir="ltr">{hajjData.nni}</p>
-                  </div>
-                </div>
-              </div>
+              <p className="text-xs text-gray-600 mb-1">الرقم الوطني</p>
+              <p className="text-lg font-bold text-blue-600" dir="ltr">{hajjData.nni}</p>
             </div>
           </div>
         )}
