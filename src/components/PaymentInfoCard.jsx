@@ -3,6 +3,8 @@ import { Button } from './ui/button';
 import { Badge } from './ui/badge';
 import { Download, CreditCard, FileText } from 'lucide-react';
 import api from '../services/api';
+import AlertDialog from './AlertDialog';
+import ConfirmationDialog from './ConfirmationDialog';
 
 /**
  * PaymentInfoCard Component
@@ -13,6 +15,8 @@ import api from '../services/api';
 export default function PaymentInfoCard({ hajjData, onPaymentMarked }) {
   const [downloading, setDownloading] = useState(false);
   const [marking, setMarking] = useState(false);
+  const [alertDialog, setAlertDialog] = useState({ isOpen: false, title: '', message: '', type: 'info' });
+  const [confirmDialog, setConfirmDialog] = useState({ isOpen: false });
 
   const handleDownloadBill = async () => {
     setDownloading(true);
@@ -30,27 +34,45 @@ export default function PaymentInfoCard({ hajjData, onPaymentMarked }) {
       link.remove();
     } catch (err) {
       console.error('Error downloading bill:', err);
-      alert('حدث خطأ في تحميل الفاتورة');
+      setAlertDialog({
+        isOpen: true,
+        title: 'خطأ',
+        message: 'حدث خطأ في تحميل الفاتورة',
+        type: 'error'
+      });
     } finally {
       setDownloading(false);
     }
   };
 
-  const handleMarkAsPaid = async () => {
-    if (!confirm('هل تريد تسجيل الدفع؟ (للاختبار فقط)')) return;
+  const handleMarkAsPaid = () => {
+    setConfirmDialog({ isOpen: true });
+  };
 
+  const confirmMarkAsPaid = async () => {
+    setConfirmDialog({ isOpen: false });
     setMarking(true);
     try {
       const response = await api.post('/api/v1/mobile/mark_paid');
       if (response.data.success) {
-        alert('تم تسجيل الدفع بنجاح');
+        setAlertDialog({
+          isOpen: true,
+          title: 'نجح',
+          message: 'تم تسجيل الدفع بنجاح',
+          type: 'success'
+        });
         if (onPaymentMarked) {
           onPaymentMarked(response.data.hajj);
         }
       }
     } catch (err) {
       console.error('Error marking as paid:', err);
-      alert('حدث خطأ في تسجيل الدفع');
+      setAlertDialog({
+        isOpen: true,
+        title: 'خطأ',
+        message: 'حدث خطأ في تسجيل الدفع',
+        type: 'error'
+      });
     } finally {
       setMarking(false);
     }
@@ -178,6 +200,25 @@ export default function PaymentInfoCard({ hajjData, onPaymentMarked }) {
           {marking ? 'جارٍ التسجيل...' : '⚠️ تسجيل الدفع (اختبار)'}
         </Button>
       </div>
+
+      <AlertDialog
+        isOpen={alertDialog.isOpen}
+        onClose={() => setAlertDialog({ ...alertDialog, isOpen: false })}
+        title={alertDialog.title}
+        message={alertDialog.message}
+        type={alertDialog.type}
+      />
+
+      <ConfirmationDialog
+        isOpen={confirmDialog.isOpen}
+        onClose={() => setConfirmDialog({ isOpen: false })}
+        onConfirm={confirmMarkAsPaid}
+        title="تأكيد تسجيل الدفع"
+        description="هل تريد تسجيل الدفع؟ (للاختبار فقط)"
+        confirmText="نعم، سجل الدفع"
+        cancelText="إلغاء"
+        loading={marking}
+      />
     </div>
   );
 }
