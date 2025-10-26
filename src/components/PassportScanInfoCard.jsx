@@ -85,7 +85,7 @@ export default function PassportScanInfoCard({ onSuccess }) {
               </div>
               <h4 className="font-bold text-gray-900 mb-2">ماذا يجب عليك فعله؟</h4>
               <p className="text-sm text-gray-700 leading-relaxed">
-                يرجى التوجه إلى مديرية الحج والعمرة لإحضار جواز السفر الفيزيائي الخاص بكم
+                يرجى التوجه إلى مديرية الحج والعمرة لإحضار جواز السفر الخاص بكم
               </p>
             </div>
 
