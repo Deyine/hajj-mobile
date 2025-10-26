@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button } from './ui/button';
-import { Download, CreditCard, Copy, Check, Banknote, Calendar, Hash } from 'lucide-react';
+import { Download, CreditCard, Copy, Check, Banknote, Calendar } from 'lucide-react';
 import api from '../services/api';
 import AlertDialog from './AlertDialog';
 import ConfirmationDialog from './ConfirmationDialog';
@@ -170,17 +170,6 @@ export default function PaymentInfoCard({ hajjData, onPaymentMarked }) {
                 <p className="text-xs text-gray-600 mb-1">آخر موعد للدفع</p>
                 <p className="text-lg font-bold text-amber-700" dir="ltr">{hajjData.payment_info.payment_deadline}</p>
               </div>
-            </div>
-
-            {/* NNI - National ID */}
-            <div className="bg-white border-2 border-blue-200 rounded-lg p-4 text-center shadow-sm">
-              <div className="flex justify-center mb-2">
-                <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
-                  <Hash className="h-5 w-5 text-blue-600" />
-                </div>
-              </div>
-              <p className="text-xs text-gray-600 mb-1">الرقم الوطني</p>
-              <p className="text-lg font-bold text-blue-600" dir="ltr">{hajjData.nni}</p>
             </div>
           </div>
         )}
