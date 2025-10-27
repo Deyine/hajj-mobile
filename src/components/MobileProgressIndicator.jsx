@@ -73,96 +73,135 @@ function MobileProgressIndicator({ currentStep, totalSteps, steps, hajjData, onH
 
   return (
     <>
-      {/* Unified header with progress - with elevation shadow */}
-      {/* Teal-green blend - Beautiful gradient with cool aqua tones */}
-      <div
-        className="bg-gradient-to-br from-teal-100/40 via-emerald-100/35 to-lime-100/30 mb-6"
-        style={{
-          boxShadow: '0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 4px 6px -1px rgba(0, 0, 0, 0.1)'
-        }}
-      >
-        {/* Hajj Header Section */}
+      {/* Crystal Glassmorphism Header - Modern & Clean */}
+      <div className="mb-6 relative">
+        {/* Gradient Background Layer */}
         <div
-          className="py-4 px-6"
-          onClick={onHeaderClick}
-          style={{ cursor: 'pointer' }}
+          className="absolute inset-0 bg-gradient-to-br from-blue-100/30 via-purple-100/20 to-teal-100/30"
+          style={{
+            borderRadius: '20px'
+          }}
+        />
+
+        {/* Glass Effect Layer */}
+        <div
+          className="relative"
+          style={{
+            background: 'rgba(255, 255, 255, 0.7)',
+            backdropFilter: 'blur(20px)',
+            WebkitBackdropFilter: 'blur(20px)',
+            border: '1px solid rgba(255, 255, 255, 0.5)',
+            borderRadius: '20px',
+            boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.15), inset 0 1px 0 0 rgba(255, 255, 255, 0.8)'
+          }}
         >
-          <div className="flex items-center gap-4">
-            {/* Hajj Photo */}
-            <div className="flex-shrink-0">
-              {hajjData?.photo_url ? (
-                <div
-                  className="h-[80px] rounded-[5px]"
-                  style={{
-                    display: 'flex',
-                    overflow: 'hidden',
-                    position: 'relative',
-                    boxShadow: '0 1px 4px 0 rgba(0, 0, 0, 0.37)'
-                  }}
-                >
-                  <img
-                    src={hajjData.photo_url}
-                    alt={hajjData.full_name_ar}
-                    className="h-full w-auto object-contain"
+          {/* Subtle shine overlay */}
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 60%)',
+              borderRadius: '20px'
+            }}
+          />
+
+          {/* Hajj Header Section */}
+          <div
+            className="py-6 px-6 relative z-10"
+            onClick={onHeaderClick}
+            style={{ cursor: 'pointer' }}
+          >
+            <div className="flex items-center gap-4">
+              {/* Hajj Photo with Glass Effect */}
+              <div className="flex-shrink-0">
+                {hajjData?.photo_url ? (
+                  <div
+                    className="h-[80px] overflow-hidden relative"
                     style={{
-                      borderRadius: '5px'
+                      borderRadius: '16px',
+                      boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
+                      border: '2px solid rgba(255, 255, 255, 0.8)'
                     }}
+                  >
+                    <img
+                      src={hajjData.photo_url}
+                      alt={hajjData.full_name_ar}
+                      className="h-full w-auto object-contain"
+                      style={{ borderRadius: '14px' }}
+                    />
+                  </div>
+                ) : (
+                  <div
+                    className="w-[80px] h-[80px] flex items-center justify-center"
+                    style={{
+                      borderRadius: '16px',
+                      background: 'rgba(99, 102, 241, 0.1)',
+                      boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
+                      border: '2px solid rgba(255, 255, 255, 0.8)'
+                    }}
+                  >
+                    <span className="text-3xl font-bold" style={{ color: '#6366f1' }}>
+                      {hajjData?.full_name_ar?.charAt(0) || '👤'}
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              {/* Greeting */}
+              <div className="flex-1">
+                <h2 className="text-xl font-bold" style={{ color: '#1e293b' }}>
+                  مرحباً {hajjData?.full_name_ar}
+                </h2>
+                <p className="text-sm" style={{ color: '#64748b' }}>
+                  <span className="font-medium">رقم الحاج:</span> {hajjData?.full_reference}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Progress Section with Glass Card */}
+          <div className="px-6 pb-6 relative z-10">
+            <div
+              className="p-5"
+              style={{
+                background: 'rgba(255, 255, 255, 0.5)',
+                backdropFilter: 'blur(10px)',
+                WebkitBackdropFilter: 'blur(10px)',
+                border: '1px solid rgba(255, 255, 255, 0.6)',
+                borderRadius: '16px',
+                boxShadow: '0 4px 16px rgba(31, 38, 135, 0.1)'
+              }}
+            >
+              <div className="flex items-start justify-between gap-4">
+                {/* Left side: Step information */}
+                <div className="flex-1">
+                  {/* Current step title */}
+                  <h2 className="text-2xl font-bold mb-2" style={{ color: '#1e293b' }}>
+                    {current?.title || 'جارٍ التحميل...'}
+                  </h2>
+
+                  {/* Next step preview */}
+                  {next ? (
+                    <p className="text-sm" style={{ color: '#64748b' }}>
+                      الخطوة التالية: <span className="font-semibold" style={{ color: '#1e293b' }}>{next.title}</span>
+                    </p>
+                  ) : (
+                    <p className="text-sm font-semibold" style={{ color: '#10b981' }}>
+                      🎉 اكتملت جميع المراحل
+                    </p>
+                  )}
+                </div>
+
+                {/* Right side: Circular progress ring */}
+                <div className="flex-shrink-0">
+                  <CircularProgress
+                    percentage={percentage}
+                    currentStep={currentStep}
+                    totalSteps={totalSteps}
                   />
                 </div>
-              ) : (
-                <div
-                  className="w-[80px] h-[80px] rounded-[5px] bg-primary/10 flex items-center justify-center"
-                  style={{ boxShadow: '0 1px 4px 0 rgba(0, 0, 0, 0.37)' }}
-                >
-                  <span className="text-3xl text-primary font-bold">
-                    {hajjData?.full_name_ar?.charAt(0) || '👤'}
-                  </span>
-                </div>
-              )}
-            </div>
-            {/* Greeting */}
-            <div className="flex-1">
-              <h2 className="text-xl font-bold text-foreground">
-                مرحباً {hajjData?.full_name_ar}
-              </h2>
-              <p className="text-sm text-muted-foreground">
-                <span className="font-medium">رقم الحاج:</span> {hajjData?.full_reference}
-              </p>
+              </div>
             </div>
           </div>
-        </div>
-
-        {/* Progress Section */}
-        <div className="p-6 pt-6">
-        <div className="flex items-start justify-between gap-4">
-          {/* Left side: Step information */}
-          <div className="flex-1">
-            {/* Current step title */}
-            <h2 className="text-2xl font-bold text-foreground mb-2">
-              {current?.title || 'جارٍ التحميل...'}
-            </h2>
-
-            {/* Next step preview */}
-            {next ? (
-              <p className="text-sm text-muted-foreground">
-                الخطوة التالية: <span className="font-semibold text-foreground">{next.title}</span>
-              </p>
-            ) : (
-              <p className="text-sm font-semibold text-primary">
-                🎉 اكتملت جميع المراحل
-              </p>
-            )}
-          </div>
-
-          {/* Right side: Circular progress ring indicator */}
-          <div className="flex-shrink-0">
-            <CircularProgress
-              percentage={percentage}
-              currentStep={currentStep}
-              totalSteps={totalSteps}
-            />
-          </div>
-        </div>
         </div>
       </div>
     </>
