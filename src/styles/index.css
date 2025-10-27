@@ -26,9 +26,25 @@
 
   body {
     @apply bg-background text-foreground font-arabic;
+    /* Safe area padding for mobile devices (Android nav buttons, iOS notch) */
+    padding-bottom: env(safe-area-inset-bottom);
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+  }
+
+  /* Ensure content doesn't go under system UI */
+  #root {
+    padding-bottom: max(20px, env(safe-area-inset-bottom));
   }
 
   * {
     @apply border-border;
+  }
+}
+
+/* Additional safe area support for fixed/sticky elements */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .safe-bottom {
+    padding-bottom: calc(1rem + env(safe-area-inset-bottom));
   }
 }

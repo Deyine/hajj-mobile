@@ -164,7 +164,7 @@ const ConditionsModal = ({ isOpen, onClose, onAccepted }) => {
         </CardContent>
 
         {/* Footer with scroll indicator */}
-        <CardFooter className="flex flex-col gap-3 pt-4 pb-4 bg-gray-50 rounded-b-lg border-t">
+        <CardFooter className="flex flex-col gap-3 pt-4 pb-4 bg-gray-50 rounded-b-lg border-t safe-bottom">
           {!hasScrolledToBottom && (
             <div className="bg-blue-50 border border-blue-200 rounded-lg px-4 py-2 text-center">
               <p className="text-sm text-blue-700 font-medium">

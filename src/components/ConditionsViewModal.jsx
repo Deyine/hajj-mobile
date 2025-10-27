@@ -136,7 +136,7 @@ const ConditionsViewModal = ({ isOpen, onClose }) => {
         </CardContent>
 
         {/* Footer with close button only */}
-        <div className="flex gap-3 w-full p-4 bg-gray-50 rounded-b-lg border-t">
+        <div className="flex gap-3 w-full p-4 bg-gray-50 rounded-b-lg border-t safe-bottom">
           <Button
             onClick={onClose}
             className="flex-1"

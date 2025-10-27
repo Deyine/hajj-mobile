@@ -301,7 +301,7 @@ function NewDashboard() {
       </div>
 
       {/* Personal Info - Full width footer */}
-      <div className="bg-white border-t border-border mt-6">
+      <div className="bg-white border-t border-border mt-6 safe-bottom">
         <div className="py-6 px-6">
           <h3 className="text-lg font-bold text-foreground mb-4">معلوماتي</h3>
           <div className="grid gap-4">
