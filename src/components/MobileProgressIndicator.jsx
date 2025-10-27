@@ -148,19 +148,19 @@ function MobileProgressIndicator({ currentStep, totalSteps, steps, hajjData, onH
               <path
                 d="M0,80 Q50,70 100,80 T200,80 T300,80 T400,80 L400,120 L0,120 Z"
                 fill="#2C5F2D"
-                opacity="0.12"
+                opacity="0.08"
               />
               <path
                 d="M0,90 Q50,82 100,90 T200,90 T300,90 T400,90 L400,120 L0,120 Z"
                 fill="#4A9B4D"
-                opacity="0.10"
+                opacity="0.08"
               />
 
               {/* Bottom waves - Symmetrical, flowing up */}
               <path
                 d="M0,120 L0,110 Q50,118 100,110 T200,110 T300,110 T400,110 L400,120 Z"
                 fill="#2C5F2D"
-                opacity="0.15"
+                opacity="0.08"
               />
               <path
                 d="M0,120 L0,102 Q50,110 100,102 T200,102 T300,102 T400,102 L400,120 Z"
