@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Button } from './ui/button';
 import { Download, CreditCard, Copy, Check, Banknote, Calendar } from 'lucide-react';
 import api from '../services/api';
-import { getAccessToken } from '../utils/auth';
 import AlertDialog from './AlertDialog';
 import ConfirmationDialog from './ConfirmationDialog';
 
@@ -18,9 +17,8 @@ export default function PaymentInfoCard({ hajjData, onPaymentMarked }) {
   const [alertDialog, setAlertDialog] = useState({ isOpen: false, title: '', message: '', type: 'info' });
   const [confirmDialog, setConfirmDialog] = useState({ isOpen: false });
 
-  // Build bill download URL with token for direct link
-  const token = getAccessToken();
-  const billDownloadUrl = `/api/v1/mobile/bill?token=${encodeURIComponent(token)}`;
+  // Build bill download URL using hajj ID (public endpoint, no auth required)
+  const billDownloadUrl = `/api/v1/mobile/bill/${hajjData.id}`;
 
   const handleCopyTitreDeRecette = async () => {
     try {
