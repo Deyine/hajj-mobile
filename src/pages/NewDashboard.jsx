@@ -334,6 +334,21 @@ function NewDashboard() {
               </a>
             </div>
           )}
+
+          {/* Download Conditions - Always available after acceptance (passport_imported onwards) */}
+          {(hajjData.status === 'passport_imported' || hajjData.status === 'subscribed' || hajjData.status === 'finished') && (
+            <div className="mt-3">
+              <a
+                href={`/api/v1/mobile/conditions/${hajjData.id}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full"
+              >
+                <Download className="ml-2 h-4 w-4" />
+                تحميل الشروط
+              </a>
+            </div>
+          )}
         </div>
 
         {/* Accommodation Info */}
