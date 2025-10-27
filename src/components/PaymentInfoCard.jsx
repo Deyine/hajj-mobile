@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Button } from './ui/button';
 import { Download, CreditCard, Copy, Check, Banknote, Calendar } from 'lucide-react';
 import api from '../services/api';
+import { getAccessToken } from '../utils/auth';
 import AlertDialog from './AlertDialog';
 import ConfirmationDialog from './ConfirmationDialog';
 
@@ -12,11 +13,14 @@ import ConfirmationDialog from './ConfirmationDialog';
  * Simplified borderless design
  */
 export default function PaymentInfoCard({ hajjData, onPaymentMarked }) {
-  const [downloading, setDownloading] = useState(false);
   const [marking, setMarking] = useState(false);
   const [copied, setCopied] = useState(false);
   const [alertDialog, setAlertDialog] = useState({ isOpen: false, title: '', message: '', type: 'info' });
   const [confirmDialog, setConfirmDialog] = useState({ isOpen: false });
+
+  // Build bill download URL with token for direct link
+  const token = getAccessToken();
+  const billDownloadUrl = `/api/v1/mobile/bill?token=${encodeURIComponent(token)}`;
 
   const handleCopyTitreDeRecette = async () => {
     try {
@@ -34,32 +38,6 @@ export default function PaymentInfoCard({ hajjData, onPaymentMarked }) {
     }
   };
 
-  const handleDownloadBill = async () => {
-    setDownloading(true);
-    try {
-      const response = await api.get('/api/v1/mobile/bill', {
-        responseType: 'blob'
-      });
-
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', `facture-${hajjData.titre_de_recette}.pdf`);
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-    } catch (err) {
-      console.error('Error downloading bill:', err);
-      setAlertDialog({
-        isOpen: true,
-        title: 'خطأ',
-        message: 'حدث خطأ في تحميل الفاتورة',
-        type: 'error'
-      });
-    } finally {
-      setDownloading(false);
-    }
-  };
 
   const handleMarkAsPaid = () => {
     setConfirmDialog({ isOpen: true });
@@ -183,25 +161,15 @@ export default function PaymentInfoCard({ hajjData, onPaymentMarked }) {
           </ul>
         </div>
 
-        {/* Download invoice button - always available */}
-        <Button
-          onClick={handleDownloadBill}
-          className="w-full"
-          disabled={downloading}
-        >
-          <Download className="ml-2 h-4 w-4" />
-          {downloading ? 'جارٍ التحميل...' : 'تحميل الفاتورة'}
-        </Button>
-
-        {/* Test button with direct URL (for webview testing) */}
+        {/* Download invoice button - direct link for webview compatibility */}
         <a
-          href="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"
+          href={billDownloadUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 bg-secondary text-secondary-foreground hover:bg-secondary/80 h-10 px-4 py-2 w-full"
+          className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 w-full"
         >
           <Download className="ml-2 h-4 w-4" />
-          اختبار تحميل مباشر (PDF)
+          تحميل الفاتورة
         </a>
 
         {/* Test button to mark as paid */}
