@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button } from './ui/button';
-import { Download, CreditCard, Copy, Check, Banknote, Calendar } from 'lucide-react';
+import { CreditCard, Copy, Check, Banknote, Calendar } from 'lucide-react';
 import api from '../services/api';
 import AlertDialog from './AlertDialog';
 import ConfirmationDialog from './ConfirmationDialog';
@@ -16,9 +16,6 @@ export default function PaymentInfoCard({ hajjData, onPaymentMarked }) {
   const [copied, setCopied] = useState(false);
   const [alertDialog, setAlertDialog] = useState({ isOpen: false, title: '', message: '', type: 'info' });
   const [confirmDialog, setConfirmDialog] = useState({ isOpen: false });
-
-  // Build bill download URL using hajj ID (public endpoint, no auth required)
-  const billDownloadUrl = `/api/v1/mobile/bill/${hajjData.id}`;
 
   const handleCopyTitreDeRecette = async () => {
     try {
@@ -158,17 +155,6 @@ export default function PaymentInfoCard({ hajjData, onPaymentMarked }) {
             <li>بعد إتمام الدفع، سيتم تحديث حالة التسجيل تلقائياً</li>
           </ul>
         </div>
-
-        {/* Download invoice button - direct link for webview compatibility */}
-        <a
-          href={billDownloadUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 w-full"
-        >
-          <Download className="ml-2 h-4 w-4" />
-          تحميل الفاتورة
-        </a>
 
         {/* Test button to mark as paid */}
         <Button

@@ -5,6 +5,7 @@ import ContactInfoForm from '@/components/ContactInfoForm'
 import PaymentInfoCard from '@/components/PaymentInfoCard'
 import ConditionsAcceptanceCard from '@/components/ConditionsAcceptanceCard'
 import ConditionsModal from '@/components/ConditionsModal'
+import ConditionsViewModal from '@/components/ConditionsViewModal'
 import PassportEntryCard from '@/components/PassportEntryCard'
 import PassportScanInfoCard from '@/components/PassportScanInfoCard'
 import MobileProgressIndicator from '@/components/MobileProgressIndicator'
@@ -17,7 +18,7 @@ import {
   Phone,
   IdCard,
   AlertTriangle,
-  Download
+  FileText
 } from 'lucide-react'
 
 /**
@@ -30,6 +31,7 @@ function NewDashboard() {
   const [error, setError] = useState(null)
   const [notFound, setNotFound] = useState(false)
   const [showConditionsModal, setShowConditionsModal] = useState(false)
+  const [showConditionsViewModal, setShowConditionsViewModal] = useState(false)
   const [showDebugPanel, setShowDebugPanel] = useState(false)
   const [clickCount, setClickCount] = useState(0)
 
@@ -96,6 +98,14 @@ function NewDashboard() {
 
   const handleCloseConditionsModal = () => {
     setShowConditionsModal(false)
+  }
+
+  const handleOpenConditionsViewModal = () => {
+    setShowConditionsViewModal(true)
+  }
+
+  const handleCloseConditionsViewModal = () => {
+    setShowConditionsViewModal(false)
   }
 
   const handleImpersonate = (targetNNI) => {
@@ -318,37 +328,21 @@ function NewDashboard() {
                 </div>
               </div>
             )}
+
+            {/* View Conditions Button - Show after conditions accepted */}
+            {(hajjData.status === 'conditions_generated' || hajjData.status === 'passport_imported' || hajjData.status === 'subscribed' || hajjData.status === 'finished') && (
+              <div className="mt-4">
+                <button
+                  onClick={handleOpenConditionsViewModal}
+                  className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full"
+                >
+                  <FileText className="ml-2 h-4 w-4" />
+                  مراجعة الشروط
+                </button>
+              </div>
+            )}
           </div>
 
-          {/* Download Invoice - Always available after payment (bill_paid onwards) */}
-          {(hajjData.status === 'bill_paid' || hajjData.status === 'conditions_generated' || hajjData.status === 'passport_imported' || hajjData.status === 'subscribed' || hajjData.status === 'finished') && (
-            <div className="mt-6">
-              <a
-                href={`/api/v1/mobile/bill/${hajjData.id}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full"
-              >
-                <Download className="ml-2 h-4 w-4" />
-                تحميل الفاتورة
-              </a>
-            </div>
-          )}
-
-          {/* Download Conditions - Always available after acceptance (conditions_generated onwards) */}
-          {(hajjData.status === 'conditions_generated' || hajjData.status === 'passport_imported' || hajjData.status === 'subscribed' || hajjData.status === 'finished') && (
-            <div className="mt-3">
-              <a
-                href={`/api/v1/mobile/conditions/${hajjData.id}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full"
-              >
-                <Download className="ml-2 h-4 w-4" />
-                تحميل الشروط
-              </a>
-            </div>
-          )}
         </div>
 
         {/* Accommodation Info */}
@@ -384,11 +378,17 @@ function NewDashboard() {
         )}
       </div>
 
-      {/* Conditions Modal */}
+      {/* Conditions Modal - For acceptance */}
       <ConditionsModal
         isOpen={showConditionsModal}
         onClose={handleCloseConditionsModal}
         onAccepted={handleConditionsAccepted}
+      />
+
+      {/* Conditions View Modal - For viewing after acceptance */}
+      <ConditionsViewModal
+        isOpen={showConditionsViewModal}
+        onClose={handleCloseConditionsViewModal}
       />
 
       {/* Debug Panel - Admin Impersonation */}
