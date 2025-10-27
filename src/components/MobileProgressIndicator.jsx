@@ -73,62 +73,85 @@ function MobileProgressIndicator({ currentStep, totalSteps, steps, hajjData, onH
 
   return (
     <>
-      {/* Crystal Glassmorphism Header - Modern & Clean */}
+      {/* Crystal Glassmorphism Header - Green Theme */}
       <div className="mb-6 relative overflow-hidden">
-        {/* Gradient Background Layer with Crystal Pattern */}
+        {/* Vibrant Green Gradient Background */}
         <div
-          className="absolute inset-0 bg-gradient-to-br from-blue-100/30 via-purple-100/20 to-teal-100/30"
+          className="absolute inset-0"
           style={{
+            background: 'linear-gradient(135deg, #d4fc79 0%, #96e6a1 50%, #7dd3c0 100%)',
             borderRadius: '20px'
           }}
         >
-          {/* Crystal Pattern SVG Overlay */}
+          {/* Crystal Pattern SVG - Prominent and Visible */}
           <svg
-            className="absolute inset-0 w-full h-full opacity-30"
+            className="absolute inset-0 w-full h-full"
             xmlns="http://www.w3.org/2000/svg"
+            style={{ opacity: 0.6 }}
           >
             <defs>
-              {/* Gradient definitions for crystal effect */}
-              <linearGradient id="crystal1" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#60a5fa" stopOpacity="0.3" />
-                <stop offset="100%" stopColor="#a78bfa" stopOpacity="0.2" />
+              {/* Green Crystal Gradients */}
+              <linearGradient id="greenCrystal1" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#a7f3d0" stopOpacity="0.8" />
+                <stop offset="100%" stopColor="#6ee7b7" stopOpacity="0.6" />
               </linearGradient>
-              <linearGradient id="crystal2" x1="100%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#34d399" stopOpacity="0.25" />
-                <stop offset="100%" stopColor="#60a5fa" stopOpacity="0.15" />
+              <linearGradient id="greenCrystal2" x1="100%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#34d399" stopOpacity="0.7" />
+                <stop offset="100%" stopColor="#10b981" stopOpacity="0.5" />
               </linearGradient>
-              <radialGradient id="lightGlow" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stopColor="#ffffff" stopOpacity="0.4" />
+              <linearGradient id="lightCrystal" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#ffffff" stopOpacity="0.9" />
+                <stop offset="100%" stopColor="#d4fc79" stopOpacity="0.6" />
+              </linearGradient>
+              <radialGradient id="crystalGlow" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stopColor="#ffffff" stopOpacity="0.8" />
+                <stop offset="70%" stopColor="#a7f3d0" stopOpacity="0.3" />
                 <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
               </radialGradient>
             </defs>
 
-            {/* Crystal geometric shapes */}
-            <g opacity="0.5">
-              {/* Top left crystal */}
-              <polygon points="20,10 60,30 40,70 0,50" fill="url(#crystal1)" />
-              <circle cx="30" cy="40" r="15" fill="url(#lightGlow)" />
+            {/* Large Crystal Shapes - Very Visible */}
+            <g>
+              {/* Big top-left crystal */}
+              <polygon points="10,20 80,10 100,80 30,100" fill="url(#greenCrystal1)" />
+              <polygon points="20,30 70,25 85,70 35,85" fill="url(#lightCrystal)" opacity="0.7" />
+              <circle cx="50" cy="50" r="30" fill="url(#crystalGlow)" />
 
-              {/* Top right crystal */}
-              <polygon points="220,5 280,25 260,65 200,45" fill="url(#crystal2)" />
-              <circle cx="240" cy="35" r="12" fill="url(#lightGlow)" />
+              {/* Big top-right crystal */}
+              <polygon points="250,10 330,30 310,100 230,80" fill="url(#greenCrystal2)" />
+              <polygon points="260,25 310,35 295,85 245,75" fill="url(#lightCrystal)" opacity="0.7" />
+              <circle cx="280" cy="55" r="28" fill="url(#crystalGlow)" />
 
-              {/* Bottom right floating crystal */}
-              <polygon points="300,140 340,160 320,200 280,180" fill="url(#crystal1)" />
-              <circle cx="310" cy="170" r="10" fill="url(#lightGlow)" />
+              {/* Bottom center crystal cluster */}
+              <polygon points="120,150 200,140 210,200 130,210" fill="url(#greenCrystal1)" />
+              <polygon points="135,160 185,155 195,190 145,195" fill="url(#lightCrystal)" opacity="0.6" />
+              <circle cx="165" cy="175" r="25" fill="url(#crystalGlow)" />
 
-              {/* Center subtle shapes */}
-              <polygon points="150,80 170,90 160,110 140,100" fill="url(#crystal2)" opacity="0.3" />
-              <polygon points="100,120 130,135 115,165 85,150" fill="url(#crystal1)" opacity="0.3" />
+              {/* Additional accent crystals */}
+              <polygon points="300,150 340,145 345,185 305,190" fill="url(#greenCrystal2)" opacity="0.8" />
+              <polygon points="50,140 90,135 95,175 55,180" fill="url(#greenCrystal1)" opacity="0.7" />
             </g>
 
-            {/* Sparkle effects */}
-            <g opacity="0.6">
-              <circle cx="80" cy="20" r="2" fill="#ffffff" opacity="0.8" />
-              <circle cx="260" cy="50" r="1.5" fill="#ffffff" opacity="0.7" />
-              <circle cx="180" cy="140" r="2" fill="#ffffff" opacity="0.6" />
-              <circle cx="320" cy="100" r="1.5" fill="#ffffff" opacity="0.8" />
-              <circle cx="50" cy="160" r="1.8" fill="#ffffff" opacity="0.7" />
+            {/* Bright Sparkles - More Visible */}
+            <g>
+              <circle cx="60" cy="30" r="3" fill="#ffffff" opacity="0.95">
+                <animate attributeName="opacity" values="0.95;0.5;0.95" dur="2s" repeatCount="indefinite" />
+              </circle>
+              <circle cx="290" cy="45" r="4" fill="#ffffff" opacity="0.9">
+                <animate attributeName="opacity" values="0.9;0.4;0.9" dur="2.5s" repeatCount="indefinite" />
+              </circle>
+              <circle cx="170" cy="180" r="3.5" fill="#ffffff" opacity="0.95">
+                <animate attributeName="opacity" values="0.95;0.5;0.95" dur="3s" repeatCount="indefinite" />
+              </circle>
+              <circle cx="320" cy="160" r="3" fill="#ffffff" opacity="0.9">
+                <animate attributeName="opacity" values="0.9;0.45;0.9" dur="2.2s" repeatCount="indefinite" />
+              </circle>
+              <circle cx="75" cy="150" r="2.5" fill="#ffffff" opacity="0.95">
+                <animate attributeName="opacity" values="0.95;0.5;0.95" dur="2.8s" repeatCount="indefinite" />
+              </circle>
+              <circle cx="200" cy="70" r="2.5" fill="#ffffff" opacity="0.9">
+                <animate attributeName="opacity" values="0.9;0.4;0.9" dur="2.3s" repeatCount="indefinite" />
+              </circle>
             </g>
           </svg>
         </div>
