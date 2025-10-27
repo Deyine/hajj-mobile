@@ -210,7 +210,7 @@ function MobileProgressIndicator({ currentStep, totalSteps, steps, hajjData, onH
               {/* Greeting - Large Typography */}
               <div className="flex-1">
                 <p className="text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: '#9CA3AF' }}>
-                  مرحباً بك
+                  مرحباً بكم
                 </p>
                 <h2 className="text-lg font-bold mb-0.5" style={{ color: '#1F2937', letterSpacing: '-0.01em' }}>
                   {hajjData?.full_name_ar}
