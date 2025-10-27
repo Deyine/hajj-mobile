@@ -41,13 +41,37 @@ export default function PaymentInfoCard({ hajjData, onPaymentMarked }) {
         responseType: 'blob'
       });
 
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', `facture-${hajjData.titre_de_recette}.pdf`);
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
+      // Convert blob to base64 for webview compatibility
+      const blob = new Blob([response.data], { type: 'application/pdf' });
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        const base64data = reader.result;
+
+        // Try to open in new window (works in webviews)
+        const newWindow = window.open();
+        if (newWindow) {
+          newWindow.location.href = base64data;
+        } else {
+          // Fallback: set current window location
+          window.location.href = base64data;
+        }
+
+        setDownloading(false);
+      };
+
+      reader.onerror = () => {
+        console.error('Error reading PDF blob');
+        setAlertDialog({
+          isOpen: true,
+          title: 'خطأ',
+          message: 'حدث خطأ في معالجة الفاتورة',
+          type: 'error'
+        });
+        setDownloading(false);
+      };
+
+      reader.readAsDataURL(blob);
     } catch (err) {
       console.error('Error downloading bill:', err);
       setAlertDialog({
@@ -56,7 +80,6 @@ export default function PaymentInfoCard({ hajjData, onPaymentMarked }) {
         message: 'حدث خطأ في تحميل الفاتورة',
         type: 'error'
       });
-    } finally {
       setDownloading(false);
     }
   };
