@@ -84,10 +84,84 @@ function MobileProgressIndicator({ currentStep, totalSteps, steps, hajjData, onH
         >
           {/* Hajj Header Section - Minimal & Spacious */}
           <div
-            className="py-6 px-6 bg-gradient-to-br from-emerald-50/50 to-lime-50/30"
+            className="py-6 px-6 relative overflow-hidden"
             onClick={onHeaderClick}
             style={{ cursor: 'pointer' }}
           >
+            {/* Vector Art Background - Oblique Crystal Pattern */}
+            <svg
+              className="absolute inset-0 w-full h-full"
+              xmlns="http://www.w3.org/2000/svg"
+              preserveAspectRatio="none"
+              viewBox="0 0 400 120"
+            >
+              <defs>
+                {/* Oblique Crystal Pattern */}
+                <pattern id="crystalPattern" x="0" y="0" width="120" height="100" patternUnits="userSpaceOnUse">
+                  {/* Large oblique crystal - bottom left */}
+                  <polygon
+                    points="10,60 35,40 50,55 25,75"
+                    fill="#2C5F2D"
+                    opacity="0.5"
+                  />
+                  {/* Medium crystal - top right */}
+                  <polygon
+                    points="70,20 90,10 100,30 80,40"
+                    fill="#97CC04"
+                    opacity="0.6"
+                  />
+                  {/* Small crystal - center */}
+                  <polygon
+                    points="45,45 55,40 60,50 50,55"
+                    fill="#2C5F2D"
+                    opacity="0.7"
+                  />
+                  {/* Thin oblique line accent */}
+                  <line
+                    x1="0" y1="80" x2="30" y2="60"
+                    stroke="#97CC04"
+                    strokeWidth="1"
+                    opacity="0.4"
+                  />
+                  <line
+                    x1="85" y1="50" x2="115" y2="30"
+                    stroke="#2C5F2D"
+                    strokeWidth="1"
+                    opacity="0.3"
+                  />
+                  {/* Scattered oblique crystals */}
+                  <polygon
+                    points="95,70 105,65 110,80 100,85"
+                    fill="#97CC04"
+                    opacity="0.5"
+                  />
+                  <polygon
+                    points="15,15 25,10 30,20 20,25"
+                    fill="#2C5F2D"
+                    opacity="0.4"
+                  />
+                </pattern>
+              </defs>
+              <rect width="400" height="120" fill="url(#crystalPattern)" opacity="0.06" />
+
+              {/* Wave Elements - Positioned at bottom */}
+              <path
+                d="M0,80 Q50,70 100,80 T200,80 T300,80 T400,80 L400,120 L0,120 Z"
+                fill="#2C5F2D"
+                opacity="0.15"
+              />
+              <path
+                d="M0,90 Q50,82 100,90 T200,90 T300,90 T400,90 L400,120 L0,120 Z"
+                fill="#97CC04"
+                opacity="0.12"
+              />
+            </svg>
+
+            {/* Gradient Overlay - Darker Green */}
+            <div className="absolute inset-0 bg-gradient-to-br from-emerald-100/90 to-green-50/70" />
+
+            {/* Content wrapper with relative positioning */}
+            <div className="relative z-10">
             <div className="flex items-center gap-4">
               {/* Hajj Photo - Original Proportions */}
               <div className="flex-shrink-0">
@@ -133,6 +207,7 @@ function MobileProgressIndicator({ currentStep, totalSteps, steps, hajjData, onH
                   <span className="font-semibold">رقم الحاج:</span> {hajjData?.full_reference}
                 </p>
               </div>
+            </div>
             </div>
           </div>
 
