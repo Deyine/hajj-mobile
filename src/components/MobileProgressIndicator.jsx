@@ -74,14 +74,64 @@ function MobileProgressIndicator({ currentStep, totalSteps, steps, hajjData, onH
   return (
     <>
       {/* Crystal Glassmorphism Header - Modern & Clean */}
-      <div className="mb-6 relative">
-        {/* Gradient Background Layer */}
+      <div className="mb-6 relative overflow-hidden">
+        {/* Gradient Background Layer with Crystal Pattern */}
         <div
           className="absolute inset-0 bg-gradient-to-br from-blue-100/30 via-purple-100/20 to-teal-100/30"
           style={{
             borderRadius: '20px'
           }}
-        />
+        >
+          {/* Crystal Pattern SVG Overlay */}
+          <svg
+            className="absolute inset-0 w-full h-full opacity-30"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <defs>
+              {/* Gradient definitions for crystal effect */}
+              <linearGradient id="crystal1" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#60a5fa" stopOpacity="0.3" />
+                <stop offset="100%" stopColor="#a78bfa" stopOpacity="0.2" />
+              </linearGradient>
+              <linearGradient id="crystal2" x1="100%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#34d399" stopOpacity="0.25" />
+                <stop offset="100%" stopColor="#60a5fa" stopOpacity="0.15" />
+              </linearGradient>
+              <radialGradient id="lightGlow" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stopColor="#ffffff" stopOpacity="0.4" />
+                <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
+              </radialGradient>
+            </defs>
+
+            {/* Crystal geometric shapes */}
+            <g opacity="0.5">
+              {/* Top left crystal */}
+              <polygon points="20,10 60,30 40,70 0,50" fill="url(#crystal1)" />
+              <circle cx="30" cy="40" r="15" fill="url(#lightGlow)" />
+
+              {/* Top right crystal */}
+              <polygon points="220,5 280,25 260,65 200,45" fill="url(#crystal2)" />
+              <circle cx="240" cy="35" r="12" fill="url(#lightGlow)" />
+
+              {/* Bottom right floating crystal */}
+              <polygon points="300,140 340,160 320,200 280,180" fill="url(#crystal1)" />
+              <circle cx="310" cy="170" r="10" fill="url(#lightGlow)" />
+
+              {/* Center subtle shapes */}
+              <polygon points="150,80 170,90 160,110 140,100" fill="url(#crystal2)" opacity="0.3" />
+              <polygon points="100,120 130,135 115,165 85,150" fill="url(#crystal1)" opacity="0.3" />
+            </g>
+
+            {/* Sparkle effects */}
+            <g opacity="0.6">
+              <circle cx="80" cy="20" r="2" fill="#ffffff" opacity="0.8" />
+              <circle cx="260" cy="50" r="1.5" fill="#ffffff" opacity="0.7" />
+              <circle cx="180" cy="140" r="2" fill="#ffffff" opacity="0.6" />
+              <circle cx="320" cy="100" r="1.5" fill="#ffffff" opacity="0.8" />
+              <circle cx="50" cy="160" r="1.8" fill="#ffffff" opacity="0.7" />
+            </g>
+          </svg>
+        </div>
 
         {/* Glass Effect Layer */}
         <div
