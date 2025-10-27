@@ -1,9 +1,10 @@
 /**
  * Utility to prevent pull-to-refresh in WebView
- * Aggressively blocks overscroll that triggers parent app refresh
+ * Only blocks overscroll at boundaries, allows normal scrolling
  */
 
 let startY = 0;
+let lastScrollTop = 0;
 
 export function preventPullToRefresh() {
   // Remove existing listeners first
@@ -11,6 +12,7 @@ export function preventPullToRefresh() {
 
   const handleTouchStart = (e) => {
     startY = e.touches[0].clientY;
+    lastScrollTop = window.pageYOffset || document.documentElement.scrollTop;
   };
 
   const handleTouchMove = (e) => {
@@ -18,58 +20,51 @@ export function preventPullToRefresh() {
     const deltaY = currentY - startY;
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
-    // Prevent pull-down when at the top
-    if (scrollTop <= 0 && deltaY > 0) {
+    // Calculate if we're trying to scroll beyond boundaries
+    const isAtTop = scrollTop <= 1; // Small threshold for precision
+    const isPullingDown = deltaY > 5; // Only if significant pull
+
+    const scrollHeight = document.documentElement.scrollHeight;
+    const clientHeight = document.documentElement.clientHeight;
+    const isAtBottom = scrollTop + clientHeight >= scrollHeight - 1;
+    const isPullingUp = deltaY < -5;
+
+    // Only prevent if we're AT a boundary AND trying to go further
+    // AND we haven't scrolled since touch started
+    const scrolledDuringTouch = Math.abs(scrollTop - lastScrollTop) < 2;
+
+    if (isAtTop && isPullingDown && scrolledDuringTouch) {
+      // At top trying to pull down - prevent
       e.preventDefault();
       e.stopPropagation();
       return false;
     }
 
-    // Prevent pull-up when at the bottom
-    const scrollHeight = document.documentElement.scrollHeight;
-    const clientHeight = document.documentElement.clientHeight;
-    if (scrollTop + clientHeight >= scrollHeight && deltaY < 0) {
+    if (isAtBottom && isPullingUp && scrolledDuringTouch) {
+      // At bottom trying to pull up - prevent
       e.preventDefault();
       e.stopPropagation();
       return false;
     }
+
+    // Otherwise allow normal scrolling
   };
 
   const handleTouchEnd = () => {
     startY = 0;
+    lastScrollTop = 0;
   };
 
-  // Prevent default scroll behavior on body
-  const preventBodyScroll = (e) => {
-    if (e.target === document.body) {
-      e.preventDefault();
-    }
-  };
-
-  // Use passive: false to allow preventDefault()
-  document.addEventListener('touchstart', handleTouchStart, { passive: false });
+  // Use passive: false to allow preventDefault() when needed
+  document.addEventListener('touchstart', handleTouchStart, { passive: true });
   document.addEventListener('touchmove', handleTouchMove, { passive: false });
   document.addEventListener('touchend', handleTouchEnd, { passive: true });
-  document.body.addEventListener('touchmove', preventBodyScroll, { passive: false });
-
-  // Also prevent mousewheel overscroll
-  document.addEventListener('wheel', (e) => {
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    const scrollHeight = document.documentElement.scrollHeight;
-    const clientHeight = document.documentElement.clientHeight;
-
-    if ((scrollTop <= 0 && e.deltaY < 0) ||
-        (scrollTop + clientHeight >= scrollHeight && e.deltaY > 0)) {
-      e.preventDefault();
-    }
-  }, { passive: false });
 
   // Store references for cleanup
   window.__pullToRefreshHandlers = {
     touchstart: handleTouchStart,
     touchmove: handleTouchMove,
-    touchend: handleTouchEnd,
-    bodytouchmove: preventBodyScroll
+    touchend: handleTouchEnd
   };
 }
 
@@ -78,7 +73,6 @@ export function removePullToRefreshPrevention() {
     document.removeEventListener('touchstart', window.__pullToRefreshHandlers.touchstart);
     document.removeEventListener('touchmove', window.__pullToRefreshHandlers.touchmove);
     document.removeEventListener('touchend', window.__pullToRefreshHandlers.touchend);
-    document.body.removeEventListener('touchmove', window.__pullToRefreshHandlers.bodytouchmove);
     delete window.__pullToRefreshHandlers;
   }
 }
