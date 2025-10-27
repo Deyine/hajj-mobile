@@ -83,6 +83,30 @@ function MobileProgressIndicator({ currentStep, totalSteps, steps, hajjData, onH
             borderRadius: '20px'
           }}
         >
+          {/* Oblique Diagonal Mask Pattern */}
+          <svg
+            className="absolute inset-0 w-full h-full"
+            xmlns="http://www.w3.org/2000/svg"
+            style={{ opacity: 0.15 }}
+          >
+            <defs>
+              <pattern id="diagonalStripes" patternUnits="userSpaceOnUse" width="60" height="60" patternTransform="rotate(-45)">
+                <rect width="30" height="60" fill="rgba(255, 255, 255, 0.4)" />
+              </pattern>
+              <linearGradient id="obliqueGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#ffffff" stopOpacity="0.3" />
+                <stop offset="50%" stopColor="#d4fc79" stopOpacity="0.2" />
+                <stop offset="100%" stopColor="#10b981" stopOpacity="0.3" />
+              </linearGradient>
+            </defs>
+            {/* Diagonal stripes background */}
+            <rect width="100%" height="100%" fill="url(#diagonalStripes)" />
+            {/* Oblique overlay shapes */}
+            <polygon points="0,0 150,0 100,250 0,200" fill="url(#obliqueGradient)" />
+            <polygon points="200,0 400,0 350,250 150,200" fill="url(#obliqueGradient)" opacity="0.7" />
+            <polygon points="0,100 100,50 150,250 0,250" fill="url(#obliqueGradient)" opacity="0.6" />
+          </svg>
+
           {/* Crystal Pattern SVG - Prominent and Visible */}
           <svg
             className="absolute inset-0 w-full h-full"
