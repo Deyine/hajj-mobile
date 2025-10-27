@@ -35,33 +35,37 @@ export default function PaymentInfoCard({ hajjData, onPaymentMarked }) {
   };
 
   const handleDownloadBill = async () => {
+    console.log('[PaymentInfoCard] Download button clicked');
     setDownloading(true);
+
     try {
+      console.log('[PaymentInfoCard] Fetching PDF from API...');
       const response = await api.get('/api/v1/mobile/bill', {
         responseType: 'blob'
       });
+      console.log('[PaymentInfoCard] PDF received, size:', response.data.size);
 
       // Convert blob to base64 for webview compatibility
       const blob = new Blob([response.data], { type: 'application/pdf' });
       const reader = new FileReader();
 
       reader.onloadend = () => {
+        console.log('[PaymentInfoCard] Blob converted to base64');
         const base64data = reader.result;
+        console.log('[PaymentInfoCard] Base64 data length:', base64data.length);
 
-        // Try to open in new window (works in webviews)
-        const newWindow = window.open();
-        if (newWindow) {
-          newWindow.location.href = base64data;
-        } else {
-          // Fallback: set current window location
-          window.location.href = base64data;
-        }
+        // Direct navigation approach - most reliable in webviews
+        console.log('[PaymentInfoCard] Navigating to PDF...');
+        window.location.href = base64data;
 
-        setDownloading(false);
+        // Set timeout to reset loading state
+        setTimeout(() => {
+          setDownloading(false);
+        }, 2000);
       };
 
-      reader.onerror = () => {
-        console.error('Error reading PDF blob');
+      reader.onerror = (error) => {
+        console.error('[PaymentInfoCard] Error reading PDF blob:', error);
         setAlertDialog({
           isOpen: true,
           title: 'خطأ',
@@ -71,13 +75,15 @@ export default function PaymentInfoCard({ hajjData, onPaymentMarked }) {
         setDownloading(false);
       };
 
+      console.log('[PaymentInfoCard] Starting blob conversion...');
       reader.readAsDataURL(blob);
     } catch (err) {
-      console.error('Error downloading bill:', err);
+      console.error('[PaymentInfoCard] Error downloading bill:', err);
+      console.error('[PaymentInfoCard] Error details:', err.response?.data);
       setAlertDialog({
         isOpen: true,
         title: 'خطأ',
-        message: 'حدث خطأ في تحميل الفاتورة',
+        message: 'حدث خطأ في تحميل الفاتورة: ' + (err.message || 'خطأ غير معروف'),
         type: 'error'
       });
       setDownloading(false);
