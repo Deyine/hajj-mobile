@@ -148,29 +148,29 @@ function MobileProgressIndicator({ currentStep, totalSteps, steps, hajjData, onH
               <path
                 d="M0,80 Q50,70 100,80 T200,80 T300,80 T400,80 L400,120 L0,120 Z"
                 fill="#2C5F2D"
-                opacity="0.15"
+                opacity="0.12"
               />
               <path
                 d="M0,90 Q50,82 100,90 T200,90 T300,90 T400,90 L400,120 L0,120 Z"
-                fill="#97CC04"
-                opacity="0.12"
+                fill="#4A9B4D"
+                opacity="0.10"
               />
 
               {/* Bottom waves - Symmetrical, flowing up */}
               <path
                 d="M0,120 L0,110 Q50,118 100,110 T200,110 T300,110 T400,110 L400,120 Z"
                 fill="#2C5F2D"
-                opacity="0.18"
+                opacity="0.15"
               />
               <path
                 d="M0,120 L0,102 Q50,110 100,102 T200,102 T300,102 T400,102 L400,120 Z"
-                fill="#97CC04"
-                opacity="0.14"
+                fill="#6BBF73"
+                opacity="0.12"
               />
             </svg>
 
-            {/* Gradient Overlay - Darker Green */}
-            <div className="absolute inset-0 bg-gradient-to-br from-emerald-100/90 to-green-50/70" />
+            {/* Gradient Overlay - Harmonious Green Tones */}
+            <div className="absolute inset-0 bg-gradient-to-br from-green-100/85 via-emerald-50/75 to-green-50/60" />
 
             {/* Content wrapper with relative positioning */}
             <div className="relative z-10">
@@ -225,7 +225,7 @@ function MobileProgressIndicator({ currentStep, totalSteps, steps, hajjData, onH
 
           {/* Progress Section - Spacious Layout */}
           <div className="p-6 bg-white relative overflow-hidden">
-            {/* Reversed Wave from Top - Light Emerald Green */}
+            {/* Reversed Wave from Top - Harmonious Green Transition */}
             <svg
               className="absolute top-0 left-0 w-full"
               xmlns="http://www.w3.org/2000/svg"
@@ -236,13 +236,13 @@ function MobileProgressIndicator({ currentStep, totalSteps, steps, hajjData, onH
               {/* Wave flowing downward from top - Matches last wave from first section */}
               <path
                 d="M0,0 L400,0 L400,10 Q350,18 300,10 T200,10 T100,10 T0,10 Z"
-                fill="#97CC04"
-                opacity="0.14"
+                fill="#6BBF73"
+                opacity="0.12"
               />
               <path
                 d="M0,0 L400,0 L400,18 Q350,26 300,18 T200,18 T100,18 T0,18 Z"
-                fill="#A7F3D0"
-                opacity="0.12"
+                fill="#8FD694"
+                opacity="0.10"
               />
             </svg>
 
