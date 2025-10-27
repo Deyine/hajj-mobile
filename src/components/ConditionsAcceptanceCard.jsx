@@ -1,10 +1,10 @@
 import { Button } from './ui/button';
-import { FileCheck } from 'lucide-react';
+import { FileCheck, BookOpen } from 'lucide-react';
 
 /**
  * ConditionsAcceptanceCard Component
  * Displays a call-to-action for reading and accepting Hajj conditions
- * Clean, modern design with gradient card
+ * Redesigned to match PassportScanInfoCard style
  */
 export default function ConditionsAcceptanceCard({ onAcceptClick }) {
   return (
@@ -15,41 +15,40 @@ export default function ConditionsAcceptanceCard({ onAcceptClick }) {
           شروط وإلتزامات الحاج
         </h3>
         <p className="text-sm text-muted-foreground">
-          يجب الموافقة على الشروط والإلتزامات قبل المتابعة
+          يجب الموافقة على الشروط قبل المتابعة
         </p>
       </div>
 
-      {/* Main action card with gradient */}
-      <div className="bg-gradient-to-br from-primary/5 via-primary/10 to-primary/5 border-2 border-primary/20 rounded-xl p-6 text-center space-y-6">
-        {/* Icon */}
-        <div className="flex justify-center">
-          <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center border-2 border-primary/20">
-            <FileCheck className="h-10 w-10 text-primary" />
+      <div className="space-y-4">
+        {/* Instructions card */}
+        <div className="bg-white rounded-lg p-6 shadow-sm">
+          <div className="space-y-4">
+            <div className="text-center">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-3">
+                <BookOpen className="h-8 w-8 text-primary" />
+              </div>
+              <h4 className="font-bold text-gray-900 mb-2">ماذا يجب عليك فعله؟</h4>
+              <p className="text-sm text-gray-700 leading-relaxed">
+                يرجى قراءة شروط وإلتزامات الحاج بعناية والموافقة عليها للمتابعة
+              </p>
+            </div>
+
+            <div className="bg-amber-50 border border-amber-200 rounded-md p-3">
+              <p className="text-xs text-amber-800 text-center">
+                سيتم عرض جميع الشروط والإلتزامات لقراءتها بعناية
+              </p>
+            </div>
+
+            <Button
+              onClick={onAcceptClick}
+              className="w-full"
+              size="lg"
+            >
+              <FileCheck className="ml-2 h-5 w-5" />
+              قراءة وقبول الشروط
+            </Button>
           </div>
         </div>
-
-        {/* Message */}
-        <div className="space-y-2">
-          <h4 className="text-lg font-bold text-gray-900">الخطوة التالية</h4>
-          <p className="text-sm text-gray-700 leading-relaxed max-w-md mx-auto">
-            يرجى قراءة شروط وإلتزامات الحاج بعناية والموافقة عليها للمتابعة في عملية التسجيل
-          </p>
-        </div>
-
-        {/* Call to action button */}
-        <Button
-          onClick={onAcceptClick}
-          className="w-full"
-          size="lg"
-        >
-          <FileCheck className="ml-2 h-5 w-5" />
-          قراءة وقبول الشروط
-        </Button>
-
-        {/* Additional note */}
-        <p className="text-xs text-gray-600">
-          سيتم عرض الشروط كاملة لقراءتها والموافقة عليها
-        </p>
       </div>
     </div>
   );

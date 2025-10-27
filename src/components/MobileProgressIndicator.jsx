@@ -145,7 +145,7 @@ function MobileProgressIndicator({ currentStep, totalSteps, steps, hajjData, onH
             {/* Next step preview */}
             {next ? (
               <p className="text-sm text-muted-foreground">
-                المرحلة التالية: <span className="font-semibold text-foreground">{next.title}</span>
+                الخطوة التالية: <span className="font-semibold text-foreground">{next.title}</span>
               </p>
             ) : (
               <p className="text-sm font-semibold text-primary">

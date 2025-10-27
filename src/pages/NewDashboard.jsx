@@ -112,11 +112,11 @@ function NewDashboard() {
   }
 
   const steps = [
-    { number: 1, title: 'التسجيل الأولي', description: 'يرجى إدخال معلومات الاتصال الخاصة بك' },
+    { number: 1, title: 'معلومات الاتصال', description: 'يرجى إدخال معلومات الاتصال الخاصة بك' },
     { number: 2, title: 'الدفع', description: 'تم دفع رسوم الحج' },
     { number: 3, title: 'قبول الشروط', description: 'الموافقة على شروط وإلتزامات الحاج' },
     { number: 4, title: 'تسجيل الجواز', description: 'تسجيل جواز السفر' },
-    { number: 5, title: 'تم التسجيل', description: 'اكتمل التسجيل' },
+    { number: 5, title: 'إحضار جواز السفر', description: 'التوجه إلى المديرية لإحضار الجواز' },
     { number: 6, title: 'التفويج', description: 'تم تحديد المجموعة والرحلة' }
   ]
 
@@ -236,8 +236,8 @@ function NewDashboard() {
             </Card>
           )}
 
-        {/* Contact Info Form - Show for init status if not complete */}
-        {hajjData.status === 'init' && !hajjData.contact_info_complete && (
+        {/* Contact Info Form - Show for init status */}
+        {hajjData.status === 'init' && (
           <div className="mb-6">
             <ContactInfoForm
               initialData={hajjData}
@@ -246,8 +246,8 @@ function NewDashboard() {
           </div>
         )}
 
-        {/* Payment Information Section - Show when status is bill_generated OR (init with contact complete) */}
-        {(hajjData.status === 'bill_generated' || (hajjData.status === 'init' && hajjData.contact_info_complete)) && (
+        {/* Payment Information Section - Show only when status is bill_generated */}
+        {hajjData.status === 'bill_generated' && (
           <PaymentInfoCard hajjData={hajjData} onPaymentMarked={handlePaymentMarked} />
         )}
 

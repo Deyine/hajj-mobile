@@ -135,24 +135,26 @@ const ConditionsModal = ({ isOpen, onClose, onAccepted }) => {
 
               {/* Hajj info - Signature box */}
               {conditionsData.hajj_info && (
-                <div className="border-2 border-primary/20 rounded-xl p-5 bg-gradient-to-br from-primary/5 to-transparent">
-                  <h4 className="text-sm font-semibold text-gray-600 mb-4 text-center">معلومات الحاج</h4>
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between py-2 border-b border-gray-200">
-                      <span className="text-sm text-gray-600">الحاج:</span>
-                      <span className="font-bold text-gray-900">{conditionsData.hajj_info.full_name_ar}</span>
+                <div className="bg-white rounded-xl p-6 shadow-sm text-right">
+                  <h4 className="text-base font-bold text-gray-900 mb-4 pb-3 border-b-2 border-primary/20 text-right">معلومات الحاج</h4>
+                  <div className="grid grid-cols-1 gap-4">
+                    <div className="space-y-1 text-right">
+                      <span className="text-xs text-gray-500 uppercase tracking-wide block">الحاج</span>
+                      <p className="font-bold text-gray-900 text-lg">{conditionsData.hajj_info.full_name_ar}</p>
                     </div>
-                    <div className="flex items-center justify-between py-2 border-b border-gray-200">
-                      <span className="text-sm text-gray-600">رقم الحاج:</span>
-                      <span className="font-bold text-gray-900" dir="ltr">{conditionsData.hajj_info.full_reference}</span>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-1 text-right">
+                        <span className="text-xs text-gray-500 uppercase tracking-wide block">رقم الحاج</span>
+                        <p className="font-semibold text-gray-900 text-right">{conditionsData.hajj_info.full_reference}</p>
+                      </div>
+                      <div className="space-y-1 text-right">
+                        <span className="text-xs text-gray-500 uppercase tracking-wide block">الرقم الوطني</span>
+                        <p className="font-semibold text-gray-900 text-right">{conditionsData.hajj_info.nni}</p>
+                      </div>
                     </div>
-                    <div className="flex items-center justify-between py-2 border-b border-gray-200">
-                      <span className="text-sm text-gray-600">الرقم الوطني:</span>
-                      <span className="font-bold text-gray-900" dir="ltr">{conditionsData.hajj_info.nni}</span>
-                    </div>
-                    <div className="flex items-center justify-between py-2">
-                      <span className="text-sm text-gray-600">التاريخ:</span>
-                      <span className="font-bold text-gray-900">{conditionsData.hajj_info.date}</span>
+                    <div className="space-y-1 pt-2 border-t border-gray-100 text-right">
+                      <span className="text-xs text-gray-500 uppercase tracking-wide block">التاريخ</span>
+                      <p className="font-medium text-gray-700">{conditionsData.hajj_info.date}</p>
                     </div>
                   </div>
                 </div>
