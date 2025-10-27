@@ -165,7 +165,7 @@ function MobileProgressIndicator({ currentStep, totalSteps, steps, hajjData, onH
               <path
                 d="M0,120 L0,102 Q50,110 100,102 T200,102 T300,102 T400,102 L400,120 Z"
                 fill="#6BBF73"
-                opacity="0.12"
+                opacity="0.08"
               />
             </svg>
 
