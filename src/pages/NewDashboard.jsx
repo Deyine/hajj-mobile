@@ -320,8 +320,8 @@ function NewDashboard() {
             )}
           </div>
 
-          {/* Download Invoice - Always available after bill_generated */}
-          {(hajjData.status === 'bill_generated' || hajjData.status === 'bill_paid' || hajjData.status === 'conditions_generated' || hajjData.status === 'passport_imported' || hajjData.status === 'subscribed' || hajjData.status === 'finished') && (
+          {/* Download Invoice - Always available after payment (bill_paid onwards) */}
+          {(hajjData.status === 'bill_paid' || hajjData.status === 'conditions_generated' || hajjData.status === 'passport_imported' || hajjData.status === 'subscribed' || hajjData.status === 'finished') && (
             <div className="mt-6">
               <a
                 href={`/api/v1/mobile/bill/${hajjData.id}`}
