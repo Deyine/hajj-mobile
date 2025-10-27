@@ -144,7 +144,7 @@ function MobileProgressIndicator({ currentStep, totalSteps, steps, hajjData, onH
               </defs>
               <rect width="400" height="120" fill="url(#crystalPattern)" opacity="0.06" />
 
-              {/* Wave Elements - Positioned at bottom */}
+              {/* Wave Elements - Top waves flowing down */}
               <path
                 d="M0,80 Q50,70 100,80 T200,80 T300,80 T400,80 L400,120 L0,120 Z"
                 fill="#2C5F2D"
@@ -154,6 +154,18 @@ function MobileProgressIndicator({ currentStep, totalSteps, steps, hajjData, onH
                 d="M0,90 Q50,82 100,90 T200,90 T300,90 T400,90 L400,120 L0,120 Z"
                 fill="#97CC04"
                 opacity="0.12"
+              />
+
+              {/* Bottom waves - Symmetrical, flowing up */}
+              <path
+                d="M0,120 L0,110 Q50,118 100,110 T200,110 T300,110 T400,110 L400,120 Z"
+                fill="#2C5F2D"
+                opacity="0.18"
+              />
+              <path
+                d="M0,120 L0,102 Q50,110 100,102 T200,102 T300,102 T400,102 L400,120 Z"
+                fill="#97CC04"
+                opacity="0.14"
               />
             </svg>
 
@@ -212,8 +224,29 @@ function MobileProgressIndicator({ currentStep, totalSteps, steps, hajjData, onH
           </div>
 
           {/* Progress Section - Spacious Layout */}
-          <div className="p-6 bg-white">
-            <div className="flex items-center justify-between gap-6">
+          <div className="p-6 bg-white relative overflow-hidden">
+            {/* Reversed Wave from Top - Light Emerald Green */}
+            <svg
+              className="absolute top-0 left-0 w-full"
+              xmlns="http://www.w3.org/2000/svg"
+              preserveAspectRatio="none"
+              viewBox="0 0 400 40"
+              style={{ height: '40px' }}
+            >
+              {/* Wave flowing downward from top - Matches last wave from first section */}
+              <path
+                d="M0,0 L400,0 L400,10 Q350,18 300,10 T200,10 T100,10 T0,10 Z"
+                fill="#97CC04"
+                opacity="0.14"
+              />
+              <path
+                d="M0,0 L400,0 L400,18 Q350,26 300,18 T200,18 T100,18 T0,18 Z"
+                fill="#A7F3D0"
+                opacity="0.12"
+              />
+            </svg>
+
+            <div className="flex items-center justify-between gap-6 relative z-10">
               {/* Left side: Step information with large typography */}
               <div className="flex-1">
                 {/* Current step title - Extra Large */}
