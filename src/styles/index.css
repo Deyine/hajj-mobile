@@ -22,9 +22,13 @@
 
   html {
     direction: rtl;
-    /* Prevent pull-to-refresh in Android WebView */
-    overscroll-behavior: contain;
+    /* Aggressively prevent pull-to-refresh in Android WebView */
+    overscroll-behavior: none;
+    overscroll-behavior-y: none;
     -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+    height: 100%;
+    overflow: hidden;
   }
 
   body {
@@ -33,17 +37,32 @@
     padding-bottom: env(safe-area-inset-bottom);
     min-height: 100vh;
     min-height: -webkit-fill-available;
-    /* Prevent overscroll that triggers parent app refresh */
-    overscroll-behavior-y: contain;
+    height: 100%;
+    /* Completely disable overscroll */
+    overscroll-behavior: none;
+    overscroll-behavior-y: none;
     /* Smooth scrolling on iOS */
     -webkit-overflow-scrolling: touch;
+    /* Only allow vertical panning */
+    touch-action: pan-y;
+    overflow-y: auto;
+    overflow-x: hidden;
+    /* Disable rubber band effect */
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
   }
 
   /* Ensure content doesn't go under system UI */
   #root {
     padding-bottom: max(20px, env(safe-area-inset-bottom));
     /* Prevent parent app from capturing scroll events */
-    overscroll-behavior: contain;
+    overscroll-behavior: none;
+    overscroll-behavior-y: none;
+    touch-action: pan-y;
+    height: 100%;
+    overflow-y: auto;
   }
 
   * {
@@ -58,14 +77,24 @@
   }
 }
 
-/* Prevent pull-to-refresh on scrollable containers */
+/* Aggressively prevent pull-to-refresh on all elements */
 * {
-  overscroll-behavior: contain;
+  overscroll-behavior: none !important;
+  overscroll-behavior-y: none !important;
 }
 
 /* Improve scroll performance and prevent bounce/refresh */
 .overflow-y-auto,
 .overflow-auto {
   -webkit-overflow-scrolling: touch;
-  overscroll-behavior-y: contain;
+  overscroll-behavior: none;
+  overscroll-behavior-y: none;
+  touch-action: pan-y;
+}
+
+/* Fix for modal scrolling */
+[role="dialog"],
+.fixed {
+  touch-action: pan-y;
+  overscroll-behavior: none;
 }

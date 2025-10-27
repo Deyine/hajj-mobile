@@ -1,40 +1,75 @@
 /**
  * Utility to prevent pull-to-refresh in WebView
- * Blocks overscroll at the top of the page that triggers parent app refresh
+ * Aggressively blocks overscroll that triggers parent app refresh
  */
 
 let startY = 0;
-let isScrollable = false;
 
 export function preventPullToRefresh() {
   // Remove existing listeners first
   removePullToRefreshPrevention();
 
   const handleTouchStart = (e) => {
-    startY = e.touches[0].pageY;
-    // Check if page is scrollable and at the top
-    isScrollable = document.documentElement.scrollHeight > window.innerHeight;
+    startY = e.touches[0].clientY;
   };
 
   const handleTouchMove = (e) => {
-    const currentY = e.touches[0].pageY;
+    const currentY = e.touches[0].clientY;
+    const deltaY = currentY - startY;
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
-    // If at the top of the page and trying to pull down
-    if (scrollTop === 0 && currentY > startY) {
-      // Prevent the pull-to-refresh gesture
+    // Prevent pull-down when at the top
+    if (scrollTop <= 0 && deltaY > 0) {
+      e.preventDefault();
+      e.stopPropagation();
+      return false;
+    }
+
+    // Prevent pull-up when at the bottom
+    const scrollHeight = document.documentElement.scrollHeight;
+    const clientHeight = document.documentElement.clientHeight;
+    if (scrollTop + clientHeight >= scrollHeight && deltaY < 0) {
+      e.preventDefault();
+      e.stopPropagation();
+      return false;
+    }
+  };
+
+  const handleTouchEnd = () => {
+    startY = 0;
+  };
+
+  // Prevent default scroll behavior on body
+  const preventBodyScroll = (e) => {
+    if (e.target === document.body) {
       e.preventDefault();
     }
   };
 
   // Use passive: false to allow preventDefault()
-  document.addEventListener('touchstart', handleTouchStart, { passive: true });
+  document.addEventListener('touchstart', handleTouchStart, { passive: false });
   document.addEventListener('touchmove', handleTouchMove, { passive: false });
+  document.addEventListener('touchend', handleTouchEnd, { passive: true });
+  document.body.addEventListener('touchmove', preventBodyScroll, { passive: false });
+
+  // Also prevent mousewheel overscroll
+  document.addEventListener('wheel', (e) => {
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    const scrollHeight = document.documentElement.scrollHeight;
+    const clientHeight = document.documentElement.clientHeight;
+
+    if ((scrollTop <= 0 && e.deltaY < 0) ||
+        (scrollTop + clientHeight >= scrollHeight && e.deltaY > 0)) {
+      e.preventDefault();
+    }
+  }, { passive: false });
 
   // Store references for cleanup
   window.__pullToRefreshHandlers = {
     touchstart: handleTouchStart,
-    touchmove: handleTouchMove
+    touchmove: handleTouchMove,
+    touchend: handleTouchEnd,
+    bodytouchmove: preventBodyScroll
   };
 }
 
@@ -42,6 +77,8 @@ export function removePullToRefreshPrevention() {
   if (window.__pullToRefreshHandlers) {
     document.removeEventListener('touchstart', window.__pullToRefreshHandlers.touchstart);
     document.removeEventListener('touchmove', window.__pullToRefreshHandlers.touchmove);
+    document.removeEventListener('touchend', window.__pullToRefreshHandlers.touchend);
+    document.body.removeEventListener('touchmove', window.__pullToRefreshHandlers.bodytouchmove);
     delete window.__pullToRefreshHandlers;
   }
 }
