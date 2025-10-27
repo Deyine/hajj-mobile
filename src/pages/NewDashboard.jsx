@@ -335,8 +335,8 @@ function NewDashboard() {
             </div>
           )}
 
-          {/* Download Conditions - Always available after acceptance (passport_imported onwards) */}
-          {(hajjData.status === 'passport_imported' || hajjData.status === 'subscribed' || hajjData.status === 'finished') && (
+          {/* Download Conditions - Always available after acceptance (conditions_generated onwards) */}
+          {(hajjData.status === 'conditions_generated' || hajjData.status === 'passport_imported' || hajjData.status === 'subscribed' || hajjData.status === 'finished') && (
             <div className="mt-3">
               <a
                 href={`/api/v1/mobile/conditions/${hajjData.id}`}
