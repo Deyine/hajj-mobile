@@ -341,7 +341,7 @@ function NewDashboard() {
               <div className="flex items-center gap-3">
                 <Phone className="h-5 w-5 text-muted-foreground" />
                 <div>
-                  <p className="text-sm text-muted-foreground">هاتف شخص قريب</p>
+                  <p className="text-sm text-muted-foreground">رقم شخص مقرب</p>
                   <p className="font-semibold">{hajjData.close_person_phone}</p>
                 </div>
               </div>
