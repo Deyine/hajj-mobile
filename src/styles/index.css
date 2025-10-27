@@ -22,6 +22,9 @@
 
   html {
     direction: rtl;
+    /* Prevent pull-to-refresh in Android WebView */
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
   }
 
   body {
@@ -30,11 +33,17 @@
     padding-bottom: env(safe-area-inset-bottom);
     min-height: 100vh;
     min-height: -webkit-fill-available;
+    /* Prevent overscroll that triggers parent app refresh */
+    overscroll-behavior-y: contain;
+    /* Smooth scrolling on iOS */
+    -webkit-overflow-scrolling: touch;
   }
 
   /* Ensure content doesn't go under system UI */
   #root {
     padding-bottom: max(20px, env(safe-area-inset-bottom));
+    /* Prevent parent app from capturing scroll events */
+    overscroll-behavior: contain;
   }
 
   * {
@@ -47,4 +56,16 @@
   .safe-bottom {
     padding-bottom: calc(1rem + env(safe-area-inset-bottom));
   }
+}
+
+/* Prevent pull-to-refresh on scrollable containers */
+* {
+  overscroll-behavior: contain;
+}
+
+/* Improve scroll performance and prevent bounce/refresh */
+.overflow-y-auto,
+.overflow-auto {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
 }
