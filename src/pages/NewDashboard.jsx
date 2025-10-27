@@ -328,6 +328,24 @@ function NewDashboard() {
                 </div>
               </div>
             )}
+            {hajjData.whatsapp && (
+              <div className="flex items-center gap-3">
+                <Phone className="h-5 w-5 text-green-600" />
+                <div>
+                  <p className="text-sm text-muted-foreground">واتساب</p>
+                  <p className="font-semibold">{hajjData.whatsapp}</p>
+                </div>
+              </div>
+            )}
+            {hajjData.close_person_phone && (
+              <div className="flex items-center gap-3">
+                <Phone className="h-5 w-5 text-muted-foreground" />
+                <div>
+                  <p className="text-sm text-muted-foreground">هاتف شخص قريب</p>
+                  <p className="font-semibold">{hajjData.close_person_phone}</p>
+                </div>
+              </div>
+            )}
 
             {/* View Conditions Button - Show after conditions accepted */}
             {(hajjData.status === 'conditions_generated' || hajjData.status === 'passport_imported' || hajjData.status === 'subscribed' || hajjData.status === 'finished') && (
