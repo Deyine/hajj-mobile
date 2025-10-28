@@ -21,13 +21,13 @@ function NewLogin() {
       return
     }
 
-    // Automatically initiate login if not already in progress
+    // Automatically initiate login only once
     if (!isLoggingIn) {
       setIsLoggingIn(true)
 
       const autoLogin = async () => {
         try {
-          // Automatically trigger OIDC login
+          // Automatically trigger OIDC login - this will redirect the browser
           await initiateLogin()
         } catch (error) {
           console.error('Login error:', error)
@@ -43,12 +43,25 @@ function NewLogin() {
 
       autoLogin()
     }
-  }, [navigate, isLoggingIn])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [navigate])
 
-  const handleRetry = () => {
+  const handleRetry = async () => {
     setAlertDialog({ ...alertDialog, isOpen: false })
-    // Reset state to trigger login again via useEffect
-    setIsLoggingIn(false)
+    setIsLoggingIn(true)
+
+    try {
+      await initiateLogin()
+    } catch (error) {
+      console.error('Login retry error:', error)
+      setIsLoggingIn(false)
+      setAlertDialog({
+        isOpen: true,
+        title: 'خطأ',
+        message: 'خطأ في بدء تسجيل الدخول. يرجى المحاولة مرة أخرى.',
+        type: 'error'
+      })
+    }
   }
 
   return (
