@@ -2,37 +2,53 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { initiateLogin } from '../services/oidc'
 import { isAuthenticated } from '../utils/auth'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import AlertDialog from '@/components/AlertDialog'
 
 /**
- * Login page component with shadcn/ui
- * Displays login button and handles OIDC authentication flow initiation
+ * Login page component with automatic OIDC redirect
+ * Automatically initiates login flow when page loads
  */
 function NewLogin() {
   const navigate = useNavigate()
   const [alertDialog, setAlertDialog] = useState({ isOpen: false, title: '', message: '', type: 'info' })
+  const [isLoggingIn, setIsLoggingIn] = useState(false)
 
   useEffect(() => {
     // Redirect to dashboard if already authenticated
     if (isAuthenticated()) {
       navigate('/dashboard')
+      return
     }
-  }, [navigate])
 
-  const handleLogin = async () => {
-    try {
-      await initiateLogin()
-    } catch (error) {
-      console.error('Login error:', error)
-      setAlertDialog({
-        isOpen: true,
-        title: 'خطأ',
-        message: 'خطأ في بدء تسجيل الدخول. يرجى المحاولة مرة أخرى.',
-        type: 'error'
-      })
+    // Automatically initiate login if not already in progress
+    if (!isLoggingIn) {
+      setIsLoggingIn(true)
+
+      const autoLogin = async () => {
+        try {
+          // Automatically trigger OIDC login
+          await initiateLogin()
+        } catch (error) {
+          console.error('Login error:', error)
+          setIsLoggingIn(false)
+          setAlertDialog({
+            isOpen: true,
+            title: 'خطأ',
+            message: 'خطأ في بدء تسجيل الدخول. يرجى المحاولة مرة أخرى.',
+            type: 'error'
+          })
+        }
+      }
+
+      autoLogin()
     }
+  }, [navigate, isLoggingIn])
+
+  const handleRetry = () => {
+    setAlertDialog({ ...alertDialog, isOpen: false })
+    // Reset state to trigger login again via useEffect
+    setIsLoggingIn(false)
   }
 
   return (
@@ -41,28 +57,28 @@ function NewLogin() {
         <Card className="w-full max-w-md">
           <CardHeader className="text-center">
             <CardTitle className="text-2xl mb-2">تطبيق الحج</CardTitle>
-            <CardDescription className="text-base">
-              مرحباً بك في تطبيق الحج
-            </CardDescription>
           </CardHeader>
-          <CardContent className="text-center space-y-4">
-            <p className="text-sm text-muted-foreground">
-              يرجى تسجيل الدخول عبر منصة خدماتي للوصول إلى خدمات الحج
-            </p>
-            <Button
-              onClick={handleLogin}
-              size="lg"
-              className="w-full"
-            >
-              تسجيل الدخول عبر خدماتي
-            </Button>
+          <CardContent className="text-center space-y-6 py-8">
+            <div className="flex flex-col items-center gap-4">
+              {/* Loading Spinner */}
+              <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-primary"></div>
+
+              <div className="space-y-2">
+                <p className="text-lg font-semibold text-foreground">
+                  جارٍ تسجيل الدخول...
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  سيتم توجيهكم إلى منصة خدماتي
+                </p>
+              </div>
+            </div>
           </CardContent>
         </Card>
       </div>
 
       <AlertDialog
         isOpen={alertDialog.isOpen}
-        onClose={() => setAlertDialog({ ...alertDialog, isOpen: false })}
+        onClose={handleRetry}
         title={alertDialog.title}
         message={alertDialog.message}
         type={alertDialog.type}
