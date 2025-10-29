@@ -260,7 +260,7 @@ function MobileProgressIndicator({ currentStep, totalSteps, steps, hajjData, onH
                 {/* Next step preview */}
                 {next ? (
                   <p className="text-sm font-medium" style={{ color: '#6B7280' }}>
-                    التالي: <span className="text-primary font-semibold">{next.title}</span>
+                    الخطوة التالية: <span className="text-primary font-semibold">{next.title}</span>
                   </p>
                 ) : (
                   <p className="text-sm font-semibold" style={{ color: '#10B981' }}>
