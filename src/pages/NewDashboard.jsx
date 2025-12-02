@@ -274,7 +274,7 @@ function NewDashboard() {
 
         {/* Passport Scan Info Card - Show when status is passport_imported */}
         {hajjData.status === 'passport_imported' && (
-          <PassportScanInfoCard onSuccess={handlePassportSubmitted} />
+          <PassportScanInfoCard hajjData={hajjData} onSuccess={handlePassportSubmitted} />
         )}
 
         {/* Flight Planning Notification - Show when status is subscribed or finished */}
