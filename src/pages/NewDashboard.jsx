@@ -617,12 +617,14 @@ function NewDashboard() {
               </button>
               {expandedSections.medical && (
                 <div className="px-6 pb-4 pt-2 space-y-3 animate-in slide-in-from-top-2">
-                  {hajjData.blood_type && (
-                    <div className="bg-gray-50 rounded-lg p-3">
-                      <p className="text-xs text-muted-foreground mb-1">فصيلة الدم</p>
+                  <div className="bg-gray-50 rounded-lg p-3">
+                    <p className="text-xs text-muted-foreground mb-1">فصيلة الدم</p>
+                    {hajjData.blood_type ? (
                       <Badge className="bg-rose-600 text-white font-bold">{hajjData.blood_type}</Badge>
-                    </div>
-                  )}
+                    ) : (
+                      <p className="text-sm text-muted-foreground">غير محدد</p>
+                    )}
+                  </div>
                   <div className="grid grid-cols-2 gap-3">
                     {hajjData.vaccine_provided !== undefined && (
                       <div className="bg-gray-50 rounded-lg p-3">
