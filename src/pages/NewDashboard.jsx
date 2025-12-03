@@ -440,6 +440,7 @@ function NewDashboard() {
       <CompanionsBottomSheet
         isOpen={showCompanionsSheet}
         onClose={() => setShowCompanionsSheet(false)}
+        onCompanionsChange={(updatedCompanions) => setCompanions(updatedCompanions)}
       />
     </div>
   )

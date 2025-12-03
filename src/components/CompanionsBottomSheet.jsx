@@ -9,7 +9,7 @@ import errorLogger from '../services/errorLogger';
  * CompanionsBottomSheet Component
  * Bottom sheet modal for managing companions
  */
-export default function CompanionsBottomSheet({ isOpen, onClose }) {
+export default function CompanionsBottomSheet({ isOpen, onClose, onCompanionsChange }) {
   const [companions, setCompanions] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -36,7 +36,12 @@ export default function CompanionsBottomSheet({ isOpen, onClose }) {
   };
 
   const handleCompanionAdded = (newCompanion) => {
-    setCompanions(prev => [...prev, newCompanion]);
+    const updatedCompanions = [...companions, newCompanion];
+    setCompanions(updatedCompanions);
+    // Notify parent dashboard
+    if (onCompanionsChange) {
+      onCompanionsChange(updatedCompanions);
+    }
   };
 
   const handleCompanionRemoved = async (companionId, onComplete) => {
@@ -44,7 +49,12 @@ export default function CompanionsBottomSheet({ isOpen, onClose }) {
       const response = await api.delete(`/api/v1/mobile/companions/${companionId}`);
 
       if (response.data.success) {
-        setCompanions(prev => prev.filter(c => c.id !== companionId));
+        const updatedCompanions = companions.filter(c => c.id !== companionId);
+        setCompanions(updatedCompanions);
+        // Notify parent dashboard
+        if (onCompanionsChange) {
+          onCompanionsChange(updatedCompanions);
+        }
       }
     } catch (error) {
       console.error('Error removing companion:', error);
