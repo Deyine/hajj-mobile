@@ -62,14 +62,30 @@ export default function CompanionList({ companions, onCompanionRemoved }) {
                 {/* Photo */}
                 <div className="flex-shrink-0">
                   {companion.photo_url ? (
-                    <img
-                      src={companion.photo_url}
-                      alt={companion.full_name_ar}
-                      className="w-16 h-16 rounded-full object-cover border-2 border-gray-200"
-                    />
+                    <div
+                      className="h-[60px] rounded-[5px]"
+                      style={{
+                        display: 'flex',
+                        overflow: 'hidden',
+                        position: 'relative',
+                        boxShadow: '0 1px 4px 0 rgba(0, 0, 0, 0.37)'
+                      }}
+                    >
+                      <img
+                        src={companion.photo_url}
+                        alt={companion.full_name_ar}
+                        className="h-full w-auto object-contain"
+                        style={{
+                          borderRadius: '5px'
+                        }}
+                      />
+                    </div>
                   ) : (
-                    <div className="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center border-2 border-gray-200">
-                      <span className="text-gray-500 text-xl">
+                    <div
+                      className="w-[60px] h-[60px] rounded-[5px] bg-primary/10 flex items-center justify-center"
+                      style={{ boxShadow: '0 1px 4px 0 rgba(0, 0, 0, 0.37)' }}
+                    >
+                      <span className="text-2xl text-primary font-bold">
                         {companion.full_name_ar?.charAt(0)}
                       </span>
                     </div>

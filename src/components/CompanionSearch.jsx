@@ -127,14 +127,30 @@ export default function CompanionSearch({ onCompanionAdded }) {
               {/* Photo */}
               <div className="flex-shrink-0">
                 {searchResult.photo_url ? (
-                  <img
-                    src={searchResult.photo_url}
-                    alt={searchResult.full_name_ar}
-                    className="w-20 h-20 rounded-full object-cover border-2 border-green-300"
-                  />
+                  <div
+                    className="h-[70px] rounded-[5px]"
+                    style={{
+                      display: 'flex',
+                      overflow: 'hidden',
+                      position: 'relative',
+                      boxShadow: '0 1px 4px 0 rgba(0, 0, 0, 0.37)'
+                    }}
+                  >
+                    <img
+                      src={searchResult.photo_url}
+                      alt={searchResult.full_name_ar}
+                      className="h-full w-auto object-contain"
+                      style={{
+                        borderRadius: '5px'
+                      }}
+                    />
+                  </div>
                 ) : (
-                  <div className="w-20 h-20 rounded-full bg-gray-200 flex items-center justify-center border-2 border-green-300">
-                    <span className="text-gray-500 text-2xl">
+                  <div
+                    className="w-[70px] h-[70px] rounded-[5px] bg-primary/10 flex items-center justify-center"
+                    style={{ boxShadow: '0 1px 4px 0 rgba(0, 0, 0, 0.37)' }}
+                  >
+                    <span className="text-3xl text-primary font-bold">
                       {searchResult.full_name_ar?.charAt(0)}
                     </span>
                   </div>
