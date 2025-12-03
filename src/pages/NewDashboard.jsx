@@ -148,26 +148,6 @@ function NewDashboard() {
     setShowConditionsViewModal(false)
   }
 
-  const handleDownloadVisa = async () => {
-    try {
-      const response = await api.get('/api/v1/mobile/documents/visa', {
-        responseType: 'blob'
-      })
-
-      // Create download link
-      const url = window.URL.createObjectURL(new Blob([response.data]))
-      const link = document.createElement('a')
-      link.href = url
-      link.setAttribute('download', `Visa-${hajjData.full_reference}.pdf`)
-      document.body.appendChild(link)
-      link.click()
-      link.remove()
-      window.URL.revokeObjectURL(url)
-    } catch (error) {
-      console.error('Error downloading visa:', error)
-      alert(error.response?.data?.error || 'حدث خطأ أثناء تحميل التأشيرة')
-    }
-  }
 
   const handleImpersonate = (targetNNI) => {
     if (targetNNI) {
@@ -598,10 +578,15 @@ function NewDashboard() {
                   <div className="bg-green-50 rounded-lg p-3 flex items-center justify-center">
                     <Badge className="bg-green-600">✓ تم إصدار التأشيرة</Badge>
                   </div>
-                  <Button onClick={handleDownloadVisa} className="w-full">
-                    <Download className="h-4 w-4 ml-2" />
-                    تحميل التأشيرة
-                  </Button>
+                  {hajjData.visa_url && (
+                    <Button
+                      onClick={() => window.open(hajjData.visa_url, '_blank')}
+                      className="w-full"
+                    >
+                      <Download className="h-4 w-4 ml-2" />
+                      تحميل التأشيرة
+                    </Button>
+                  )}
                 </div>
               )}
             </div>
