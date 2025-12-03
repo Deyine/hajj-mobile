@@ -64,6 +64,7 @@ export function isAdmin(nni) {
   // TODO: This could be fetched from backend or environment variable
   const adminNNIs = [
     '1234567890',  // Example admin NNI
+    '1623990685',  // Admin user
     // Add more admin NNIs here
   ];
 
