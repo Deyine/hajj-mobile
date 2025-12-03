@@ -73,7 +73,8 @@ function MobileProgressIndicator({
   onHeaderClick,
   companionsCount = 0,
   onCompanionsClick,
-  companionsLoading = false
+  companionsLoading = false,
+  hideProgress = false
 }) {
   // Get current and next step info
   const current = steps.find(s => s.number === currentStep)
@@ -295,7 +296,7 @@ function MobileProgressIndicator({
             </div>
           </div>
 
-          {/* Progress Section - Spacious Layout */}
+          {/* Progress Section - Spacious Layout - Show title when registration is complete */}
           <div className="p-6 bg-white relative overflow-hidden">
             {/* Reversed Wave from Top - Harmonious Green Transition */}
             <svg
@@ -318,38 +319,54 @@ function MobileProgressIndicator({
               />
             </svg>
 
-            <div className="flex items-center justify-between gap-6 relative z-10">
-              {/* Left side: Step information with large typography */}
-              <div className="flex-1">
-                {/* Current step title - Extra Large */}
+            {hideProgress ? (
+              // Show completion title when registration is complete
+              <div className="relative z-10 text-center">
                 <h2
-                  className="text-2xl font-extrabold mb-2 leading-tight"
+                  className="text-2xl font-extrabold leading-tight"
                   style={{ color: '#111827', letterSpacing: '-0.02em' }}
                 >
-                  {current?.title || 'جارٍ التحميل...'}
+                  معلومات الحاج
                 </h2>
-
-                {/* Next step preview */}
-                {next ? (
-                  <p className="text-sm font-medium" style={{ color: '#6B7280' }}>
-                    الخطوة التالية: <span className="text-primary font-semibold">{next.title}</span>
-                  </p>
-                ) : (
-                  <p className="text-sm font-semibold" style={{ color: '#10B981' }}>
-                    ✓ مكتمل
-                  </p>
-                )}
+                <p className="text-sm font-semibold mt-1" style={{ color: '#10B981' }}>
+                  ✓ التسجيل مكتمل
+                </p>
               </div>
+            ) : (
+              // Show progress when registration is in progress
+              <div className="flex items-center justify-between gap-6 relative z-10">
+                {/* Left side: Step information with large typography */}
+                <div className="flex-1">
+                  {/* Current step title - Extra Large */}
+                  <h2
+                    className="text-2xl font-extrabold mb-2 leading-tight"
+                    style={{ color: '#111827', letterSpacing: '-0.02em' }}
+                  >
+                    {current?.title || 'جارٍ التحميل...'}
+                  </h2>
 
-              {/* Right side: Minimal Progress Ring */}
-              <div className="flex-shrink-0">
-                <CircularProgress
-                  percentage={percentage}
-                  currentStep={currentStep}
-                  totalSteps={totalSteps}
-                />
+                  {/* Next step preview */}
+                  {next ? (
+                    <p className="text-sm font-medium" style={{ color: '#6B7280' }}>
+                      الخطوة التالية: <span className="text-primary font-semibold">{next.title}</span>
+                    </p>
+                  ) : (
+                    <p className="text-sm font-semibold" style={{ color: '#10B981' }}>
+                      ✓ مكتمل
+                    </p>
+                  )}
+                </div>
+
+                {/* Right side: Minimal Progress Ring */}
+                <div className="flex-shrink-0">
+                  <CircularProgress
+                    percentage={percentage}
+                    currentStep={currentStep}
+                    totalSteps={totalSteps}
+                  />
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>

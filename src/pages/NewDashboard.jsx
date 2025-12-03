@@ -14,13 +14,21 @@ import CompanionsBottomSheet from '@/components/CompanionsBottomSheet'
 import DebugPanel from '@/components/DebugPanel'
 import { getUserInfo } from '../utils/auth'
 import { getImpersonatedNNI, setImpersonatedNNI, clearImpersonatedNNI, isImpersonating } from '../utils/debug'
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
 import {
   Plane,
   Hotel,
   Phone,
   IdCard,
   AlertTriangle,
-  FileText
+  FileText,
+  Download,
+  Heart,
+  FileCheck,
+  Users,
+  User,
+  Calendar
 } from 'lucide-react'
 
 /**
@@ -120,6 +128,27 @@ function NewDashboard() {
 
   const handleCloseConditionsViewModal = () => {
     setShowConditionsViewModal(false)
+  }
+
+  const handleDownloadVisa = async () => {
+    try {
+      const response = await api.get('/api/v1/mobile/documents/visa', {
+        responseType: 'blob'
+      })
+
+      // Create download link
+      const url = window.URL.createObjectURL(new Blob([response.data]))
+      const link = document.createElement('a')
+      link.href = url
+      link.setAttribute('download', `Visa-${hajjData.full_reference}.pdf`)
+      document.body.appendChild(link)
+      link.click()
+      link.remove()
+      window.URL.revokeObjectURL(url)
+    } catch (error) {
+      console.error('Error downloading visa:', error)
+      alert(error.response?.data?.error || 'حدث خطأ أثناء تحميل التأشيرة')
+    }
   }
 
   const handleImpersonate = (targetNNI) => {
@@ -242,6 +271,7 @@ function NewDashboard() {
         companionsCount={companions.length}
         onCompanionsClick={() => setShowCompanionsSheet(true)}
         companionsLoading={companionsLoading}
+        hideProgress={hajjData.status === 'subscribed' || hajjData.status === 'finished'}
       />
 
       <div className="p-4">
@@ -294,123 +324,236 @@ function NewDashboard() {
           <PassportScanInfoCard hajjData={hajjData} onSuccess={handlePassportSubmitted} />
         )}
 
-        {/* Flight Planning Notification - Show when status is subscribed or finished */}
-        {(hajjData.status === 'subscribed' || hajjData.status === 'finished') && (
-          <div className="w-full mb-6">
-            <div className="mb-4">
-              <h3 className="text-xl font-bold text-foreground flex items-center gap-2">
-                <Plane className="h-5 w-5 text-primary" />
-                التفويج
-              </h3>
-            </div>
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-center">
-              <p className="text-blue-900 font-medium mb-2">
-                التفويج قيد التحضير
-              </p>
-              <p className="text-sm text-blue-800">
-                سيتم إعلامكم فور برمجة التفويج
-              </p>
-            </div>
-          </div>
-        )}
-
         </div>
       </div>
 
       {/* Personal Info - Full width footer */}
-      <div className="bg-white border-t border-border safe-bottom">
+      <div className={`bg-white safe-bottom ${hajjData.status !== 'subscribed' && hajjData.status !== 'finished' ? 'border-t border-border' : ''}`}>
         <div className="py-6 px-6">
           <h3 className="text-lg font-bold text-foreground mb-4">معلوماتي</h3>
-          <div className="grid gap-4">
-            <div className="flex items-center gap-3">
-              <IdCard className="h-5 w-5 text-muted-foreground" />
-              <div>
-                <p className="text-sm text-muted-foreground">رقم الحاج</p>
-                <p className="font-semibold">{hajjData.full_reference}</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-3">
-              <IdCard className="h-5 w-5 text-muted-foreground" />
-              <div>
-                <p className="text-sm text-muted-foreground">الرقم الوطني</p>
-                <p className="font-semibold">{hajjData.nni}</p>
-              </div>
-            </div>
-            {hajjData.phone && (
+            <div className="grid gap-4">
               <div className="flex items-center gap-3">
-                <Phone className="h-5 w-5 text-muted-foreground" />
+                <IdCard className="h-5 w-5 text-muted-foreground" />
                 <div>
-                  <p className="text-sm text-muted-foreground">رقم الهاتف</p>
-                  <p className="font-semibold">{hajjData.phone}</p>
+                  <p className="text-sm text-muted-foreground">رقم الحاج</p>
+                  <p className="font-semibold">{hajjData.full_reference}</p>
                 </div>
               </div>
-            )}
-            {hajjData.whatsapp && (
               <div className="flex items-center gap-3">
-                <Phone className="h-5 w-5 text-green-600" />
+                <IdCard className="h-5 w-5 text-muted-foreground" />
                 <div>
-                  <p className="text-sm text-muted-foreground">واتساب</p>
-                  <p className="font-semibold">{hajjData.whatsapp}</p>
+                  <p className="text-sm text-muted-foreground">الرقم الوطني</p>
+                  <p className="font-semibold">{hajjData.nni}</p>
                 </div>
               </div>
-            )}
-            {hajjData.close_person_phone && (
-              <div className="flex items-center gap-3">
-                <Phone className="h-5 w-5 text-muted-foreground" />
-                <div>
-                  <p className="text-sm text-muted-foreground">رقم شخص مقرب</p>
-                  <p className="font-semibold">{hajjData.close_person_phone}</p>
+              {hajjData.phone && (
+                <div className="flex items-center gap-3">
+                  <Phone className="h-5 w-5 text-muted-foreground" />
+                  <div>
+                    <p className="text-sm text-muted-foreground">رقم الهاتف</p>
+                    <p className="font-semibold">{hajjData.phone}</p>
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+              {hajjData.whatsapp && (
+                <div className="flex items-center gap-3">
+                  <Phone className="h-5 w-5 text-green-600" />
+                  <div>
+                    <p className="text-sm text-muted-foreground">واتساب</p>
+                    <p className="font-semibold">{hajjData.whatsapp}</p>
+                  </div>
+                </div>
+              )}
+              {hajjData.close_person_phone && (
+                <div className="flex items-center gap-3">
+                  <Phone className="h-5 w-5 text-muted-foreground" />
+                  <div>
+                    <p className="text-sm text-muted-foreground">رقم شخص مقرب</p>
+                    <p className="font-semibold">{hajjData.close_person_phone}</p>
+                  </div>
+                </div>
+              )}
 
-            {/* View Conditions Button - Show after conditions accepted */}
-            {(hajjData.status === 'conditions_generated' || hajjData.status === 'passport_imported' || hajjData.status === 'subscribed' || hajjData.status === 'finished') && (
-              <div className="mt-4">
-                <button
-                  onClick={handleOpenConditionsViewModal}
-                  className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full"
-                >
-                  <FileText className="ml-2 h-4 w-4" />
-                  مراجعة الشروط
-                </button>
-              </div>
-            )}
-          </div>
-
-        </div>
-
-        {/* Accommodation Info */}
-        {hajjData.accommodation_info && (
-          <div className="border-t border-border py-6 px-6">
-            <h3 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
-              <Hotel className="h-5 w-5" />
-              معلومات السكن
-            </h3>
-            <div className="space-y-3">
-              <div>
-                <p className="text-sm text-muted-foreground">الفندق</p>
-                <p className="font-semibold">{hajjData.accommodation_info.hotel.name}</p>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <p className="text-sm text-muted-foreground">الطابق</p>
-                  <p className="font-semibold">{hajjData.accommodation_info.floor.name}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">الغرفة</p>
-                  <p className="font-semibold">{hajjData.accommodation_info.room.number}</p>
-                </div>
-              </div>
-              {hajjData.accommodation_info.suite && (
-                <div>
-                  <p className="text-sm text-muted-foreground">الجناح</p>
-                  <p className="font-semibold">{hajjData.accommodation_info.suite.name}</p>
+              {/* View Conditions Button - Show after conditions accepted */}
+              {(hajjData.status === 'conditions_generated' || hajjData.status === 'passport_imported' || hajjData.status === 'subscribed' || hajjData.status === 'finished') && (
+                <div className="mt-4">
+                  <button
+                    onClick={handleOpenConditionsViewModal}
+                    className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full"
+                  >
+                    <FileText className="ml-2 h-4 w-4" />
+                    مراجعة الشروط
+                  </button>
                 </div>
               )}
             </div>
+
           </div>
-        )}
+
+          {/* Flight & Group Info */}
+          {(hajjData.flight_info || hajjData.group_info || hajjData.supervisor_info) && (
+            <div className="border-t border-border py-6 px-6">
+              <h3 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
+                <Plane className="h-5 w-5" />
+                معلومات الرحلة والمجموعة
+              </h3>
+              <div className="space-y-3">
+                {hajjData.flight_info && (
+                  <div>
+                    <p className="text-sm text-muted-foreground">رقم الرحلة</p>
+                    <p className="font-semibold">{hajjData.flight_info.flight_number}</p>
+                    {hajjData.flight_info.flight_name && (
+                      <p className="text-sm text-muted-foreground mt-1">{hajjData.flight_info.flight_name}</p>
+                    )}
+                  </div>
+                )}
+                {hajjData.group_info && (
+                  <div>
+                    <p className="text-sm text-muted-foreground">المجموعة</p>
+                    <p className="font-semibold">{hajjData.group_info.name}</p>
+                  </div>
+                )}
+                {hajjData.supervisor_info && (
+                  <div>
+                    <p className="text-sm text-muted-foreground">المشرف</p>
+                    <p className="font-semibold">{hajjData.supervisor_info.name}</p>
+                    {hajjData.supervisor_info.phone && (
+                      <p className="text-sm text-muted-foreground mt-1">{hajjData.supervisor_info.phone}</p>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Accommodation Info */}
+          {hajjData.accommodation_info && (
+            <div className="border-t border-border py-6 px-6">
+              <h3 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
+                <Hotel className="h-5 w-5" />
+                معلومات السكن
+              </h3>
+              <div className="space-y-3">
+                <div>
+                  <p className="text-sm text-muted-foreground">الفندق</p>
+                  <p className="font-semibold">{hajjData.accommodation_info.hotel.name}</p>
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-sm text-muted-foreground">الطابق</p>
+                    <p className="font-semibold">{hajjData.accommodation_info.floor.name}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground">الغرفة</p>
+                    <p className="font-semibold">{hajjData.accommodation_info.room.number}</p>
+                  </div>
+                </div>
+                {hajjData.accommodation_info.suite && (
+                  <div>
+                    <p className="text-sm text-muted-foreground">الجناح</p>
+                    <p className="font-semibold">{hajjData.accommodation_info.suite.name}</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Passport Info */}
+          {hajjData.passeport_number && (
+            <div className="border-t border-border py-6 px-6">
+              <h3 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
+                <FileText className="h-5 w-5" />
+                معلومات جواز السفر
+              </h3>
+              <div className="space-y-3">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-sm text-muted-foreground">رقم الجواز</p>
+                    <p className="font-semibold font-mono">{hajjData.passeport_number}</p>
+                  </div>
+                  {hajjData.passeport_type && (
+                    <div>
+                      <p className="text-sm text-muted-foreground">النوع</p>
+                      <Badge variant="outline">{hajjData.passeport_type}</Badge>
+                    </div>
+                  )}
+                </div>
+                {hajjData.passeport_expiration_date && (
+                  <div>
+                    <p className="text-sm text-muted-foreground">تاريخ انتهاء الصلاحية</p>
+                    <p className="font-semibold">{new Date(hajjData.passeport_expiration_date).toLocaleDateString('en-GB')}</p>
+                  </div>
+                )}
+                {hajjData.has_passeport_photo && hajjData.passeport_photo_url && (
+                  <div>
+                    <Button
+                      onClick={() => window.open(hajjData.passeport_photo_url, '_blank')}
+                      variant="outline"
+                      className="w-full"
+                    >
+                      <FileText className="h-4 w-4 ml-2" />
+                      عرض وثيقة الجواز
+                    </Button>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Visa Info */}
+          {hajjData.has_visa_attached && (
+            <div className="border-t border-border py-6 px-6">
+              <h3 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
+                <FileCheck className="h-5 w-5" />
+                تأشيرة الحج
+              </h3>
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <Badge className="bg-green-600">✓ تم إصدار التأشيرة</Badge>
+                </div>
+                <Button onClick={handleDownloadVisa} className="w-full">
+                  <Download className="h-4 w-4 ml-2" />
+                  تحميل التأشيرة
+                </Button>
+              </div>
+            </div>
+          )}
+
+          {/* Medical Info */}
+          {(hajjData.blood_type || hajjData.vaccine_provided !== undefined || hajjData.vaccine2_provided !== undefined) && (
+            <div className="border-t border-border py-6 px-6">
+              <h3 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
+                <Heart className="h-5 w-5" />
+                الملف الطبي
+              </h3>
+              <div className="space-y-3">
+                {hajjData.blood_type && (
+                  <div>
+                    <p className="text-sm text-muted-foreground">فصيلة الدم</p>
+                    <Badge className="bg-rose-600 text-white font-bold">{hajjData.blood_type}</Badge>
+                  </div>
+                )}
+                <div className="grid grid-cols-2 gap-4">
+                  {hajjData.vaccine_provided !== undefined && (
+                    <div>
+                      <p className="text-sm text-muted-foreground">اللقاح الأول</p>
+                      <Badge className={hajjData.vaccine_provided ? 'bg-green-600' : 'bg-gray-400'}>
+                        {hajjData.vaccine_provided ? '✓ مُقدم' : '✗ غير مُقدم'}
+                      </Badge>
+                    </div>
+                  )}
+                  {hajjData.vaccine2_provided !== undefined && (
+                    <div>
+                      <p className="text-sm text-muted-foreground">اللقاح الثاني</p>
+                      <Badge className={hajjData.vaccine2_provided ? 'bg-green-600' : 'bg-gray-400'}>
+                        {hajjData.vaccine2_provided ? '✓ مُقدم' : '✗ غير مُقدم'}
+                      </Badge>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
       </div>
 
       {/* Conditions Modal - For acceptance */}
