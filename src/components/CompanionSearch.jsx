@@ -165,6 +165,9 @@ export default function CompanionSearch({ onCompanionAdded }) {
                 <p className="text-sm text-gray-600">
                   الرقم الوطني: <span className="font-mono">{searchResult.nni}</span>
                 </p>
+                <p className="text-xs text-gray-500 mt-0.5">
+                  <span className="font-semibold">رقم الحاج:</span> {searchResult.full_reference}
+                </p>
               </div>
             </div>
 

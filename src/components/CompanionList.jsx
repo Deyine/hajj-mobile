@@ -100,6 +100,9 @@ export default function CompanionList({ companions, onCompanionRemoved }) {
                   <p className="text-sm text-gray-600">
                     الرقم الوطني: <span className="font-mono">{companion.nni}</span>
                   </p>
+                  <p className="text-xs text-gray-500 mt-0.5">
+                    <span className="font-semibold">رقم الحاج:</span> {companion.full_reference}
+                  </p>
                 </div>
 
                 <Button
