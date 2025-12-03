@@ -12,8 +12,6 @@ import PassportScanInfoCard from '@/components/PassportScanInfoCard'
 import MobileProgressIndicator from '@/components/MobileProgressIndicator'
 import CompanionsBottomSheet from '@/components/CompanionsBottomSheet'
 import DebugPanel from '@/components/DebugPanel'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
 import { getUserInfo } from '../utils/auth'
 import { getImpersonatedNNI, setImpersonatedNNI, clearImpersonatedNNI, isImpersonating } from '../utils/debug'
 import {
@@ -22,9 +20,7 @@ import {
   Phone,
   IdCard,
   AlertTriangle,
-  FileText,
-  Users,
-  ArrowLeft
+  FileText
 } from 'lucide-react'
 
 /**
