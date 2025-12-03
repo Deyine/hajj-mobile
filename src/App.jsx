@@ -3,6 +3,7 @@ import NewLogin from './pages/NewLogin'
 import Callback from './pages/Callback'
 import Logout from './pages/Logout'
 import NewDashboard from './pages/NewDashboard'
+import Companions from './pages/Companions'
 import ProtectedRoute from './components/ProtectedRoute'
 import { isAuthenticated } from './utils/auth'
 
@@ -37,6 +38,15 @@ function App() {
           element={
             <ProtectedRoute>
               <NewDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/companions"
+          element={
+            <ProtectedRoute>
+              <Companions />
             </ProtectedRoute>
           }
         />

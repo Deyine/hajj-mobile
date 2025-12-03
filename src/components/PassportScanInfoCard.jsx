@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { Button } from './ui/button';
-import { FileCheck, CheckCircle2, AlertCircle, Camera, Upload, X } from 'lucide-react';
+import { CheckCircle2, AlertCircle, Camera, Upload, X } from 'lucide-react';
 import api from '../services/api';
 import ConfirmationDialog from './ConfirmationDialog';
 
@@ -221,7 +221,6 @@ export default function PassportScanInfoCard({ hajjData, onSuccess }) {
                   ref={fileInputRef}
                   type="file"
                   accept="image/*"
-                  capture="environment"
                   onChange={handleFileSelect}
                   className="hidden"
                   id="passport-photo-input"

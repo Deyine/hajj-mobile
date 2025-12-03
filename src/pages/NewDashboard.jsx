@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import api from '../services/api'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import ContactInfoForm from '@/components/ContactInfoForm'
@@ -18,7 +19,9 @@ import {
   Phone,
   IdCard,
   AlertTriangle,
-  FileText
+  FileText,
+  Users,
+  ArrowLeft
 } from 'lucide-react'
 
 /**
@@ -26,6 +29,7 @@ import {
  * Shows citizen's Hajj journey with step-by-step progress
  */
 function NewDashboard() {
+  const navigate = useNavigate()
   const [hajjData, setHajjData] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -300,8 +304,25 @@ function NewDashboard() {
         </div>
       </div>
 
+      {/* Companions Button - Full width */}
+      <div className="bg-white border-t border-border py-4 px-6">
+        <button
+          onClick={() => navigate('/companions')}
+          className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-white rounded-lg py-4 px-6 flex items-center justify-between transition-all shadow-md hover:shadow-lg"
+        >
+          <div className="flex items-center gap-3">
+            <Users className="h-6 w-6" />
+            <div className="text-right">
+              <div className="font-bold text-lg">رفقاء الحج</div>
+              <div className="text-sm text-white/90">إدارة رفقاء السفر</div>
+            </div>
+          </div>
+          <ArrowLeft className="h-5 w-5" />
+        </button>
+      </div>
+
       {/* Personal Info - Full width footer */}
-      <div className="bg-white border-t border-border mt-6 safe-bottom">
+      <div className="bg-white border-t border-border safe-bottom">
         <div className="py-6 px-6">
           <h3 className="text-lg font-bold text-foreground mb-4">معلوماتي</h3>
           <div className="grid gap-4">
