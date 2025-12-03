@@ -10,6 +10,7 @@ import ConditionsViewModal from '@/components/ConditionsViewModal'
 import PassportEntryCard from '@/components/PassportEntryCard'
 import PassportScanInfoCard from '@/components/PassportScanInfoCard'
 import MobileProgressIndicator from '@/components/MobileProgressIndicator'
+import CompanionsPreviewCard from '@/components/CompanionsPreviewCard'
 import DebugPanel from '@/components/DebugPanel'
 import { getUserInfo } from '../utils/auth'
 import { getImpersonatedNNI, setImpersonatedNNI, clearImpersonatedNNI, isImpersonating } from '../utils/debug'
@@ -31,6 +32,8 @@ import {
 function NewDashboard() {
   const navigate = useNavigate()
   const [hajjData, setHajjData] = useState(null)
+  const [companions, setCompanions] = useState([])
+  const [companionsLoading, setCompanionsLoading] = useState(true)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [notFound, setNotFound] = useState(false)
@@ -64,18 +67,26 @@ function NewDashboard() {
   const fetchHajjData = async () => {
     try {
       setLoading(true)
-      const response = await api.get('/api/v1/mobile/dashboard')
+      setCompanionsLoading(true)
 
-      if (response.data.found === false) {
+      // Fetch dashboard and companions in parallel
+      const [dashboardResponse, companionsResponse] = await Promise.all([
+        api.get('/api/v1/mobile/dashboard'),
+        api.get('/api/v1/mobile/companions').catch(() => ({ data: { companions: [] } }))
+      ])
+
+      if (dashboardResponse.data.found === false) {
         setNotFound(true)
       } else {
-        setHajjData(response.data)
+        setHajjData(dashboardResponse.data)
+        setCompanions(companionsResponse.data.companions || [])
       }
     } catch (err) {
       console.error('Error fetching Hajj data:', err)
       setError('حدث خطأ في تحميل البيانات')
     } finally {
       setLoading(false)
+      setCompanionsLoading(false)
     }
   }
 
@@ -382,6 +393,14 @@ function NewDashboard() {
             )}
           </div>
 
+        </div>
+
+        {/* Companions Preview */}
+        <div className="border-t border-border py-6 px-6">
+          <CompanionsPreviewCard
+            companions={companions}
+            loading={companionsLoading}
+          />
         </div>
 
         {/* Accommodation Info */}
