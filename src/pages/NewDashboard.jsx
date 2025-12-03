@@ -53,6 +53,7 @@ function NewDashboard() {
 
   // Progressive disclosure state for info sections
   const [expandedSections, setExpandedSections] = useState({
+    personal: false,
     flight: false,
     accommodation: false,
     passport: false,
@@ -325,68 +326,71 @@ function NewDashboard() {
         </div>
       </div>
 
-      {/* Personal Info - Full width footer */}
+      {/* Personal Info - Collapsible */}
       <div className={`bg-white safe-bottom ${hajjData.status !== 'subscribed' && hajjData.status !== 'finished' ? 'border-t border-border' : ''}`}>
-        <div className="py-6 px-6">
-          <h3 className="text-lg font-bold text-foreground mb-4">معلوماتي</h3>
-            <div className="grid gap-4">
-              <div className="flex items-center gap-3">
-                <IdCard className="h-5 w-5 text-muted-foreground" />
-                <div>
-                  <p className="text-sm text-muted-foreground">رقم الحاج</p>
-                  <p className="font-semibold">{hajjData.full_reference}</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <IdCard className="h-5 w-5 text-muted-foreground" />
-                <div>
-                  <p className="text-sm text-muted-foreground">الرقم الوطني</p>
-                  <p className="font-semibold">{hajjData.nni}</p>
-                </div>
-              </div>
-              {hajjData.phone && (
-                <div className="flex items-center gap-3">
-                  <Phone className="h-5 w-5 text-muted-foreground" />
-                  <div>
-                    <p className="text-sm text-muted-foreground">رقم الهاتف</p>
-                    <p className="font-semibold">{hajjData.phone}</p>
-                  </div>
-                </div>
-              )}
-              {hajjData.whatsapp && (
-                <div className="flex items-center gap-3">
-                  <Phone className="h-5 w-5 text-green-600" />
-                  <div>
-                    <p className="text-sm text-muted-foreground">واتساب</p>
-                    <p className="font-semibold">{hajjData.whatsapp}</p>
-                  </div>
-                </div>
-              )}
-              {hajjData.close_person_phone && (
-                <div className="flex items-center gap-3">
-                  <Phone className="h-5 w-5 text-muted-foreground" />
-                  <div>
-                    <p className="text-sm text-muted-foreground">رقم شخص مقرب</p>
-                    <p className="font-semibold">{hajjData.close_person_phone}</p>
-                  </div>
-                </div>
-              )}
-
-              {/* View Conditions Button - Show after conditions accepted */}
-              {(hajjData.status === 'conditions_generated' || hajjData.status === 'passport_imported' || hajjData.status === 'subscribed' || hajjData.status === 'finished') && (
-                <div className="mt-4">
-                  <button
-                    onClick={handleOpenConditionsViewModal}
-                    className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full"
-                  >
-                    <FileText className="ml-2 h-4 w-4" />
-                    مراجعة الشروط
-                  </button>
-                </div>
-              )}
+        <button
+          onClick={() => toggleSection('personal')}
+          className={`w-full py-4 px-6 flex items-center justify-between transition-colors ${
+            expandedSections.personal ? 'bg-gray-100' : 'hover:bg-gray-50'
+          }`}
+        >
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-teal-50">
+              <User className="h-5 w-5 text-teal-600" />
             </div>
-
+            <h3 className="text-lg font-bold text-foreground">
+              معلوماتي
+            </h3>
           </div>
+          {expandedSections.personal ? (
+            <ChevronUp className="h-5 w-5 text-muted-foreground" />
+          ) : (
+            <ChevronDown className="h-5 w-5 text-muted-foreground" />
+          )}
+        </button>
+        {expandedSections.personal && (
+          <div className="px-6 pb-4 pt-2 space-y-3 animate-in slide-in-from-top-2">
+            <div className="bg-gray-50 rounded-lg p-3">
+              <p className="text-xs text-muted-foreground mb-1">رقم الحاج</p>
+              <p className="font-semibold text-foreground">{hajjData.full_reference}</p>
+            </div>
+            <div className="bg-gray-50 rounded-lg p-3">
+              <p className="text-xs text-muted-foreground mb-1">الرقم الوطني</p>
+              <p className="font-semibold text-foreground">{hajjData.nni}</p>
+            </div>
+            {hajjData.phone && (
+              <div className="bg-gray-50 rounded-lg p-3">
+                <p className="text-xs text-muted-foreground mb-1">رقم الهاتف</p>
+                <p className="font-semibold text-foreground">{hajjData.phone}</p>
+              </div>
+            )}
+            {hajjData.whatsapp && (
+              <div className="bg-gray-50 rounded-lg p-3">
+                <p className="text-xs text-muted-foreground mb-1">واتساب</p>
+                <p className="font-semibold text-foreground">{hajjData.whatsapp}</p>
+              </div>
+            )}
+            {hajjData.close_person_phone && (
+              <div className="bg-gray-50 rounded-lg p-3">
+                <p className="text-xs text-muted-foreground mb-1">رقم شخص مقرب</p>
+                <p className="font-semibold text-foreground">{hajjData.close_person_phone}</p>
+              </div>
+            )}
+
+            {/* View Conditions Button - Show after conditions accepted */}
+            {(hajjData.status === 'conditions_generated' || hajjData.status === 'passport_imported' || hajjData.status === 'subscribed' || hajjData.status === 'finished') && (
+              <Button
+                onClick={handleOpenConditionsViewModal}
+                variant="outline"
+                className="w-full"
+              >
+                <FileText className="ml-2 h-4 w-4" />
+                مراجعة الشروط
+              </Button>
+            )}
+          </div>
+        )}
+      </div>
 
           {/* Flight & Group Info - Collapsible */}
           {(hajjData.flight_info || hajjData.group_info || hajjData.supervisor_info) && (
