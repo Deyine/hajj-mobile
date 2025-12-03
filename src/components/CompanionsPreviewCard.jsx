@@ -45,21 +45,33 @@ export default function CompanionsPreviewCard({ companions = [], loading = false
                 key={companion.id}
                 className="flex items-center gap-3 p-2 bg-gray-50 rounded-lg"
               >
-                {/* Mini photo - 40px circular */}
+                {/* Mini photo - 50px with rounded corners */}
                 <div className="flex-shrink-0">
                   {companion.photo_url ? (
-                    <img
-                      src={companion.photo_url}
-                      alt={companion.full_name_ar}
-                      className="w-10 h-10 rounded-full object-cover"
-                      style={{ boxShadow: '0 1px 3px rgba(0, 0, 0, 0.2)' }}
-                    />
+                    <div
+                      className="h-[50px] rounded-[5px]"
+                      style={{
+                        display: 'flex',
+                        overflow: 'hidden',
+                        position: 'relative',
+                        boxShadow: '0 1px 4px 0 rgba(0, 0, 0, 0.37)'
+                      }}
+                    >
+                      <img
+                        src={companion.photo_url}
+                        alt={companion.full_name_ar}
+                        className="h-full w-auto object-contain"
+                        style={{
+                          borderRadius: '5px'
+                        }}
+                      />
+                    </div>
                   ) : (
                     <div
-                      className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center"
-                      style={{ boxShadow: '0 1px 3px rgba(0, 0, 0, 0.2)' }}
+                      className="w-[50px] h-[50px] rounded-[5px] bg-primary/10 flex items-center justify-center"
+                      style={{ boxShadow: '0 1px 4px 0 rgba(0, 0, 0, 0.37)' }}
                     >
-                      <span className="text-primary font-bold text-sm">
+                      <span className="text-primary font-bold text-lg">
                         {companion.full_name_ar?.charAt(0)}
                       </span>
                     </div>
