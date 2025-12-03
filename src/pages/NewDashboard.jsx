@@ -651,7 +651,6 @@ function NewDashboard() {
           )}
         </div>
       )}
-      </div>
 
       {/* Conditions Modal - For acceptance */}
       <ConditionsModal
