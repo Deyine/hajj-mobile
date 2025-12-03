@@ -1,3 +1,5 @@
+import { Users } from 'lucide-react';
+
 /**
  * Circular Progress Ring Component
  * SVG-based circular progress indicator showing completion percentage
@@ -63,7 +65,16 @@ function CircularProgress({ percentage, currentStep, totalSteps }) {
  *
  * Design: Unified header block with gradient background
  */
-function MobileProgressIndicator({ currentStep, totalSteps, steps, hajjData, onHeaderClick }) {
+function MobileProgressIndicator({
+  currentStep,
+  totalSteps,
+  steps,
+  hajjData,
+  onHeaderClick,
+  companionsCount = 0,
+  onCompanionsClick,
+  companionsLoading = false
+}) {
   // Get current and next step info
   const current = steps.find(s => s.number === currentStep)
   const next = steps.find(s => s.number === currentStep + 1)
@@ -219,6 +230,67 @@ function MobileProgressIndicator({ currentStep, totalSteps, steps, hajjData, onH
                   <span className="font-semibold">رقم الحاج:</span> {hajjData?.full_reference}
                 </p>
               </div>
+
+              {/* Companions Button - Modern Icon with Badge */}
+              {onCompanionsClick && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onCompanionsClick();
+                  }}
+                  disabled={companionsLoading}
+                  className="flex-shrink-0 relative"
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.9)',
+                    backdropFilter: 'blur(10px)',
+                    border: '1px solid rgba(44, 95, 45, 0.2)',
+                    borderRadius: '12px',
+                    padding: '10px',
+                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)',
+                    transition: 'all 0.2s ease',
+                    cursor: companionsLoading ? 'not-allowed' : 'pointer',
+                    opacity: companionsLoading ? 0.6 : 1,
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!companionsLoading) {
+                      e.currentTarget.style.transform = 'translateY(-2px)';
+                      e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.12)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.08)';
+                  }}
+                >
+                  <Users className="h-6 w-6" style={{ color: '#2C5F2D' }} />
+
+                  {/* Badge with count */}
+                  {!companionsLoading && (
+                    <div
+                      className="absolute -top-1 -right-1"
+                      style={{
+                        background: 'linear-gradient(135deg, #2C5F2D 0%, #4A9B4D 100%)',
+                        borderRadius: '10px',
+                        minWidth: '20px',
+                        height: '20px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        padding: '0 5px',
+                        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
+                        border: '2px solid white',
+                      }}
+                    >
+                      <span
+                        className="text-xs font-bold"
+                        style={{ color: 'white', lineHeight: 1 }}
+                      >
+                        {companionsCount}
+                      </span>
+                    </div>
+                  )}
+                </button>
+              )}
             </div>
             </div>
           </div>

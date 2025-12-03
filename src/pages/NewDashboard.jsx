@@ -243,6 +243,9 @@ function NewDashboard() {
         steps={steps}
         hajjData={hajjData}
         onHeaderClick={handleHeaderClick}
+        companionsCount={companions.length}
+        onCompanionsClick={() => setShowCompanionsSheet(true)}
+        companionsLoading={companionsLoading}
       />
 
       <div className="p-4">
@@ -396,30 +399,6 @@ function NewDashboard() {
             )}
           </div>
 
-        </div>
-
-        {/* Companions Section */}
-        <div className="border-t border-border py-6 px-6">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-bold text-foreground flex items-center gap-2">
-              <Users className="h-5 w-5" />
-              رفقاء الحج
-            </h3>
-            <Badge variant="secondary" className="font-mono">
-              {companionsLoading ? '...' : `${companions.length}/5`}
-            </Badge>
-          </div>
-
-          <Button
-            onClick={() => setShowCompanionsSheet(true)}
-            variant="outline"
-            className="w-full"
-            size="lg"
-            disabled={companionsLoading}
-          >
-            {companions.length > 0 ? 'إدارة الرفقاء' : 'إضافة رفقاء'}
-            <ArrowLeft className="mr-2 h-4 w-4" />
-          </Button>
         </div>
 
         {/* Accommodation Info */}
