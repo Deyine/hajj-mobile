@@ -28,7 +28,9 @@ import {
   FileCheck,
   Users,
   User,
-  Calendar
+  Calendar,
+  ChevronDown,
+  ChevronUp
 } from 'lucide-react'
 
 /**
@@ -48,6 +50,22 @@ function NewDashboard() {
   const [showDebugPanel, setShowDebugPanel] = useState(false)
   const [showCompanionsSheet, setShowCompanionsSheet] = useState(false)
   const [clickCount, setClickCount] = useState(0)
+
+  // Progressive disclosure state for info sections
+  const [expandedSections, setExpandedSections] = useState({
+    flight: false,
+    accommodation: false,
+    passport: false,
+    visa: false,
+    medical: false
+  })
+
+  const toggleSection = (section) => {
+    setExpandedSections(prev => ({
+      ...prev,
+      [section]: !prev[section]
+    }))
+  }
 
   useEffect(() => {
     fetchHajjData()
@@ -390,102 +408,154 @@ function NewDashboard() {
 
           </div>
 
-          {/* Flight & Group Info */}
+          {/* Flight & Group Info - Collapsible */}
           {(hajjData.flight_info || hajjData.group_info || hajjData.supervisor_info) && (
-            <div className="border-t border-border py-6 px-6">
-              <h3 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
-                <Plane className="h-5 w-5" />
-                معلومات الرحلة والمجموعة
-              </h3>
-              <div className="space-y-3">
-                {hajjData.flight_info && (
-                  <div>
-                    <p className="text-sm text-muted-foreground">رقم الرحلة</p>
-                    <p className="font-semibold">{hajjData.flight_info.flight_number}</p>
-                    {hajjData.flight_info.flight_name && (
-                      <p className="text-sm text-muted-foreground mt-1">{hajjData.flight_info.flight_name}</p>
-                    )}
+            <div className="border-t border-border">
+              <button
+                onClick={() => toggleSection('flight')}
+                className={`w-full py-4 px-6 flex items-center justify-between transition-colors ${
+                  expandedSections.flight ? 'bg-gray-100' : 'hover:bg-gray-50'
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-blue-50">
+                    <Plane className="h-5 w-5 text-blue-600" />
                   </div>
-                )}
-                {hajjData.group_info && (
-                  <div>
-                    <p className="text-sm text-muted-foreground">المجموعة</p>
-                    <p className="font-semibold">{hajjData.group_info.name}</p>
-                  </div>
-                )}
-                {hajjData.supervisor_info && (
-                  <div>
-                    <p className="text-sm text-muted-foreground">المشرف</p>
-                    <p className="font-semibold">{hajjData.supervisor_info.name}</p>
-                    {hajjData.supervisor_info.phone && (
-                      <p className="text-sm text-muted-foreground mt-1">{hajjData.supervisor_info.phone}</p>
-                    )}
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
-
-          {/* Accommodation Info */}
-          {hajjData.accommodation_info && (
-            <div className="border-t border-border py-6 px-6">
-              <h3 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
-                <Hotel className="h-5 w-5" />
-                معلومات السكن
-              </h3>
-              <div className="space-y-3">
-                <div>
-                  <p className="text-sm text-muted-foreground">الفندق</p>
-                  <p className="font-semibold">{hajjData.accommodation_info.hotel.name}</p>
+                  <h3 className="text-lg font-bold text-foreground">
+                    معلومات الرحلة والمجموعة
+                  </h3>
                 </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <p className="text-sm text-muted-foreground">الطابق</p>
-                    <p className="font-semibold">{hajjData.accommodation_info.floor.name}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">الغرفة</p>
-                    <p className="font-semibold">{hajjData.accommodation_info.room.number}</p>
-                  </div>
-                </div>
-                {hajjData.accommodation_info.suite && (
-                  <div>
-                    <p className="text-sm text-muted-foreground">الجناح</p>
-                    <p className="font-semibold">{hajjData.accommodation_info.suite.name}</p>
-                  </div>
+                {expandedSections.flight ? (
+                  <ChevronUp className="h-5 w-5 text-muted-foreground" />
+                ) : (
+                  <ChevronDown className="h-5 w-5 text-muted-foreground" />
                 )}
-              </div>
-            </div>
-          )}
-
-          {/* Passport Info */}
-          {hajjData.passeport_number && (
-            <div className="border-t border-border py-6 px-6">
-              <h3 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
-                <FileText className="h-5 w-5" />
-                معلومات جواز السفر
-              </h3>
-              <div className="space-y-3">
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <p className="text-sm text-muted-foreground">رقم الجواز</p>
-                    <p className="font-semibold font-mono">{hajjData.passeport_number}</p>
-                  </div>
-                  {hajjData.passeport_type && (
-                    <div>
-                      <p className="text-sm text-muted-foreground">النوع</p>
-                      <Badge variant="outline">{hajjData.passeport_type}</Badge>
+              </button>
+              {expandedSections.flight && (
+                <div className="px-6 pb-4 pt-2 space-y-3 animate-in slide-in-from-top-2">
+                  {hajjData.flight_info && (
+                    <div className="bg-gray-50 rounded-lg p-3">
+                      <p className="text-xs text-muted-foreground mb-1">رقم الرحلة</p>
+                      <p className="font-semibold text-foreground">{hajjData.flight_info.flight_number}</p>
+                      {hajjData.flight_info.flight_name && (
+                        <p className="text-sm text-muted-foreground mt-1">{hajjData.flight_info.flight_name}</p>
+                      )}
+                    </div>
+                  )}
+                  {hajjData.group_info && (
+                    <div className="bg-gray-50 rounded-lg p-3">
+                      <p className="text-xs text-muted-foreground mb-1">المجموعة</p>
+                      <p className="font-semibold text-foreground">{hajjData.group_info.name}</p>
+                    </div>
+                  )}
+                  {hajjData.supervisor_info && (
+                    <div className="bg-gray-50 rounded-lg p-3">
+                      <p className="text-xs text-muted-foreground mb-1">المشرف</p>
+                      <p className="font-semibold text-foreground">{hajjData.supervisor_info.name}</p>
+                      {hajjData.supervisor_info.phone && (
+                        <p className="text-sm text-muted-foreground mt-1">{hajjData.supervisor_info.phone}</p>
+                      )}
                     </div>
                   )}
                 </div>
-                {hajjData.passeport_expiration_date && (
-                  <div>
-                    <p className="text-sm text-muted-foreground">تاريخ انتهاء الصلاحية</p>
-                    <p className="font-semibold">{new Date(hajjData.passeport_expiration_date).toLocaleDateString('en-GB')}</p>
+              )}
+            </div>
+          )}
+
+          {/* Accommodation Info - Collapsible */}
+          {hajjData.accommodation_info && (
+            <div className="border-t border-border">
+              <button
+                onClick={() => toggleSection('accommodation')}
+                className={`w-full py-4 px-6 flex items-center justify-between transition-colors ${
+                  expandedSections.accommodation ? 'bg-gray-100' : 'hover:bg-gray-50'
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-purple-50">
+                    <Hotel className="h-5 w-5 text-purple-600" />
                   </div>
+                  <h3 className="text-lg font-bold text-foreground">
+                    معلومات السكن
+                  </h3>
+                </div>
+                {expandedSections.accommodation ? (
+                  <ChevronUp className="h-5 w-5 text-muted-foreground" />
+                ) : (
+                  <ChevronDown className="h-5 w-5 text-muted-foreground" />
                 )}
-                {hajjData.has_passeport_photo && hajjData.passeport_photo_url && (
-                  <div>
+              </button>
+              {expandedSections.accommodation && (
+                <div className="px-6 pb-4 pt-2 space-y-3 animate-in slide-in-from-top-2">
+                  <div className="bg-gray-50 rounded-lg p-3">
+                    <p className="text-xs text-muted-foreground mb-1">الفندق</p>
+                    <p className="font-semibold text-foreground">{hajjData.accommodation_info.hotel.name}</p>
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="bg-gray-50 rounded-lg p-3">
+                      <p className="text-xs text-muted-foreground mb-1">الطابق</p>
+                      <p className="font-semibold text-foreground">{hajjData.accommodation_info.floor.name}</p>
+                    </div>
+                    <div className="bg-gray-50 rounded-lg p-3">
+                      <p className="text-xs text-muted-foreground mb-1">الغرفة</p>
+                      <p className="font-semibold text-foreground">{hajjData.accommodation_info.room.number}</p>
+                    </div>
+                  </div>
+                  {hajjData.accommodation_info.suite && (
+                    <div className="bg-gray-50 rounded-lg p-3">
+                      <p className="text-xs text-muted-foreground mb-1">الجناح</p>
+                      <p className="font-semibold text-foreground">{hajjData.accommodation_info.suite.name}</p>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Passport Info - Collapsible */}
+          {hajjData.passeport_number && (
+            <div className="border-t border-border">
+              <button
+                onClick={() => toggleSection('passport')}
+                className={`w-full py-4 px-6 flex items-center justify-between transition-colors ${
+                  expandedSections.passport ? 'bg-gray-100' : 'hover:bg-gray-50'
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-amber-50">
+                    <FileText className="h-5 w-5 text-amber-600" />
+                  </div>
+                  <h3 className="text-lg font-bold text-foreground">
+                    معلومات جواز السفر
+                  </h3>
+                </div>
+                {expandedSections.passport ? (
+                  <ChevronUp className="h-5 w-5 text-muted-foreground" />
+                ) : (
+                  <ChevronDown className="h-5 w-5 text-muted-foreground" />
+                )}
+              </button>
+              {expandedSections.passport && (
+                <div className="px-6 pb-4 pt-2 space-y-3 animate-in slide-in-from-top-2">
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="bg-gray-50 rounded-lg p-3">
+                      <p className="text-xs text-muted-foreground mb-1">رقم الجواز</p>
+                      <p className="font-semibold font-mono text-foreground">{hajjData.passeport_number}</p>
+                    </div>
+                    {hajjData.passeport_type && (
+                      <div className="bg-gray-50 rounded-lg p-3 flex flex-col">
+                        <p className="text-xs text-muted-foreground mb-1">النوع</p>
+                        <Badge variant="outline" className="w-fit">{hajjData.passeport_type}</Badge>
+                      </div>
+                    )}
+                  </div>
+                  {hajjData.passeport_expiration_date && (
+                    <div className="bg-gray-50 rounded-lg p-3">
+                      <p className="text-xs text-muted-foreground mb-1">تاريخ انتهاء الصلاحية</p>
+                      <p className="font-semibold text-foreground">{new Date(hajjData.passeport_expiration_date).toLocaleDateString('en-GB')}</p>
+                    </div>
+                  )}
+                  {hajjData.has_passeport_photo && hajjData.passeport_photo_url && (
                     <Button
                       onClick={() => window.open(hajjData.passeport_photo_url, '_blank')}
                       variant="outline"
@@ -494,64 +564,100 @@ function NewDashboard() {
                       <FileText className="h-4 w-4 ml-2" />
                       عرض وثيقة الجواز
                     </Button>
-                  </div>
-                )}
-              </div>
+                  )}
+                </div>
+              )}
             </div>
           )}
 
-          {/* Visa Info */}
+          {/* Visa Info - Collapsible */}
           {hajjData.has_visa_attached && (
-            <div className="border-t border-border py-6 px-6">
-              <h3 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
-                <FileCheck className="h-5 w-5" />
-                تأشيرة الحج
-              </h3>
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <Badge className="bg-green-600">✓ تم إصدار التأشيرة</Badge>
+            <div className="border-t border-border">
+              <button
+                onClick={() => toggleSection('visa')}
+                className={`w-full py-4 px-6 flex items-center justify-between transition-colors ${
+                  expandedSections.visa ? 'bg-gray-100' : 'hover:bg-gray-50'
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-green-50">
+                    <FileCheck className="h-5 w-5 text-green-600" />
+                  </div>
+                  <h3 className="text-lg font-bold text-foreground">
+                    تأشيرة الحج
+                  </h3>
                 </div>
-                <Button onClick={handleDownloadVisa} className="w-full">
-                  <Download className="h-4 w-4 ml-2" />
-                  تحميل التأشيرة
-                </Button>
-              </div>
+                {expandedSections.visa ? (
+                  <ChevronUp className="h-5 w-5 text-muted-foreground" />
+                ) : (
+                  <ChevronDown className="h-5 w-5 text-muted-foreground" />
+                )}
+              </button>
+              {expandedSections.visa && (
+                <div className="px-6 pb-4 pt-2 space-y-3 animate-in slide-in-from-top-2">
+                  <div className="bg-green-50 rounded-lg p-3 flex items-center justify-center">
+                    <Badge className="bg-green-600">✓ تم إصدار التأشيرة</Badge>
+                  </div>
+                  <Button onClick={handleDownloadVisa} className="w-full">
+                    <Download className="h-4 w-4 ml-2" />
+                    تحميل التأشيرة
+                  </Button>
+                </div>
+              )}
             </div>
           )}
 
-          {/* Medical Info */}
+          {/* Medical Info - Collapsible */}
           {(hajjData.blood_type || hajjData.vaccine_provided !== undefined || hajjData.vaccine2_provided !== undefined) && (
-            <div className="border-t border-border py-6 px-6">
-              <h3 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
-                <Heart className="h-5 w-5" />
-                الملف الطبي
-              </h3>
-              <div className="space-y-3">
-                {hajjData.blood_type && (
-                  <div>
-                    <p className="text-sm text-muted-foreground">فصيلة الدم</p>
-                    <Badge className="bg-rose-600 text-white font-bold">{hajjData.blood_type}</Badge>
+            <div className="border-t border-border">
+              <button
+                onClick={() => toggleSection('medical')}
+                className={`w-full py-4 px-6 flex items-center justify-between transition-colors ${
+                  expandedSections.medical ? 'bg-gray-100' : 'hover:bg-gray-50'
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-rose-50">
+                    <Heart className="h-5 w-5 text-rose-600" />
                   </div>
-                )}
-                <div className="grid grid-cols-2 gap-4">
-                  {hajjData.vaccine_provided !== undefined && (
-                    <div>
-                      <p className="text-sm text-muted-foreground">اللقاح الأول</p>
-                      <Badge className={hajjData.vaccine_provided ? 'bg-green-600' : 'bg-gray-400'}>
-                        {hajjData.vaccine_provided ? '✓ مُقدم' : '✗ غير مُقدم'}
-                      </Badge>
-                    </div>
-                  )}
-                  {hajjData.vaccine2_provided !== undefined && (
-                    <div>
-                      <p className="text-sm text-muted-foreground">اللقاح الثاني</p>
-                      <Badge className={hajjData.vaccine2_provided ? 'bg-green-600' : 'bg-gray-400'}>
-                        {hajjData.vaccine2_provided ? '✓ مُقدم' : '✗ غير مُقدم'}
-                      </Badge>
-                    </div>
-                  )}
+                  <h3 className="text-lg font-bold text-foreground">
+                    الملف الطبي
+                  </h3>
                 </div>
-              </div>
+                {expandedSections.medical ? (
+                  <ChevronUp className="h-5 w-5 text-muted-foreground" />
+                ) : (
+                  <ChevronDown className="h-5 w-5 text-muted-foreground" />
+                )}
+              </button>
+              {expandedSections.medical && (
+                <div className="px-6 pb-4 pt-2 space-y-3 animate-in slide-in-from-top-2">
+                  {hajjData.blood_type && (
+                    <div className="bg-gray-50 rounded-lg p-3">
+                      <p className="text-xs text-muted-foreground mb-1">فصيلة الدم</p>
+                      <Badge className="bg-rose-600 text-white font-bold">{hajjData.blood_type}</Badge>
+                    </div>
+                  )}
+                  <div className="grid grid-cols-2 gap-3">
+                    {hajjData.vaccine_provided !== undefined && (
+                      <div className="bg-gray-50 rounded-lg p-3">
+                        <p className="text-xs text-muted-foreground mb-1">اللقاح الأول</p>
+                        <Badge className={hajjData.vaccine_provided ? 'bg-green-600' : 'bg-gray-400'}>
+                          {hajjData.vaccine_provided ? '✓ مُقدم' : '✗ غير مُقدم'}
+                        </Badge>
+                      </div>
+                    )}
+                    {hajjData.vaccine2_provided !== undefined && (
+                      <div className="bg-gray-50 rounded-lg p-3">
+                        <p className="text-xs text-muted-foreground mb-1">اللقاح الثاني</p>
+                        <Badge className={hajjData.vaccine2_provided ? 'bg-green-600' : 'bg-gray-400'}>
+                          {hajjData.vaccine2_provided ? '✓ مُقدم' : '✗ غير مُقدم'}
+                        </Badge>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
           )}
       </div>
